@@ -1,0 +1,97 @@
+{% load static %}
+<footer class="footer">
+  <div class="container">
+    <div class="footer__row">
+      <div class="footer__col">
+        <div class="footer__logo"></div>
+        <div class="footer__contact-inner">
+          <p class="footer__name">Офис продаж Максимум</p>
+          {% if site_settings.address %}<p class="footer__street">{{ site_settings.address }}</p>{% endif %}
+          {% if site_settings.phone %}
+          <div class="footer__contact">
+            <span>Номер менеджера :</span>
+            <a href="tel:{{ site_settings.phone }}">{{ site_settings.phone }}</a>
+          </div>
+          {% endif %}
+          {% if site_settings.email %}
+          <div class="footer__contact">
+            <span>Почта для связи :</span>
+            <a href="mailto:site_settings.email">{{ site_settings.email }}</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-inner">
+          <nav class="footer__nav footer-nav">
+            <p>О компании</p>
+            <ul class="footer-nav__list">
+              <li class="footer-nav__item"><a href="{% url 'about' %}">О нас</a></li>
+              <li class="footer-nav__item">
+                <a href="{% if activate_page %} {% url 'contact' %}{% else %}#{% endif %}" {% if not activate_page %} data-popup="contact" {% endif %}>
+                  Контакты
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <nav class="footer__nav footer-nav">
+            <p>Каталог</p>
+            <ul class="footer-nav__list">
+              {% if category_menu %}
+              {% for cat in category_menu %}
+              <li class="footer-nav__item"><a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></li>
+              {% endfor %}
+              {% endif %}
+            </ul>
+          </nav>
+          <nav class="footer__nav footer-nav">
+            <p>Новости</p>
+            <ul class="footer-nav__list">
+              {% if category_blog %}
+              {% for cat_blog in category_blog %}
+              <li class="footer-nav__item"><a href="{{ cat_blog.get_absolute_url }}">{{ cat_blog.name }}</a></li>
+              {% endfor %}
+              {% endif %}
+            </ul>
+          </nav>
+          {% if services %}
+          <nav class="footer__nav footer-nav">
+            <p>Услуги</p>
+            {% for service in services %}
+            <ul class="footer-nav__list">
+              <li class="footer-nav__item"><a href="{{ service.get_absolute_url }}">{{ service.name }}</a></li>
+            </ul>
+            {% endfor %}
+          </nav>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__author">
+        Сайт разработан - <a href="https://xn----7sbah6bllcobpj.xn--p1ai/" target="_blank">РА Аврора</a>
+      </div>
+      <a href="{% url 'politika' %}">Политика конфиденциальности</a>
+      <div class="footer__social">
+        <a href=""><img src="{% static 'theme/mb/images/icon/telegram-icon.svg' %}" alt=""></a>
+        <a href=""><img src="{% static 'theme/mb/images/icon/vk-icon.svg' %}" alt=""></a>
+        <a href=""><img src="{% static 'theme/mb/images/icon/phone-icon.svg' %}" alt=""></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="cookie-notice"
+     style="display: none; width: 60%; position: fixed; bottom: 10px; line-height: 150%; left: 10px; background-color: rgb(51, 51, 51); color: white; padding: 15px; border-radius: 5px; z-index: 1000;">
+  Мы используем cookie. Это позволяет нам анализировать взаимодействие посетителей с сайтом и делать его лучше.
+  Продолжая пользоваться сайтом, вы соглашаетесь с использованием файлов <a
+  href="{% url 'cookie' %}" target="_blank"
+  style="color: red; text-decoration: underline;">cookie</a> и
+  <a href="{% url 'politika' %}" target="_blank"  style="color: red; text-decoration: underline;">
+    политикой конфиденциальности.</a>
+  <button id="accept-cookies"
+          style="margin-left: 10px; padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 5px;">
+    Я согласен
+  </button>
+</div>
+

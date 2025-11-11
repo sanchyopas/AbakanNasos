@@ -1,0 +1,56 @@
+{% extends 'admin_base.html' %} {% load thumbnail %} {% load static %} {% block body %}
+
+<div class="page">
+  <div class="page__inner">
+    <div class="page__top">
+      <h1 class="page__title">Акции</h1>
+      <ul class="admin-breadcrumbs">
+        <li><a href="{% url 'admin' %}">Панель управления</a></li>
+        <li>Отзывы</li>
+      </ul>
+    </div>
+    <div class="page__head">
+      <div class="page__head-tab">
+        <a href="{% url 'admin_reviews_add' %}" class="action-button">Добавить новую</a>
+      </div>
+    </div>
+    {% if stocks.count > 0 %}
+    <div class="page__content content-page table-top">
+      <div class="table">
+        <div class="table-header">
+          <div class="table-row">
+            <div class="table-cell">Изображение</div>
+            <div class="table-cell">Название</div>
+            <div class="table-cell">_____</div>
+            <div class="table-cell">Действия</div>
+          </div>
+        </div>
+        <div class="table-body">
+          {% for item in stocks %}
+          <div class="table-row">
+            <div class="table-cell">
+              {% if item.image %} {% thumbnail item.image "50x50" format="WEBP" crop="center" as im %}
+              <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" />
+              {% endthumbnail %} {% else%}
+              <img src="{% static 'theme/mb/images/no-image.png' %}" alt="" />
+              {% endif %}
+            </div>
+            <div class="table-cell">{{ item.title }}</div>
+            <div class="table-cell" data-label="Header 1"></div>
+            <div class="table-cell" data-label="Header 1">
+              <a href="{% url 'stock_edit' item.pk %}">Изменить</a>
+              <a href="{% url 'stock_delete' item.pk %}">Удалить</a>
+            </div>
+          </div>
+          {% endfor %}
+          <!-- Add more rows as needed -->
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty">Список акций пуст</div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

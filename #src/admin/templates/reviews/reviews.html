@@ -1,0 +1,52 @@
+{% extends 'admin_base.html' %}{% load thumbnail %}{% load static %} {% block body %}
+
+<div class="page">
+  <div class="page__inner">
+    <div class="page__top">
+      <h1 class="page__title">Отзывы</h1>
+      <ul class="admin-breadcrumbs">
+        <li><a href="{% url 'admin' %}">Панель управления</a></li>
+        <li>Отзывы</li>
+      </ul>
+    </div>
+    <div class="page__head">
+      <div class="page__head-tab">
+        <a href="{% url 'admin_reviews_add' %}" class="action-button">Добавить новый</a>
+      </div>
+    </div>
+    <div class="page__content content-page table-top">
+      <div class="table">
+        <div class="table-header">
+          <div class="table-row">
+            <div class="table-cell">Аватар</div>
+            <div class="table-cell">Имя</div>
+            <div class="table-cell">_____</div>
+            <div class="table-cell">Действия</div>
+          </div>
+        </div>
+        <div class="table-body">
+          {% for item in items %}
+          <div class="table-row">
+            <div class="table-cell">
+              {% if item.avatar %} {% thumbnail item.avatar "50x50" format="WEBP" crop="center" as im %}
+              <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" />
+              {% endthumbnail %} {% else%}
+              <img src="{% static 'theme/mb/images/no-image.png' %}" alt="" />
+              {% endif %}
+            </div>
+            <div class="table-cell">{{ item.name }}</div>
+            <div class="table-cell" data-label="Header 1"></div>
+            <div class="table-cell" data-label="Header 1">
+              <a href="{% url 'admin_reviews_edit' item.pk %}">Изменить</a>
+              <a href="{% url 'admin_reviews_delete' item.pk %}">Удалить</a>
+            </div>
+          </div>
+          {% endfor %}
+          <!-- Add more rows as needed -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

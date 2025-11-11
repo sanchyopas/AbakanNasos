@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load carts_tag %}
+{% load thumbnail %}
+{% block title %}{{ setup_blog.meta_title }}{% endblock %}
+{% block description %}{{ setup_blog.meta_description }}{% endblock %}
+{% block keywords %}{{ setup_blog.meta_keywords }}{% endblock %}
+
+{% block content %}
+<main class="page">
+  <section class="news">
+    <div class="container">
+      <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+        <a href="/" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+           class="breadcrumbs__item">
+          Главная
+          <meta itemprop="position" content="1"/>
+        </a>
+        <span itemprop="itemListElement" itemscope=""
+              itemtype="http://schema.org/ListItem" class="breadcrumbs__item">
+          Новости
+          <meta itemprop="position" content="2"/>
+        </span>
+      </div>
+      <h1 class="ews__title title-h2">
+        {% if setup_blog.meta_h1 %}{{ setup_blog.meta_h1 }}{% else %}Новости{% endif %}
+      </h1>
+      <div class="news__inner">
+        {% if categorys %}
+        <div class="category__filter filter">
+          <div class="filter__inner">
+            <div class="filter__item _active">
+              <a href="{% url 'blog' %}" class="filter__btn">
+                <span>Все категории</span>
+              </a>
+            </div>
+            {% for category in categorys %}
+            <div class="filter__item">
+              <a href="{{ category.get_absolute_url }}" class="filter__btn">
+                <span>{{ category.name }}</span>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        {% if posts %}
+        <div class="news__grid">
+          {% for post in posts %}
+          {% include "../../components/blog-card.html" with post=post %}
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-block">
+          <p>Тут пока пусто</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

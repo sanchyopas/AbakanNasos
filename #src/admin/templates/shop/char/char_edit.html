@@ -1,0 +1,47 @@
+{% extends 'admin_base.html' %} {% block body %}
+<div class="page">
+  <div class="page__inner">
+    <form action="" method="POST" class="form" enctype="multipart/form-data">
+      <div class="page__head">
+        <div class="page__head-inner">
+          <h1 class="page__title">Редактировать характеристику</h1>
+        </div>
+        <button type="submit" class="form__btn">
+          <img src="{% static 'admin/img/save.svg' %}" alt=""/>
+          Сохранить
+        </button>
+      </div>
+      {% csrf_token %}
+      <div class="page-content _show" id="basic">
+        <div class="page-content__row">
+          <div class="page-content__seo">
+            <div class="form__group">
+              <label for="{{ form.group.id_for_label }}" class="form__controls-label">Группа характеристики</label>
+              {{ form.group }} {{ form.group.errors }}
+            </div>
+
+            <div class="form__group">
+              <label for="{{ form.text_name.id_for_label }}" class="form__controls-label"> Название характеристики </label>
+              {{ form.text_name }} {{ form.text_name.errors }}
+            </div>
+
+            <div class="form__group-checkbox">
+              <label for="{{ form.filter_add.id_for_label }}" class="form__controls-label"> Добавить в фильтрацию</label>
+              {{ form.filter_add }} {{ form.filter_add.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.filter_name.id_for_label }}" class="form__controls-label"> Название фильтрации на английском </label>
+              {{ form.filter_name }} {{ form.filter_name.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.sort_order.id_for_label }}" class="form__controls-label"> Сортировка</label>
+              {{ form.sort_order }} {{ form.sort_order.errors }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

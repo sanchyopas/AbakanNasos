@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load carts_tag %}
+{% load thumbnail %}
+{% block title %}{{ home_page.meta_title }}{% endblock %}
+{% block description %}{{ home_page.meta_description }}{% endblock %}
+{% block keywords %}{{ home_page.meta_keywords }}{% endblock %}
+
+{% block content %}
+<main class="page">
+  {% include "../section/full-slider.html" %}
+
+  <section class="advantages section--padded">
+    <div class="container">
+      <div class="advantages__inner">
+        {% if home_page.meta_h1 %}
+        <h1 class="advantages__title-h1 title-h2">
+          {{ home_page.meta_h1 }}
+        </h1>
+        {% endif %}
+        <p class="advantages__title _title">
+          <strong>Максимум</strong> — мы изготавливаем двери, отвечающие действующим стандартам качества.
+        </p>
+        <div class="advantages__row">
+          <div class="advantages__col">
+            <div class="advantages__item item-advantages">
+              <div class="item-advantages__icon">
+                <img src="{% static 'theme/img/icon/adv-1.svg' %}" alt="">
+              </div>
+              <p class="item-advantages__title">Любая сложность</p>
+              <p class="item-advantages__text">
+                При производстве входных дверей мы используем современное оборудование.
+              </p>
+            </div>
+          </div>
+          <div class="advantages__col">
+            <div class="advantages__item item-advantages">
+              <div class="item-advantages__icon">
+                <img src="{% static 'theme/img/icon/adv-2.svg' %}" alt="">
+              </div>
+              <p class="item-advantages__title">Качество</p>
+              <p class="item-advantages__text">
+                Мы гарантируем долгий срок службы нашей продукции за счет качественных материалов.
+              </p>
+            </div>
+
+          </div>
+          <div class="advantages__col">
+            <div class="advantages__item item-advantages">
+              <div class="item-advantages__icon">
+                <img src="{% static 'theme/img/icon/adv-3.svg' %}" alt="">
+              </div>
+              <p class="item-advantages__title">Безопасность</p>
+              <p class="item-advantages__text">
+                Особое внимание мы уделяем взломостойкости и износостойкости двери — выбираем лучшие комплектующие,
+                фурнитуру и замки.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="best-choice section--padded">
+    <div class="container">
+      <div class="best-choice__inner">
+        <h2 class="best-choice__title title-h2">Лучший выбор</h2>
+        <div class="best-choice__grid">
+          {% for product in products %}
+          {% include "../components/card.html" with product=product %}
+          {% endfor %}
+        </div>
+        <a href="{% url 'category' %}" class="best-choice__btn btn btn--shadow">Перейти в каталог</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="selection section--padded">
+    <div class="selection__inner">
+      <div class="selection__body">
+        <div class="container">
+          <div class="selection__content">
+            <h2 class="selection__title">Подберите дверь уже сейчас</h2>
+            <a href="{% url 'category' %}" class="selection__btn btn btn--shadow">Перейти в каталог</a>
+          </div>
+        </div>
+      </div>
+      <div class="selection__image">
+        <img src="{% static 'theme/img/dveri-seichas.jpeg' %}" alt="">
+      </div>
+    </div>
+  </section>
+
+  {% if reviews %}
+    {% include "../includes/_reviews.html" %}
+  {% endif %}
+
+  {% include "../includes/_contact.html" %}
+
+  <section class="index-questions" style="background-image: url({% static 'theme/img/questions.jpeg' %})">
+    <div class="container">
+      <div class="index-questions__inner">
+        <div class="index-questions__body">
+          <h2 class="index-questions__title">Остались <br>вопросы ?</h2>
+          <p class="index-questions__subtitle">
+            Закажите звонок или обратитесь в чат на нашем сайте, менеджеры помогут вам выбрать лучший вариант для вас
+          </p>
+          <div class="index-questions__buttons">
+            <button class="index-questions__btn index-questions--order" data-popup="leave-request">Оставить заявку
+            </button>
+            <button class="index-questions__btn index-questions--callback" data-popup="callback">Заказать звонок
+            </button>
+          </div>
+          <div class="index-questions__social">
+            <a href=" https://t.me/+79879826810" target="_blank"><img src="{% static 'theme/img/icon/telegram.svg' %}"
+                                                                      alt="Двери Максимум телеграмм"></a>
+            <a href="https://vk.com/maximum2022" target="_blank"><img src="{% static 'theme/img/icon/vk.svg' %}"
+                                                                      alt="Двери Максимум вк"></a>
+            <p>
+              Подписывайтесь на нас, чтобы быть в курсе всех новостей и акций.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% if posts %}
+  <section class="index-news section--padded">
+    <div class="container">
+      <div class="index-news__inner">
+        <h2 class="index-news__title title-h2">Новости</h2>
+
+        <div class="index-news__slider swiper">
+          <div class="index-news__wrapper swiper-wrapper">
+            {% for post in posts %}
+            {% include "../components/blog-card.html" with post=post %}
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  {% endif %}
+</main>
+{% endblock %}

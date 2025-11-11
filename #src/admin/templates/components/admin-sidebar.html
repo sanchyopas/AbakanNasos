@@ -1,0 +1,199 @@
+{% load static %}
+
+<div class="sidebar">
+  <div class="sidebar__top top-sidebar">
+    <a href="/admin" class="top-sidebar__logo">
+      <img src="{% static 'admin/img/admin-logo.svg' %}" alt="svg logo" title="svg logo" />
+      Панель управления
+    </a>
+  </div>
+  <div class="sidebar__menu menu-sidebar">
+    <div class="menu-sidebar__item">
+      <p class="menu-sidebar__item-title">Основные страницы</p>
+      <a href="{% url 'admin' %}" class="menu-sidebar__link-general">
+        <i class="fas fa-signal"></i>
+        <span>Статистика</span>
+      </a>
+      <a href="" class="menu-sidebar__link-general">
+        <i class="fas fa-users-cog"></i>
+        <span>Пользователи</span>
+      </a>
+    </div>
+    <div class="menu-sidebar__item">
+      <p class="menu-sidebar__item-title">Каталог</p>
+      <a href="{% url 'admin_shop' %}" class="menu-sidebar__link-general">
+<!--        <i class="fas fa-shopping-basket"></i>-->
+        <span>Настройки каталога</span>
+      </a>
+      <div class="menu-sidebar__dropdown" id="products">
+        <div class="menu-sidebar__dropdown-title">
+          <div class="menu-sidebar__dropdow-inner">
+            <i class="fas fa-sliders-h"></i>
+            <span>Товары</span>
+          </div>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="menu-sidebar__dropdown-content">
+          <ul>
+            <li><a href="{% url 'admin_product' %}">Список товаров</a></li>
+            <li><a href="{% url 'product_add' %}">Добавить товар</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="menu-sidebar__dropdown" id="category">
+        <div class="menu-sidebar__dropdown-title">
+          <div class="menu-sidebar__dropdow-inner">
+            <i class="fas fa-sliders-h"></i>
+            <span>Категории</span>
+          </div>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="menu-sidebar__dropdown-content">
+          <ul>
+            <li><a href="{% url 'admin_category' %}">Список категорий</a></li>
+            <li><a href="{% url 'category_add' %}">Добавить категорию</a></li>
+          </ul>
+        </div>
+      </div>
+<!--      <div class="menu-sidebar__dropdown" id="attribute">-->
+<!--        <div class="menu-sidebar__dropdown-title">-->
+<!--          <div class="menu-sidebar__dropdow-inner">-->
+<!--            <i class="fas fa-sliders-h"></i>-->
+<!--            <span>Атрибуты товаров</span>-->
+<!--          </div>-->
+<!--          <i class="fas fa-chevron-down"></i>-->
+<!--        </div>-->
+<!--        <div class="menu-sidebar__dropdown-content">-->
+<!--          <ul>-->
+<!--            <li><a href="">Список атрибутов</a></li>-->
+<!--            <li><a href="">Добавить группу атрибутов</a></li>-->
+<!--            <li><a href="">Добавить атрибут</a></li>-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--      </div>-->
+      <a href="{% url 'upload_goods' %}" class="menu-sidebar__link-general">
+        <i class="fas fa-sliders-h"></i>
+        <span>Загрузка csv/Excel</span>
+      </a>
+    </div>
+    <a href="{% url 'gallery_settings' %}" class="menu-sidebar__link-general">
+      <i class="fas fa-images"></i>
+      <span>Наши работы</span>
+    </a>
+    <a href="{% url 'admin_prod_page' %}" class="menu-sidebar__link-general">
+      <i class="fa-brands fa-buffer"></i>
+      <span>Балконы и лоджии</span>
+    </a>
+    <div class="menu-sidebar__item">
+      <p class="menu-sidebar__item-title">Остальные страницы</p>
+      <div class="menu-sidebar__dropdown" id="attr">
+        <div class="menu-sidebar__dropdown-title">
+          <div class="menu-sidebar__dropdow-inner">
+            <i class="fas fa-address-card"></i>
+            <span>Контакты</span>
+          </div>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="menu-sidebar__dropdown-content">
+          <ul>
+            <li><a href="{% url 'admin_contact' %}">Страница контактов</a></li>
+            <li><a href="{% url 'admin_office' %}">Офисы продаж</a></li>
+            <li><a href="">Соц. сети</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="menu-sidebar__dropdown" id="attr">
+        <div class="menu-sidebar__dropdown-title">
+          <div class="menu-sidebar__dropdow-inner">
+            <i class="fas fa-star-half-alt"></i>
+            <span>Отзывы</span>
+          </div>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="menu-sidebar__dropdown-content">
+          <ul>
+            <li><a href="{% url 'admin_reviews' %}">Список отзывов</a></li>
+            <li><a href="{% url 'admin_reviews_add' %}">Добавить отзыв</a></li>
+          </ul>
+        </div>
+      </div>
+<!--      <div class="menu-sidebar__dropdown" id="attr">-->
+<!--        <div class="menu-sidebar__dropdown-title">-->
+<!--          <div class="menu-sidebar__dropdow-inner">-->
+<!--            <i class="fas fa-percentage"></i>-->
+<!--            <span>Акции</span>-->
+<!--          </div>-->
+<!--          <i class="fas fa-chevron-down"></i>-->
+<!--        </div>-->
+<!--        <div class="menu-sidebar__dropdown-content">-->
+<!--          <ul>-->
+<!--            <li><a href="{% url 'admin_stock' %}">Список акций</a></li>-->
+<!--            <li><a href="{% url 'stock_add' %}">Добавить акцию</a></li>-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--      </div>-->
+      <div class="menu-sidebar__dropdown" id="attr">
+        <div class="menu-sidebar__dropdown-title">
+          <div class="menu-sidebar__dropdow-inner">
+            <i class="fas fa-rss-square"></i>
+            <span>Настрйоки блога</span>
+          </div>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="menu-sidebar__dropdown-content">
+          <ul>
+            <li><a href="{% url 'blog_settings' %}">Настройки блога</a></li>
+            <li><a href="{% url 'category_blog' %}">Категории блога</a></li>
+            <li><a href="{% url 'article' %}">Статьи блога</a></li>
+          </ul>
+        </div>
+      </div>
+      <a href="{% url 'admin_service_page' %}" class="menu-sidebar__link-general">
+        <i class="fas fa-cogs"></i>
+        <span>Услуги</span>
+      </a>
+      <a href="{% url 'admin_about_page' %}" class="menu-sidebar__link-general">
+        <i class="fas fa-assistive-listening-systems"></i>
+        <span>О компании</span>
+      </a>
+      <a href="{% url 'admin_delivery_page' %}" class="menu-sidebar__link-general">
+        <i class="fas fa-assistive-listening-systems"></i>
+        <span>Доставка / Оплата</span>
+      </a>
+    </div>
+
+    <div class="menu-sidebar__item">
+      <p class="menu-sidebar__item-title">Страницы с настройками</p>
+      <a href="{% url 'admin_settings' %}" class="menu-sidebar__link-general">
+        <i class="fas fa-cogs"></i>
+        <span>Общие настройки</span>
+      </a>
+      <a href="{% url 'robots' %}" class="menu-sidebar__link-general">
+        <i class="fas fa-assistive-listening-systems"></i>
+        <span>Системные настройки</span>
+      </a>
+    </div>
+
+    <div class="menu-sidebar__item">
+      <p class="menu-sidebar__item-title">Шаблоны страниц</p>
+      <a href="{% url 'admin_home_page' %}" class="menu-sidebar__link-general">
+        <i class="fas fa-home"></i>
+        <span>Главная</span>
+      </a>
+    </div>
+    <div class="menu-sidebar__item">
+      <p class="menu-sidebar__item-title">Редактируемые блоки</p>
+      <a href="" class="menu-sidebar__link-general">
+        <i class="fas fa-photo-video"></i>
+        <span>Слайдеры</span>
+      </a>
+    </div>
+    <div class="menu-sidebar__item">
+      <p class="menu-sidebar__item-title">Маркетинг</p>
+      <a href="" class="menu-sidebar__link-general">
+        <i class="fas fa-wave-square"></i>
+        <span>Промокоды</span>
+      </a>
+    </div>
+  </div>
+</div>

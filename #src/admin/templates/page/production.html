@@ -1,0 +1,61 @@
+{% extends 'admin_base.html' %}{% load static %} {% block body %}
+<div class="page">
+  <div class="page__inner">
+    <div class="page__top">
+      <h1 class="page__title">Страница балконы и лоджии</h1>
+      <ul class="admin-breadcrumbs">
+        <li><a href="{% url 'admin' %}">Панель управления</a></li>
+        <li><a href="{% url 'admin_prod_page' %}">Балконы,лоджии</a></li>
+      </ul>
+    </div>
+    <form action="." method="POST" class="form" enctype="multipart/form-data">
+      <div class="page__head">
+        <div class="page__head-tab">
+          <button type="button" data-name="basic" class="page__head-btn _active">Основные</button>
+        </div>
+        <button type="submit" class="form__btn">
+          <img src="{% static 'admin/img/save.svg' %}" alt="" />
+          Сохранить
+        </button>
+      </div>
+      {% csrf_token %}
+      <div class="page-content _show" id="basic">
+        <div class="page-content__row">
+          <div class="page-content__onecol">
+            {% comment %}{% include '../includes/form-group.html' with field=form.meta_h1 label='Заголовок h1' %}{% endcomment %}
+            <div class="form__group">
+              <label for="{{ form.meta_h1.id_for_label }}" class="form__controls-label"> Заголовок h1 : </label>
+              {{ form.meta_h1 }} {{ form.meta_h1.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.meta_title.id_for_label }}" class="form__controls-label">
+                Мета заголовок :
+                <div class="meta-lenght">0</div>
+              </label>
+              {{ form.meta_title }} {{ form.meta_title.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label">
+                Мета описание :
+                <div class="meta-lenght">0</div>
+              </label>
+              {{ form.meta_description }} {{ form.meta_description.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label"> Мета keywords :
+              </label>
+              {{ form.meta_keywords }} {{ form.meta_keywords.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.sale_text.id_for_label }}" class="form__controls-label"> Текст скидки в всплывающем окне :
+              </label>
+              {{ form.sale_text }} {{ form.sale_text.errors }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

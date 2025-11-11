@@ -1,0 +1,45 @@
+{% extends 'admin_base.html' %}{% load thumbnail %} {% load static %} {% block body %}
+<div class="page">
+  <div class="page__inner">
+    <div class="page__top">
+      <h1 class="page__title">Категории блога</h1>
+      <ul class="admin-breadcrumbs">
+        <li><a href="{% url 'admin' %}">Панель управления</a></li>
+        <li><a href="{% url 'category_blog' %}">Список категорий</a></li>
+      </ul>
+    </div>
+    <div class="page__content content-page">
+      <div class="content-page__action">
+        <div class="content-page__showing showing">
+          <p>Показано</p>
+          <select name="view-elem" id="view-elem">
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="60">60</option>
+            <option value="120">120</option>
+          </select>
+          <p>элементов</p>
+        </div>
+        <a href="{% url 'category_blog_add' %}" class="action-button">Создать</a>
+      </div>
+      <div class="grid-items">
+        {% for item in items %}
+        <div class="grid-item">
+          <div class="grid-item__image">
+            {% if item.image %} {% thumbnail item.image "250x250" format="WEBP" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" />
+            {% endthumbnail %} {% else%}
+            <img src="{% static 'admin/img/no-image.png' %}" alt="" />
+            {% endif %}
+          </div>
+          <div class="grid-item__content">
+            <a href="{% url 'category_blog_edit' item.pk %}" class="grid-item__title">{{ item.name }}</a>
+            {% include 'common/_edit-block.html' with edit_url='category_blog_edit' delete_url='category_blog_remove' %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

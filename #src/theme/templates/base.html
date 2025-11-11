@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru" class="">
+
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{% endblock %}"/>
+  <meta name="keywords" content="{% block keywords %}{% endblock %}"/>
+  <link rel="canonical" href=""/>
+  <meta charset="UTF-8"/>
+  <meta name="format-detection" content="telephone=no"/>
+  <link rel="stylesheet" href="{% static 'theme/css/style.min.css' %}"/>
+  <link rel="shortcut icon" href="{% if site_settings.favicon %} {{ site_settings.favicon.url }} {% endif%}"/>
+  <link rel="apple-touch-icon" href="{% static 'images/logo.png' %}" sizes="120x120"/>
+  <meta name="robots" content="all"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Sofia+Sans+Condensed:ital,wght@0,1..1000;1,1..1000&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css?_v=20240126172157"/>
+
+  <style>
+
+  </style>
+
+  </head>
+
+<body>
+<div class="wrapper">
+  {% include "./includes/_header.html" %}
+  {% block content %} {% endblock %}
+  {% include "./includes/_footer.html" %}
+  {% include "./includes/_popup.html" %}
+</div>
+
+<script type="module" src="{% static 'theme/js/app.min.js' %}"></script>
+</body>
+
+</html>

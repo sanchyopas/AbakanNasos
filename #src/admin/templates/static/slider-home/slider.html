@@ -1,0 +1,56 @@
+{% extends 'admin_base.html' %} {% load shop_tags %} {% load thumbnail %} {% load static %} {% block body %}
+
+<div class="page">
+  <div class="page__inner">
+    <div class="page__top">
+      <h1 class="page__title">Слайды</h1>
+      <ul class="admin-breadcrumbs">
+        <li><a href="{% url 'admin' %}">Панель управления</a></li>
+        <li>Слайды</li>
+      </ul>
+    </div>
+    <div class="page__head">
+      <div class="page__head-tab">
+        <a href="{% url 'slider_add' %}" class="action-button">Добавить новый</a>
+      </div>
+    </div>
+    <div class="page__content content-page table-top">
+      {% if items %} {% comment %}
+      <p class="page_chars">Характеристики без группы</p>
+      {% endcomment %}
+      <div class="table">
+        <div class="table-header">
+          <div class="table-row">
+            <div class="table-cell">Изображение</div>
+            <div class="table-cell">Заголовок</div>
+            <div class="table-cell">Ссылка</div>
+            <div class="table-cell">Действие</div>
+          </div>
+        </div>
+        <div class="table-body">
+          {% for item in items %}
+          <div class="table-row">
+            <div class="table-cell" data-label="Header 1">
+              {% if item.image %} {% thumbnail item.image "50x50" format="WEBP" crop="center" as im %}
+              <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" />
+              {% endthumbnail %} {% else%}
+              <img src="{% static 'theme/mb/images/no-image.png' %}" alt="" />
+              {% endif %}
+            </div>
+            <div class="table-cell" data-label="Header 1">{{ item.title }}</div>
+            <div class="table-cell" data-label="Header 1">{{ item.link }}</div>
+            <div class="table-cell" data-label="Header 4">
+              <a href="{% url 'slider_edit' item.pk %}">Изменить</a>
+              <a href="{% url 'slider_delete' item.pk %}">Удалить</a>
+            </div>
+          </div>
+          {% endfor %}
+          <!-- Add more rows as needed -->
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

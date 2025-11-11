@@ -1,0 +1,55 @@
+{% extends 'admin_base.html' %} {% load shop_tags %} {% load thumbnail %} {% load static %} {% block body %}
+
+<div class="page">
+  <div class="page__inner">
+    <div class="page__top">
+      <h1 class="page__title">Пользователи</h1>
+      <ul class="admin-breadcrumbs">
+        <li><a href="{% url 'admin' %}">Панель управления</a></li>
+        <li><a href="{% url 'admin_users' %}">Список пользователей</a></li>
+      </ul>
+    </div>
+    <div class="page__content content-page">
+      <div class="content-page__action">
+        <div class="content-page__showing showing">
+          <p>Показано</p>
+          <select name="view-elem" id="view-elem">
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="60">60</option>
+            <option value="120">120</option>
+          </select>
+          <p>элементов</p>
+        </div>
+        <a href="{% url 'product_add' %}" class="action-button">Добавить новый</a>
+      </div>
+      <div class="table">
+        <div class="table-header">
+          <div class="table-row">
+            <div class="table-cell">Пользователь</div>
+            <div class="table-cell">Email</div>
+            <div class="table-cell">Телефон</div>
+            <div class="table-cell">Действия</div>
+          </div>
+        </div>
+        <div class="table-body">
+          {% for item in items %}
+          <div class="table-row">
+            <div class="table-cell" data-label="Header 1">{{ item.first_name }}</div>
+            <div class="table-cell" data-label="Header 2">{{ item.email }}</div>
+            <div class="table-cell" data-label="Header 3">{{ item.phone }}</div>
+            <div class="table-cell" data-label="Header 4">
+              <a href="{{ item.get_absolute_url }}">Посмотреть</a>
+              <a href="">Изменить</a>
+              <a href="">Удалить</a>
+            </div>
+          </div>
+          {% endfor %}
+          <!-- Add more rows as needed -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,118 @@
+{% load static %}
+<div id="leave-request" class="popup">
+  <div class="popup__wrapper">
+    <div class="popup__content">
+      <div class="popup__top">
+        <button data-close type="button" class="popup__close close"></button>
+      </div>
+      <div class="popup__loading">
+        <img src="{% static 'theme/mb/images/loading.gif' %}" alt="Загрузка" title="Загрузка"/>
+      </div>
+      <h2 class="popup__title">Оставить заявку</h2>
+      <form action="{% url 'order_form' %}" class="popup__form form" method="POST" id="order-form">
+        {% csrf_token %}
+        <input type="text" name="name" class="form__input" placeholder="Ваше имя" required/>
+        <input type="tel" name="phone" class="form__input" placeholder="номер телефона" required data-tel-input/>
+        <input type="text" name="product" id="order-product" class="form__input form__input--hidden"/>
+        <div class="form__agreement">
+          <input type="checkbox" name="agreement" id="agreement" required>
+          <label for="agreement">Я согласен(а) с <a href="{% url 'politika' %}">политикой конфиденциальности</a></label>
+        </div>
+        <button type="submit" class="form__button">Отправить</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="callback" class="popup ">
+  <div class="popup__wrapper">
+    <div class="popup__content">
+      <div class="popup__top">
+        <button data-close type="button" class="popup__close close"></button>
+      </div>
+      <div class="popup__loading">
+        <img src="{% static 'theme/mb/images/loading.gif' %}" alt="Загрузка" title="Загрузка"/>
+      </div>
+      <h2 class="popup__title">Обратный звонок</h2>
+      <form action="{% url 'callback' %}" class="popup__form form" method="POST" id="callback-form">
+        {% csrf_token %}
+        <input type="text" name="name" class="form__input" placeholder="Ваше имя" required/>
+        <input type="tel" name="phone" class="form__input" placeholder="номер телефона" required data-tel-input/>
+        <div class="form__agreement">
+          <input type="checkbox" name="agreement" id="agreement-con" required>
+          <label for="agreement-con">Я согласен(а) с <a href="{% url 'politika' %}">политикой
+            конфиденциальности</a></label>
+        </div>
+        <button type="submit" class="form__button">Отправить</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="contact" class="popup">
+  <div class="popup__wrapper">
+    <div class="popup__content">
+      <div class="popup__top">
+        <button data-close type="button" class="popup__close close"></button>
+      </div>
+      <div class="popup__contact">
+        {% if offices %}
+        {% for office in offices %}
+        <div class="contact-address__card">
+          <p class="contact-address__name">{{ office.name }}</p>
+          <p class="contact-address__address">{{ office.address }}</p>
+          <a href="tel:{{ office.phone }}" class="contact-address__phone">{{ office.phone }}</a>
+          <p class="contact-address__work-time">{{ office.time_work }}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--<div id="success" class="notification">-->
+<!--  <div class="notification__content">-->
+<!--    <div class="notification__success-image">-->
+<!--      <img src="{% static 'theme/mb/images/tick.png' %}" alt="Обратный звонок" title="Обратный звонок"/>-->
+<!--    </div>-->
+<!--    <p class="notification__success-text">Успешно</p>-->
+<!--  </div>-->
+<!--</div>-->
+
+
+{% if page_name %}
+<div id="test" class="popup popup-centered" data-popup-id="{{ page_name }}">
+  <div class="popup__wrapper">
+    <div class="popup-centered__content">
+      <div class="popup-centered__left">
+        <img src="{% static 'theme/img/popup-image.jpg' %}" alt="">
+      </div>
+      <div class="popup-centered__right">
+        <button type="button" class="popup__close close" id="close-btn-timeout"></button>
+        <h2 class="popup__title">{{ text_sale }}</h2>
+        <form action="{% url 'okna_form' %}" class="popup__form form" method="POST" id="okna-form-test">
+          {% csrf_token %}
+          <input type="text" name="name" class="form__input" placeholder="Ваше имя" required/>
+          <input type="tel" name="phone" class="form__input" placeholder="номер телефона" required data-tel-input/>
+          <input type="hidden" name="page_name" value="{{ text_sale }}">
+          <button type="submit" class="form__button">Отправить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if page_name %}
+<div id="stock" class="notice notice--offer" data-popup-id="{{ page_name }}">
+  <div class="notice__wrapper">
+    <div class="notice__content">
+      <p class="notice__percent">%</p>
+      <p class="notice__text">{{ text_sale }}</p>
+    </div>
+  </div>
+</div>
+{% endif %}
+

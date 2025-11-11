@@ -1,0 +1,18 @@
+// Bootstrap
+@import '../../../node_modules/bootstrap/scss/bootstrap-grid';
+@import '../../../node_modules/swiper/swiper';
+
+// Шрифты
+// Удалить файл fonts.scss, если произошли какие-то изменения со шрифтами
+@import "fonts";
+
+// Переменны (цвета, скорость transition и пр)
+@import "_variables";
+@import "_mixins";
+@import "./base/_null";
+
+
+@import "global";
+
+
+// Стили секций

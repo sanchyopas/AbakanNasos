@@ -1,0 +1,27 @@
+{% extends 'admin_base.html' %} {% load shop_tags %} {% load static %} {% block body %}
+
+<div class="page">
+  <div class="page__inner">
+    <div class="page__add">
+      <h1 class="page__title">Субдомены</h1>
+      <a href="{% url 'subdomain_add' %}" class="page__add-btn">Добавить</a>
+    </div>
+    {% if subdomains %}
+
+    <div class="subdomain">
+      {% for subdomain in subdomains %}
+      <div class="subdomain__item">
+        <a href="#" class="subdomain__name">{{ subdomain.name }}</a>
+        <p class="subdomain__name">{{ subdomain.subdomain }}</p>
+        <div class="subdomain__action">
+          <a href="{% url 'subdomain_edit' subdomain.pk %}">Изменить</a>
+          <a href="#">Удалить</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

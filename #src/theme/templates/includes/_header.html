@@ -1,0 +1,46 @@
+{% load static %}{% load carts_tag %}{% user_carts request as carts %}
+<header class="header {% if request.path != '/' %}header--white{% endif %}" id="header">
+  <div class="container">
+    <div class="header__inner">
+      <div class="header__left">
+        <a href="/" class="header__logo logo" style="
+        {% if site_settings.logo_width %}width: {{ site_settings.logo_width}};{% endif %}
+        {% if site_settings.logo_height %}height: {{ site_settings.logo_height}};{% endif %}
+        background-size: cover;
+        "> </a>
+        <p class="header__city">г.Самара</p>
+        {% if site_settings.phone %}
+          <a href="tel:{{ site_settings.phone }}" class="header__phone phone">
+            {{ site_settings.phone }}
+          </a>
+        {% endif %}
+      </div>
+      <nav class="header__right nav" id="nav">
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a href="{% url 'category' %}" class="nav__link">Каталог</a>
+            <!--            <ul class="submenu">-->
+            <!--              <li class="submenu__item"><a href="#">Межкомнатные двери</a></li>-->
+            <!--              <li class="submenu__item"><a href="#">Окна</a></li>-->
+            <!--              <li class="submenu__item"><a href="#">Балконы</a></li>-->
+            <!--              <li class="submenu__item"><a href="#">Лоджии</a></li>-->
+            <!--            </ul>-->
+          </li>
+          <li class="nav__item"><a href="{% url 'about' %}" class="nav__link">О компании</a></li>
+          <li class="nav__item"><a href="{% url 'works' %}" class="nav__link">Наши работы</a></li>
+          <li class="nav__item">
+            <a href="{% url 'service' %}" class="nav__link">Услуги</a>
+            <ul class="submenu">
+              <li class="submenu__item"></li>
+            </ul>
+          </li>
+          <li class="nav__item"><a href="{% url 'blog' %}" class="nav__link">Новости</a></li>
+          <li class="nav__item"><a href="{% if activate_page %} {% url 'contact' %}{% else %}#{% endif %}" {% if not activate_page %} data-popup="contact" {% endif %} class="nav__link">Контакты</a></li>
+        </ul>
+        <button class="header__close close" id="menu-close"></button>
+      </nav>
+      <button class="header__burger burger" id="burger"><span></span></button>
+    </div>
+  </div>
+</header>
+</header>

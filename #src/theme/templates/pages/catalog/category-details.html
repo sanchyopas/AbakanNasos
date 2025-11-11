@@ -1,0 +1,118 @@
+{% extends "base.html" %} {% load shop_tags %} {% load thumbnail %}{% load static %}
+
+{% block title %}
+{{ category.meta_title }}
+{% endblock %}
+{% block description %}
+{{ category.meta_description }}
+{% endblock %}
+{% block keywords %}
+{{ category.meta_keywords }}
+{% endblock %}
+
+{% block content %}
+<main class="page">
+  <section class="category">
+    <div class="container">
+      <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+        <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+           class="breadcrumbs__item">
+          Главная
+          <meta itemprop="position" content="1"/>
+        </a>
+        <a href="{% url 'category' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+           class="breadcrumbs__item">
+          Каталог
+          <meta itemprop="position" content="2"/>
+        </a>
+        <a href="{{ category.get_absolute_url }}" itemprop="itemListElement" itemscope=""
+           itemtype="http://schema.org/ListItem"
+           class="breadcrumbs__item">
+          {{ category.name }}
+          <meta itemprop="position" content="3"/>
+        </a>
+      </div>
+      {% if popup_type == "mezhkomnatnyie-dveri" %}
+      <div class="popup-ad">
+        <button type="button" data-popup="okna">Заполни форму и получи скидку 10%</button>
+        <button type="button" class="close" id="close-ad"><span></span></button>
+      </div>
+      {% endif %}
+      {% if popup_type == "vhodnye-dveri" %}
+      <div class="popup-ad">
+        <button type="button" data-popup="okna">Заполни форму и получи скидку 10%</button>
+        <button type="button" class="close" id="close-ad"><span></span></button>
+      </div>
+      {% endif %}
+      {% if category.meta_h1 %}
+      <h1 class="category__title">{{ category.meta_h1}}</h1>
+      {% else %}
+      <h1 class="category__title">{{ category.name }}</h1>
+      {% endif %}
+      {% if category.children.all %}
+      <div class="category__grid">
+        {% for cat in category.children.all %}
+        <div class="category__item category__item--subcategory">
+          <a href="{{ cat.get_absolute_url }}" class="category__name">{{ cat.name }}</a>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      <div class="category__filter filter">
+        <form action="#" class="form form--search">
+          <button type="submit" class="form__button"><i class="fa-solid fa-magnifying-glass"></i></button>
+          <input type="search" class="form__input" name="catalog-search" id="catalog-search">
+          <div class="search-result" id="search-result">
+            <div class="search-result__empty">
+              <p>Ничего не найдено</p>
+            </div>
+          </div>
+        </form>
+        <form action="" class="form">
+          <select class="form__select form__select--small" name="count" id="count">
+            <option value="16" {% if count == 16 %}selected{% endif %} class="from__option">16</option>
+            <option value="32" {% if count == 32 %}selected{% endif %} class="from__option">32</option>
+            <option value="64" {% if count == 64 %}selected{% endif %} class="from__option">64</option>
+          </select>
+        </form>
+      </div>
+      <div class="category__grid products-list">
+        <div class="best-choice__grid">
+          {% for product in products %}
+          {% include "../../components/card.html" with product=product %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    {% if products.paginator.count > 15 %}
+    <div class="pagging">
+      <a
+        href="{% if products.has_previous %}?{% chenge_params page=products.previous_page_number %}{% else %}#{% endif %}"
+        class="pagging__arrow {% if not products.has_previous%}disabled{% endif %}">«</a>
+      <ul class="pagging__list">
+        {% for page in products.paginator.page_range %}
+        {% if page >= products.number|add:-2 and page <= products.number|add:2 %}
+        <li>
+          <a href="?{% chenge_params page=page %}"
+             class="pagging__item {% if products.number == page %}_active{% endif %}">{{page}}</a>
+        </li>
+        {% endif %} {% endfor %}
+      </ul>
+      <a href="{% if products.has_next %}?{% chenge_params page=products.next_page_number %}{% else %}#{% endif %}"
+         class="pagging__arrow">»</a>
+    </div>
+    {% endif %}
+
+    {% if category.description %}
+    <div class="text-category" style="margin-top: 80px;">
+      <div class="container">
+        <div class="page-text">
+          {{ category.description|safe }}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </section>
+</main>
+{% endblock content %}

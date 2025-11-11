@@ -1,0 +1,68 @@
+{% extends 'admin_base.html' %}{% load static %} {% load thumbnail %} {% block body %}
+
+<div class="page">
+  <div class="page__inner">
+    <h1 class="page__title">Настройки услуг</h1>
+    <div class="page__head">
+      <div class="page__head-tab">
+        <button type="button" data-name="settings" class="page__head-btn _active">Настройки страницы</button>
+        <button type="button" data-name="list" class="page__head-btn">Список услуг</button>
+      </div>
+    </div>
+
+    <div class="page__form tab-content _show" id="settings">
+      <form action="." method="POST" class="form _show" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.media }}
+        <div class="form__group">
+          <label for="{{ form.meta_h1.id_for_label }}" class="form__controls-label"> Заголовок h1 : </label>
+          {{ form.meta_h1 }} {{ form.meta_h1.errors }}
+        </div>
+        <div class="form__group">
+          <label for="{{ form.meta_title.id_for_label }}" class="form__controls-label"> Мета заголовок : </label>
+          {{ form.meta_title }} {{ form.meta_title.errors }}
+        </div>
+        <div class="form__group">
+          <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label">
+            Мета описание :
+            <div class="meta-lenght">0</div>
+          </label>
+          {{ form.meta_description }} {{ form.meta_description.errors }}
+        </div>
+        <div class="form__group">
+          <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label"> Мета keywords :
+          </label>
+          {{ form.meta_keywords }} {{ form.meta_keywords.errors }}
+        </div>
+        <button type="submit" class="form__btn">
+          <img src="{% static 'admin/img/save.svg' %}" alt=""/>
+          Сохранить
+        </button>
+      </form>
+    </div>
+
+    <div class="page__list tab-content" id="list">
+      <a href="{% url 'service_add' %}" class="action-button">Создать</a>
+      <div class="grid-items">
+        {% for item in items %}
+        <div class="grid-item">
+          <div class="grid-item__image">
+            {% if item.image %} {% thumbnail item.image "250x250" format="WEBP" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
+            {% endthumbnail %} {% else%}
+            <img src="{% static 'admin/img/no-image.png' %}" alt=""/>
+            {% endif %}
+          </div>
+          <div class="grid-item__content">
+            <a href="{% url 'service_edit' item.pk %}" class="grid-item__title">{{ item.name }}</a>
+            {% if item.price %}<p>{{ item.price }} ₽</p>{% endif %}
+            {% include 'common/_edit-block.html' with edit_url='service_edit' delete_url='service_delete' %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

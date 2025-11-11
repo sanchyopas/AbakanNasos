@@ -1,0 +1,40 @@
+{% extends 'admin_base.html' %}{% load static %} {% block body %}
+<div class="page">
+  <div class="page__inner">
+    <div class="page__top">
+      <h1 class="page__title">Общие настройки и Сео главной страницы</h1>
+      <ul class="admin-breadcrumbs">
+        <li><a href="{% url 'admin' %}">Панель управления</a></li>
+        <li><a href="{% url 'admin_product' %}">Настройки</a></li>
+      </ul>
+    </div>
+    <form action="." method="POST" class="form" enctype="multipart/form-data">
+      <div class="page__head">
+        <div class="page__head-tab">
+          <button type="button" data-name="basic" class="page__head-btn _active">Robots.txt</button>
+          <button type="button" data-name="basic" class="page__head-btn"></button>
+        </div>
+        <button type="submit" class="form__btn">
+          <img src="{% static 'theme/mb/images/admin/save.svg' %}" alt="" />
+          Сохранить
+        </button>
+      </div>
+      {% csrf_token %}
+      <div class="page-content _show" id="basic">
+        <div class="page-content__row">
+          <div class="page-content__col">
+            <div class="form__group">
+              <label for="{{ form.content.id_for_label }}" class="form__controls-label"> <span>*</span>Контент: </label>
+              {{ form.content }} {{ form.content.errors }}
+            </div>
+          </div>
+          <div class="page-content__col">
+            <div class="form__group"></div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
