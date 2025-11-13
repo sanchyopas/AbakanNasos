@@ -9,6 +9,12 @@ from reviews import admin
 
 urlpatterns = [
     path('', views.admin, name="admin"),
+
+    # Новые urls
+    path('socials/', views.socials, name='socials'),
+    path('socials/add/', views.socials_add, name='socials_add'),
+    path('socials/edit/<int:pk>/', views.socials_edit, name='socials_edit'),
+    # Новые конец urls
     
     #URl - отвечающие за загрузку данных
     path('upload-goods/', views.upload_goods, name="upload_goods"),
@@ -55,13 +61,7 @@ urlpatterns = [
     
     path('home-page/', views.admin_home_page, name='admin_home_page'),
     path('prod-page/', views.admin_prod_page, name='admin_prod_page'),
-    path('admin-contact/', views.admin_contact, name='admin_contact'),
-    path('about-page/', views.admin_about_page, name='admin_about_page'),
-    path('delivery-page/', views.admin_delivery_page, name='admin_delivery_page'),
-    path('office-page/', views.admin_office, name='admin_office'),
-    path('office-page/add/', views.admin_office_add, name='admin_office_add'),
-    path('office-page/edit/<int:pk>/', views.admin_office_edit, name='admin_office_edit'),
-    path('office-page/delete/<int:pk>/', views.admin_office_delete, name='admin_office_delete'),
+
 
     path('admin-shop/', views.admin_shop, name='admin_shop'),
 

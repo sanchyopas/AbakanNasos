@@ -20,6 +20,19 @@
     box-shadow: 0px 0px 4px rgba(38, 53, 61, 0.1);
   }
 
+  //.page__list
+  &__list {
+    background: #fff;
+  }
+
+  //.page__head-btns
+  &__head-btns {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+
   // .page__head-tab
 
   &__head-tab {
@@ -150,6 +163,10 @@
   &__image {
     width: 50px;
     height: 50px;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid rgba(38, 53, 61, 0.1);
+
 
     img {
       width: 100%;

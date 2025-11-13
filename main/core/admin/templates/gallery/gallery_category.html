@@ -1,0 +1,86 @@
+{% extends 'admin_base.html' %}{% load thumbnail %} {% load static %} {% block body %}
+<div class="page">
+  <div class="page__inner">
+    <div class="page__top">
+      <h1 class="page__title">Товары</h1>
+      <ul class="admin-breadcrumbs">
+        <li><a href="{% url 'admin' %}">Панель управления</a></li>
+        <li><a href="{% url 'admin_category' %}">Список категорий</a></li>
+      </ul>
+    </div>
+    <div class="page__content content-page">
+      <div class="content-page__action">
+        <div class="content-page__showing showing">
+          <p>Показано</p>
+          <select name="view-elem" id="view-elem">
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="60">60</option>
+            <option value="120">120</option>
+          </select>
+          <p>элементов</p>
+        </div>
+        <a href="{% url 'gallery_category_add' %}" class="action-button">Создать</a>
+      </div>
+      <div class="table-4">
+        <div class="body-table table-4__body">
+          {% for category in items %}
+          <div class="body-table__row">
+            <div class="body-table__image">
+              {% if category.image %} {% thumbnail category.image "250x250" format="WEBP" crop="center" as im %}
+              <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" />
+              {% endthumbnail %} {% else%}
+              <img src="{% static 'theme/mb/images/no-image-1.png' %}" alt="" />
+              {% endif %}
+            </div>
+            <div class="body-table__name">
+              {% if category.slug %}
+              <a href="{% url 'category_edit' category.id %}" class="">{{ category.name }}</a>
+              {% else %}
+              <p class="">{{ category.name }}</p>
+              {% endif %}
+            </div>
+            <div class="body-table__name">
+              {% if category.parent %}
+              <p class="">{{ category.parent }}</p>
+              {% else %}
+              <p class="">Нет категории</p>
+              <p>{% endif %}</p>
+            </div>
+
+            <div class="body-table__action">
+              <a href="{% url 'gallery_category_edit' category.id %}" class="edit" title="Редактировать категорию">
+                <img src="{% static 'theme/mb/images/admin/edit.svg' %}" alt="" />
+              </a>
+              <a href="{% url 'category_delete' category.id %}" class="remove" title="Удалить категорию">
+                <?xml version="1.0" ?><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <style>
+                      .cls-1 {
+                        fill: none;
+                        stroke: #fff;
+                        stroke-linecap: round;
+                        stroke-linejoin: round;
+                        stroke-width: 2px;
+                      }
+                    </style>
+                  </defs>
+                  <title />
+                  <g id="trash">
+                    <rect class="cls-1" height="22" width="18" x="7" y="7" />
+                    <line class="cls-1" x1="3" x2="29" y1="7" y2="7" />
+                    <line class="cls-1" x1="13" x2="19" y1="3" y2="3" />
+                    <line class="cls-1" x1="13" x2="13" y1="12" y2="22" />
+                    <line class="cls-1" x1="19" x2="19" y1="12" y2="22" />
+                  </g>
+                </svg>
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

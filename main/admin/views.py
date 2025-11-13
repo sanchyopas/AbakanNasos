@@ -5,8 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib import messages
-from admin.forms import ContactTemplateForm, ProductPropertiesForm, ProductionForm, WorksForm, AboutTemplateForm, OfficeForm, DeliveryForm, BlogSettingsForm, CategoryForm, ColorProductForm, GalleryCategoryForm, GalleryCategorySettingsForm, GalleryForm, GlobalSettingsForm, HomeTemplateForm, PostForm, BlogCategoryForm, ProductForm, ProductImageForm, RobotsForm, ServiceForm, ServicePageForm, ShopSettingsForm, StockForm, SubdomainForm, UploadFileForm
-from home.models import BaseSettings,Production, Gallery, GalleryCategory, HomeTemplate, RobotsTxt, Stock, About, Delivery, SalesOffices, ContactTemplate, Works
+from admin.forms import *
+from home.models import *
 from blog.models import BlogSettings, Post, BlogCategory
 from main.settings import BASE_DIR
 from subdomain.models import Subdomain
@@ -1105,50 +1105,63 @@ def category_blog_remove(request, pk):
 
   return redirect(request.META.get('HTTP_REFERER'))
 
-def admin_office(request):
-  items = SalesOffices.objects.all()
-  context ={
-    "items": items,
-  }
-  return render(request, "template-page/office_page.html", context)
+# Новые views
 
+def socials(request):
+    items = Socials.objects.all()
 
-def admin_office_add(request):
-  form = OfficeForm()
-  if request.method == "POST":
-    form_new = OfficeForm(request.POST, request.FILES)
-    if form_new.is_valid():
-      form_new.save()
-      return redirect("admin_office")
-    else:
-      return render(request, "template-page/office_page_add.html", {"form": form_new})
+    context = {
+        "items": items,
+        "title": "Социальные сети",
+        "add_url": "socials_add"
+    }
 
-  context = {
-    "form": form
-  }
+    return render(request, "common-template/list-items.html", context)
 
-  return render(request, "template-page/office_page_add.html", context)
+def list_items(request, model, title, add_url):
+    items = model.objects.all()
 
-def admin_office_edit(request, pk):
-  item = SalesOffices.objects.get(id=pk)
-  form = OfficeForm(request.POST, request.FILES, instance=item)
+    context = {
+        "items": items,
+        "title": title,
+        "add_url": add_url
+    }
+
+    return render(request, "common-template/list-items.html", context)
+
+def socials_add(request):
+    form = SocialsForm()
+    if request.method == "POST":
+        form_new = SocialsForm(request.POST, request.FILES)
+        if form_new.is_valid():
+          form_new.save()
+          return redirect("socials")
+        else:
+          return render(request, "common-template/template-edit-add-page.html", {"form": form_new})
+
+    context = {
+        "form": form,
+        "title": "Добавление соц.сетей"
+    }
+
+    return render(request, "common-template/template-edit-add-page.html", context)
+
+def socials_edit(request, pk):
+  item = Socials.objects.get(id=pk)
+  form = SocialsForm(request.POST, request.FILES, instance=item)
 
   if request.method == "POST":
 
     if form.is_valid():
-      form.save()
-      return redirect(request.META.get('HTTP_REFERER'))
-    else:return render(request, "common-template/template-edit-add-page.html", {"form": form})
+        form.save()
+        messages.success(request, 'Успешное сохранение!')
+        return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        return render(request, "common-template/template-edit-add-page.html", {"form": form, 'image_path': image_path})
 
   context = {
-    "form": OfficeForm(instance=item),
+    "form": SocialsForm(instance=item),
     "item": item
   }
 
   return render(request, "common-template/template-edit-add-page.html", context)
-
-def admin_office_delete(request, pk):
-  office = SalesOffices.objects.get(id=pk)
-  office.delete()
-
-  return redirect(request.META.get('HTTP_REFERER'))

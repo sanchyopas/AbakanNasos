@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load carts_tag %}
+{% load thumbnail %}
+{% block title %}{{ contact_page.meta_title }}{% endblock %}
+{% block description %}{{ contact_page.meta_description }}{% endblock %}
+{% block keywords %}{{ contact_page.meta_keywords }}{% endblock %}
+
+{% block content %}
+<section class="contact contact__page">
+  <div class="container">
+    <div class="contact__top">
+      <h1 class="contact__title title-h2">
+        {% if contact_page.meta_h1 %}
+          {{ contact_page.meta_h1 }}
+        {% else %}
+          Контакты
+        {% endif %}
+      </h1>
+    </div>
+    <div class="contact__inner">
+      <div class="contact__search">
+        <div class="contact__address contact-address">
+          {% if offices %}
+          {% for office in offices %}
+          <div class="contact-address__card">
+            <p class="contact-address__name">{{ office.name }}</p>
+            <p class="contact-address__address">{{ office.address }}</p>
+            <a href="tel:{{ office.phone }}" class="contact-address__phone">{{ office.phone }}</a>
+            <p class="contact-address__work-time">{{ office.time_work }}</p>
+          </div>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      {% if contact_page.map %}
+      <div class="contact__map">
+        {{ contact_page.map|safe }}
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}

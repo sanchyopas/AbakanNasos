@@ -1,0 +1,90 @@
+{% extends 'admin_base.html' %} {% block body %}
+<div class="page">
+  <div class="page__inner">
+    <h1 class="page__title">{{ product.name }}</h1>
+    <form action="." method="POST" class="form" enctype="multipart/form-data">
+      <div class="page__head">
+        <div class="page__head-inner">
+          <button type="button" data-name="basic" class="page__head-btn _active">Основные</button>
+          <button type="button" data-name="seo" class="page__head-btn">SEO</button>
+          <button type="button" data-name="char" class="page__head-btn">Характеристики</button>
+        </div>
+        <button type="submit" class="form__btn">
+          <img src="{% static 'admin/img/save.svg' %}" alt=""/>
+          Сохранить
+        </button>
+      </div>
+      {% csrf_token %}
+      <div class="page-content show" id="basic">
+        <div class="page-content__row">
+          <div class="page-content__col">
+            <div class="form__group">
+              <label for="{{ form.title.id_for_label }}" class="form__controls-label"><span>*</span>Вопрос</label>
+              {{ form.title }} {{ form.title.errors }}
+            </div>
+
+            <div class="form__group">
+              <label for="{{ form.description.id_for_label }}" class="form__controls-label"> Полное описание </label>
+              {{ form.description }} {{ form.description.errors }}
+            </div>
+
+            <div class="form__group">
+              <label for="{{ form.status.id_for_label }}" class="form__controls-label"> Опубликовать ? </label>
+              {{ form.status }} {{ form.status.errors }}
+            </div>
+        </div>
+      </div>
+      <div class="page-content" id="seo">
+        <!-- SEO страницы -->
+        <div class="page-content__row">
+          <div class="page-content__seo">
+            <div class="form__group">
+              <label for="{{ form.meta_h1.id_for_label }}" class="form__controls-label"> Заголовок h1 <span>:</span> </label>
+              {{ form.meta_h1 }} {{ form.meta_h1.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.meta_title.id_for_label }}" class="form__controls-label"> Мета заголовок </label>
+              {{ form.meta_title }} {{ form.meta_title.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label">
+                Мета описание <span> :</span>
+                <div class="meta-lenght">0</div>
+              </label>
+              {{ form.meta_description }} {{ form.meta_description.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label"> Мета keywords </label>
+              {{ form.meta_keywords }} {{ form.meta_keywords.errors }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-content _show" id="char">
+        <button type="button" id="add-char" class="form__btn char__plus">Добавить характеристику</button>
+        <!-- Характеристики товара страницы -->
+        <div class="page-content__row">
+          <div class="page-content__seo" id="paste-char">
+            <!-- <div class="form__group form__group--chars">
+              <div class="form__group-char">
+                <label for="{{ product_char_form.char_name.id_for_label }}" class="form__controls-label">
+                  Название характеристики <span>:</span>
+                </label>
+                {{ product_char_form.char_name }} {{ product_char_form.char_name.errors }}
+              </div>
+              <div class="form__group-char">
+                <label for="{{ product_char_form.char_value.id_for_label }}" class="form__controls-label">
+                  Значение характеристики <span>:</span> </label>
+                {{ product_char_form.char_value }} {{ product_char_form.char_value.errors }}
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="select-hide" id="select-hide" style="opacity: 0; position: absolute">{{ option_form.type }} {{ product_char_form.char_name }}</div>
+  </div>
+</div>
+
+{% endblock %}

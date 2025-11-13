@@ -1,0 +1,75 @@
+{% extends 'admin_base.html' %}{% load static %} {% block body %}
+<div class="page">
+  <div class="page__inner">
+    <div class="page__top">
+      <h1 class="page__title">Старница о компании</h1>
+      <ul class="admin-breadcrumbs">
+        <li><a href="{% url 'admin' %}">Панель управления</a></li>
+        <li><a href="{% url 'admin_about_page' %}">Шаблон страницы о нас</a></li>
+      </ul>
+    </div>
+    <form action="." method="POST" class="form" enctype="multipart/form-data">
+      <div class="page__head">
+        <div class="page__head-tab">
+          <button type="button" data-name="basic" class="page__head-btn _active">Основные</button>
+          <button type="button" data-name="seo" class="page__head-btn">Поля SEO</button>
+        </div>
+        <button type="submit" class="form__btn">
+          <img src="{% static 'admin/img/save.svg' %}" alt=""/>
+          Сохранить
+        </button>
+      </div>
+      {% csrf_token %}
+      {{ form.media }}
+      <div class="page-content _show" id="basic">
+        <div class="page-content__row">
+          <div class="page-content__col">
+            <div class="form__group">
+              <label for="{{ form.description.id_for_label }}" class="form__controls-label"> Текст над картинкой : </label>
+              {{ form.description }} {{ form.description.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.description_two.id_for_label }}" class="form__controls-label"> Текст после картинкой: </label>
+              {{ form.description_two }} {{ form.description_two.errors }}
+            </div>
+          </div>
+          <div class="page-content__col">
+            <div class="form__group form__group-image">
+              <label for="{{ form.image.id_for_label }}" class="form__controls-label">Фоновая картинка:</label>
+              {{ form.image }} {{ form.image.errors }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-content" id="seo">
+        <!-- SEO страницы -->
+        <div class="page-content__row">
+          <div class="page-content__onecol">
+            <div class="form__group">
+              <label for="{{ form.meta_h1.id_for_label }}" class="form__controls-label"> Заголовок h1 : </label>
+              {{ form.meta_h1 }} {{ form.meta_h1.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.meta_title.id_for_label }}" class="form__controls-label"> Мета заголовок : </label>
+              {{ form.meta_title }} {{ form.meta_title.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label">
+                Мета описание :
+                <div class="meta-lenght">0</div>
+              </label>
+              {{ form.meta_description }} {{ form.meta_description.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label"> Мета keywords
+                : </label>
+              {{ form.meta_keywords }} {{ form.meta_keywords.errors }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

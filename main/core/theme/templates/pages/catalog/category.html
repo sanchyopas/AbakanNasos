@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load shop_tags %}
+{% load thumbnail %}
+{% load static %}
+{% block title %}{{ shop_setup.meta_title }}{% endblock %}
+{% block description %}{{ shop_setup.meta_description }}{% endblock %}
+{% block keywords %}{{ shop_setup.meta_keywords }}{% endblock %}
+{% block pixels_code %}
+
+<!-- Pixel -->
+<script type="text/javascript">
+  (function (d, w) {
+    var n = d.getElementsByTagName("script")[0],
+      s = d.createElement("script");
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = "https://qoopler.ru/index.php?ref="+d.referrer+"&page=" + encodeURIComponent(w.location.href);
+    n.parentNode.insertBefore(s, n);
+  })(document, window);
+</script>
+<!-- /Pixel -->
+
+{% endblock %}
+{% block content %}
+
+<main>
+  <section class="category">
+    <div class="container">
+
+      <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+        <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+           class="breadcrumbs__item">
+          Главная
+          <meta itemprop="position" content="1"/>
+        </a>
+        <a href="{% url 'category' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+           class="breadcrumbs__item">
+          Каталог
+          <meta itemprop="position" content="2"/>
+        </a>
+      </div>
+      {% if shop_setup.meta_h1 %}<h1 class="category__title">{{ shop_setup.meta_h1 }}</h1>{% else %} <h1 class="category__title">Каталог</h1>{% endif %}
+      <div class="category__grid">
+        {% if category %}
+        {% for cat in category %}
+        <div class="category__item">
+          <a href="{{ cat.get_absolute_url }}" class="category__image">
+            {% if cat.image %}
+            <img src="{{ cat.image.url }}" alt="{{ cat.name }}" title="{{ cat.name }}">
+            {% endif %}
+          </a>
+          <a href="{{ cat.get_absolute_url }}" class="category__name">{{ cat.name }}</a>
+        </div>
+
+        {% for c in cat.children.all %}
+        <div class="category__item">
+          <a href="{{ c.get_absolute_url }}" class="category__image">
+            {% if cat.image %}
+            <img src="{{ c.image.url }}" alt="{{ c.name }}" title="{{ c.name }}">
+            {% endif %}
+          </a>
+          <a href="{{ c.get_absolute_url }}" class="category__name">{{ c.name }}</a>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% endif %}
+        <div class="category__item">
+          <a href="{% url 'production' %}" class="category__image">
+            <img src="{% static 'theme/img/lodzii.jpg' %}" alt="">
+          </a>
+          <a href="{% url 'production' %}" class="category__name">Балконы,лоджии</a>
+        </div>
+
+
+    </div>
+
+    {% comment %}{% if products.paginator.count > 15 %}
+    <div class="pagging">
+      <a
+        href="{% if products.has_previous %}?{% chenge_params page=products.previous_page_number %}{% else %}#{% endif %}"
+        class="pagging__arrow {% if not products.has_previous%}disabled{% endif %}">«</a>
+      <ul class="pagging__list">
+        {% for page in products.paginator.page_range %}
+        {% if page >= products.number|add:-2 and page <= products.number|add:2 %}
+        <li>
+          <a href="?{% chenge_params page=page %}"
+             class="pagging__item {% if products.number == page %}_active{% endif %}">{{page}}</a>
+        </li>
+        {% endif %} {% endfor %}
+      </ul>
+      <a href="{% if products.has_next %}?{% chenge_params page=products.next_page_number %}{% else %}#{% endif %}"
+         class="pagging__arrow">»</a>
+    </div>
+    {% endif %}{% endcomment %}
+    </div>
+  </section>
+</main>
+{% endblock content %}

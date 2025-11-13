@@ -1,0 +1,152 @@
+{% extends "base.html" %} {% load static %} {% load thumbnail %}
+
+{% block title %}
+{% if product.meta_h1 %}{{ product.meta_h1 }}{% else %}Купить {{ product.name }} в Самаре | Магазин “Максимум”{% endif %}
+{% endblock %}
+
+{% block description %}
+{% if product.meta_description %}
+{{ product.meta_description}}
+{% else %}
+Купить {{ product.category }} - {{ product.name }} в Самаре в магазине “Максимум”. {{ product.name }} по лучшим ценам с
+установкой и доставкой по городу. Закажите {{ product.name }} в {{ product.category }}  на официальном сайте “Максимум”
+{% endif %}
+{% endblock %}
+
+{% block keywords %}
+{% if product.meta_keywords %}
+{{ product.meta_keywords}}
+{% else %}
+{{ product.name }},{{ product.category }}
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+<main class="page">
+  <div class="product-details section--padded">
+    <div class="container">
+      <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+        <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+          class="breadcrumbs__item">
+          Главная
+          <meta itemprop="position" content="1" />
+        </a>
+        <a href="{{ product.category.get_absolute_url }}" itemprop="itemListElement" itemscope=""
+          itemtype="http://schema.org/ListItem" class="breadcrumbs__item">
+          {{ product.category.name }}
+          <meta itemprop="position" content="2" />
+        </a>
+        <a href="{{ product.get_absolute_url }}" itemprop="itemListElement" itemscope=""
+          itemtype="http://schema.org/ListItem" class="breadcrumbs__item">
+          {{ product.name }}
+          <meta itemprop="position" content="3" />
+        </a>
+      </div>
+      <div class="product-details__card product-info">
+        <h1 class="product-info__title">{% if product.meta_h1 %}{{ product.meta_h1 }}{% else %} {{ product.name }} {% endif %}</h1>
+        <div class="product-info__row">
+          <div class="product-info__col">
+            <div class="product-info__images">
+              {% thumbnail product.image "x400" format="WEBP" crop="center" as im %}
+              <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ product.name }} {{ product.category }}" title="{{ product.name }} {{ product.category }}" />
+              {% endthumbnail %}
+            </div>
+            <div class="product-info__price-panel">
+              <div class="product-info__price">
+                <div class="product-info__price-inner">
+                  {% if product.sale %}
+                  <span class="product-info__price-value">{{ product.sell_price }} ₽</span>
+                  <s class="product-info__price--old-price">{{ product.price }} ₽</s>
+                  {% else %}
+                  <span class="product-info__price-value">{{ product.price }} ₽</span>
+                  {% endif %}
+                </div>
+                {% comment %}<div class="product-info__price-sale">
+                  <span>Акция</span>
+                  <p class="product-info__price-sale-info">
+                    Скидка 20% на все товары в разделе "Входные двери"
+                  </p>
+                </div>{% endcomment %}
+              </div>
+              <div class="product-info__actions">
+                <button type="button" class="product-info__btn _btn" data-popup="leave-request">Оставить заявку</button>
+                <button type="button" class="product-info__btn _btn" data-popup="callback">Заказать звонок</button>
+              </div>
+<!--              <div class="product-info__properties">-->
+<!--                <div class="product-info__properties-text">-->
+<!--                  <span>Артикул</span>-->
+<!--                  <span>1234</span>-->
+<!--                </div>-->
+<!--                <div class="product-info__properties-text">-->
+<!--                  <span>Отделка</span>-->
+<!--                  <span>Серый металл</span>-->
+<!--                </div>-->
+<!--                <div class="product-info__properties-text">-->
+<!--                  <span>Вставка</span>-->
+<!--                  <span>Бежевый дуб</span>-->
+<!--                </div>-->
+<!--                <div class="product-info__properties-text">-->
+<!--                  <span>Портал</span>-->
+<!--                  <span>Классика</span>-->
+<!--                </div>-->
+<!--              </div>-->
+            </div>
+          </div>
+          <div class="product-info__col">
+            <div class="product-info__param tab-params">
+              <div class="tab-params__trigger">
+                <div class="tab-params__trigger-inner">
+                  {% if properties %}
+                  <button type="button" data-tab="1" class="tab-params__tab _active">Характеристики</button>
+                  {% endif %}
+                  {% if product.colors %}
+                  <button type="button" data-tab="2" class="tab-params__tab {% if not properties %}_active{% endif %}">Цвета</button>
+                  {% endif %}
+                </div>
+                <div class="line-active"><span id="line"></span></div>
+              </div>
+              <div class="tab-params__content">
+                {% if properties %}
+                <div class="tab-params__panel _active" data-tab="1">
+                  {% for prop in properties %}
+                  <p><b>{{ prop.name }} :</b>{{ prop.value }}</p>
+                  {% endfor %}
+                </div>
+                {% endif %}
+                {% if product.colors %}
+                <div class="tab-params__panel _active" data-tab="2">
+                  <p>{{ product.colors }}</p>
+<!--                  {% for prop in properties %}-->
+<!--                  <p><b>{{ prop.name }} :</b>{{ prop.value }}</p>-->
+<!--                  {% endfor %}-->
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% if product.manufacturer_description %}
+      <div class="text">
+        <h2>Описание производителя</h2>
+        <p>
+          {{ product.manufacturer_description }}
+        </p>
+      </div>
+      {% endif %}
+      <div class="related-products">
+        <h2 class="related-products__title">Товары для вас</h2>
+        <div class="best-choice__grid products-list">
+          {% for product in products %}
+          {% include "../../components/card.html" with product=product %}
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock content %}

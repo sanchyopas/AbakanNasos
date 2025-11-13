@@ -1,0 +1,58 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% block body %}
+
+<div class="page">
+  <div class="page__inner">
+    <h1 class="page__title">{{ title }}</h1>
+    <div class="page__head">
+      <div class="page__head-tab">
+
+      </div>
+      <div class="page__head-btns">
+        <a href="{% url add_url %}" class="action-button">Создать</a>
+        <button type="submit" class="form__btn">
+          <img src="{% static 'admin/img/save.svg' %}" alt=""/>
+          Сохранить
+        </button>
+      </div>
+
+    </div>
+    <div class="page__list" id="list">
+      <div class="grid-items">
+        {% for item in items %}
+        <div class="grid-item">
+          {% if item.image %}
+          <div class="grid-item__image">
+            {% thumbnail item.image "250x250" format="WEBP" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
+            {% endthumbnail %}
+          </div>
+          {% endif %}
+
+          {% if item.icon_white %}
+          <div class="grid-item__image">
+            <img src="{{ item.icon_white.url }}" alt=""/>
+          </div>
+          {% endif %}
+
+          {% if item.icon_dark %}
+          <div class="grid-item__image">
+            <img src="{{ item.icon_dark.url }}" alt=""/>
+          </div>
+          {% endif %}
+
+          <div class="grid-item__content">
+            <p class="grid-item__title">{{ item.name }}</p>
+            {% if item.price %}<p>{{ item.price }} ₽</p>{% endif %}
+            {% include 'common/_edit-block.html' with edit_url='socials_edit' delete_url='service_delete' %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

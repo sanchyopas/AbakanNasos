@@ -1,9 +1,9 @@
 from django import forms
-from home.models import BaseSettings, Works, Production, Gallery, GalleryCategory, HomeTemplate, RobotsTxt, Stock, About, Delivery,SalesOffices, ContactTemplate
-from blog.models import BlogSettings, Post, BlogCategory
-from subdomain.models import Subdomain, SubdomainContact
-from service.models import Service, ServicePage
-from shop.models import Category, ColorProduct, Product, ProductImage, ShopSettings,Properties
+from home.models import *
+from blog.models import *
+from subdomain.models import *
+from service.models import *
+from shop.models import *
 from .widgets import CustomImageWidget
 from django_ckeditor_5.widgets import CKEditor5Widget
 
@@ -114,28 +114,7 @@ class BlogSettingsForm(forms.ModelForm):
           )
 
       }
-      
-class GalleryCategorySettingsForm(forms.ModelForm):
-  
-  class Meta:
-      model = GalleryCategory
-      fields = "__all__"
-      widgets = {
-          'meta_h1': forms.TextInput(attrs={
-              'class': 'form__controls',
-          }),
-          'meta_title': forms.TextInput(attrs={
-              'class': 'form__controls',
-          }),
-          'meta_description': forms.Textarea(attrs={
-              'class': 'form__controls',
-              "id": "meta_description"
-          }),
-          'meta_keywords': forms.TextInput(attrs={
-              'class': 'form__controls',
-          }),
-      }
-  
+
 class ProductForm(forms.ModelForm):
     """ Form, отвечает за создание товара и редактирование товара"""
     # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
@@ -399,139 +378,6 @@ class HomeTemplateForm(forms.ModelForm):
           }),
       }
 
-class ProductionForm(forms.ModelForm):
-  class Meta:
-      model = Production
-      fields = "__all__"
-      widgets = {
-          'meta_h1': forms.TextInput(attrs={
-              'class': INPUT_CLASS,
-          }),
-          'meta_title': forms.TextInput(attrs={
-              'class': f"{INPUT_CLASS} meta_field",
-          }),
-          'meta_description': forms.Textarea(attrs={
-              'class': f"{INPUT_CLASS} meta_field",
-              'rows': 5
-          }),
-          'meta_keywords': forms.TextInput(attrs={
-              'class': INPUT_CLASS,
-          }),
-          'text_sale': forms.TextInput(attrs={
-              'class': INPUT_CLASS,
-          }),
-      }
-
-
-class ContactTemplateForm(forms.ModelForm):
-  """ Form, редактирование страницы контакты"""
-  # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
-
-  class Meta:
-      model = ContactTemplate
-      fields = "__all__"
-      widgets = {
-          'meta_h1': forms.TextInput(attrs={
-              'class': INPUT_CLASS,
-          }),
-          'meta_title': forms.TextInput(attrs={
-              'class': f"{INPUT_CLASS} meta_field",
-          }),
-          'meta_description': forms.Textarea(attrs={
-              'class': f"{INPUT_CLASS} meta_field",
-              'rows': 5
-          }),
-          'meta_keywords': forms.TextInput(attrs={
-              'class': INPUT_CLASS,
-          }),
-          'activate_page': forms.CheckboxInput(attrs={
-            'class': 'form__controls-checkbox',
-          }),
-      }
-
-
-
-class AboutTemplateForm(forms.ModelForm):
-  """ Form, редактирование главной страницы"""
-  # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
-
-  class Meta:
-      model = About
-      fields = "__all__"
-      widgets = {
-          'name': forms.TextInput(attrs={
-              'class': INPUT_CLASS
-          }),
-          'meta_h1': forms.TextInput(attrs={
-              'class': INPUT_CLASS,
-          }),
-          'meta_title': forms.TextInput(attrs={
-              'class': f"{INPUT_CLASS} meta_field",
-          }),
-          'meta_description': forms.Textarea(attrs={
-              'class': f"{INPUT_CLASS} meta_field",
-              'rows': 5
-          }),
-          'meta_keywords': forms.TextInput(attrs={
-              'class': INPUT_CLASS,
-          }),
-          'description': CKEditor5Widget(
-             attrs={'class': 'django_ckeditor_5'},
-             config_name='extends'
-         ),
-         'description_two': CKEditor5Widget(
-            attrs={'class': 'django_ckeditor_5'},
-            config_name='extends'
-        )
-      }
-           
-
-    
-class StockForm(forms.ModelForm):
-  """ Form, добавление и редактирование акций"""
-  # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
-  
-  class Meta:
-    model = Stock
-    fields = "__all__"
-    widgets = {
-      'title': forms.TextInput(attrs={
-        'class': INPUT_CLASS,
-        'id': 'name'
-      }),
-      'slug': forms.TextInput(attrs={
-        'class':INPUT_CLASS,
-        "id": "slug"
-      }),
-      'validity': forms.DateInput(attrs={
-        'class':INPUT_CLASS,
-      }),
-      'description': forms.Textarea(attrs={
-        'class': INPUT_CLASS,
-        'rows': 5,
-      }),
-      'status': forms.CheckboxInput(attrs={
-        'class': 'form__controls-checkbox',
-      }),
-      'slider_status': forms.CheckboxInput(attrs={
-        'class': 'form__controls-checkbox',
-      }),
-      'meta_title': forms.TextInput(attrs={
-        'class': INPUT_CLASS,
-      }),
-      'meta_description': forms.Textarea(attrs={
-        'class': 'form-controls',
-        'rows': 5,
-      }),
-      'meta_keywords': forms.TextInput(attrs={
-        'class': INPUT_CLASS
-      }),
-      'description': CKEditor5Widget(
-          attrs={'class': 'django_ckeditor_5'},
-          config_name='extends'
-      )
-    }
-
 class ServicePageForm(forms.ModelForm):
   """ Поля настроек старницы услуг"""
   # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
@@ -654,101 +500,18 @@ class SubdomainContactForm(forms.ModelForm):
             'class': "form__controls-select",
         }),
     }
-    
-class GalleryForm(forms.ModelForm):
+
+# Новые и нужные формы
+class SocialsForm(forms.ModelForm):
   class Meta:
-    model = Gallery
+    model = Socials
     fields = "__all__"
     widgets = {
         'name': forms.TextInput(attrs={
           'class': INPUT_CLASS
         }),
-    }
+        'link': forms.TextInput(attrs={
+            'class': INPUT_CLASS,
+        }),
 
-class WorksForm(forms.ModelForm):
-  class Meta:
-    model = Works
-    fields = "__all__"
-    widgets = {
-        'name': forms.TextInput(attrs={
-          'class': INPUT_CLASS
-        }),
-        'text': CKEditor5Widget(
-            attrs={'class': 'django_ckeditor_5'},
-            config_name='extends'
-        )
     }
-    
-class GalleryCategoryForm(forms.ModelForm):
-  class Meta:
-    model = GalleryCategory
-    fields = "__all__"
-    widgets = {
-        'name': forms.TextInput(attrs={
-          'class': INPUT_CLASS
-        }),
-        'slug': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-          "id": "slug"
-        }),
-        'meta_h1': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'meta_title': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'meta_description': forms.Textarea(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'meta_keywords': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-    }
-
-class DeliveryForm(forms.ModelForm):
-  class Meta:
-    model = Delivery
-    fields = "__all__"
-    widgets = {
-        'meta_h1': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'meta_title': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'meta_description': forms.Textarea(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'meta_keywords': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'description':CKEditor5Widget(
-            attrs={'class': 'django_ckeditor_5'},
-            config_name='extends'
-        ),
-        'description_two':CKEditor5Widget(
-            attrs={'class': 'django_ckeditor_5'},
-            config_name='extends'
-        )
-    }
-
-class OfficeForm(forms.ModelForm):
-  class Meta:
-    model = SalesOffices
-    fields = "__all__"
-    widgets = {
-        'name': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'address': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'phone': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'time_work': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-    }
-    
-    

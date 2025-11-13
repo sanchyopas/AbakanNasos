@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load image_path %}
+{% load carts_tag %}
+{% load thumbnail %}
+{% block title %}{{ home_page.meta_title }}{% endblock %}
+{% block description %}{{ home_page.meta_description }}{% endblock %}
+{% block keywords %}{{ home_page.meta_keywords }}{% endblock %}
+
+{% block content %}
+<main class="page">
+  <section class="hero">
+    <div class="container">
+      <div class="swiper hero__slider">
+        <div class="swiper-wrapper hero__wrapper">
+          <div class="swiper-slide hero__slide">
+            <h1>1Распродажа вертикальных многоступенчатых насосов CDL</h1>
+            <p>
+              Сейчас насосы Ensi QB доступны по специальной цене, поэтому это отличная возможность приобрести надежное
+              оборудование с выгодой. Насосы серии QB от бренда Ensi — это надежное решение для тех, кто ценит качество
+              и
+              удобство в использовании.
+            </p>
+            <picture><source srcset="img/hero__image.webp" type="image/webp"><img src="img/hero__image.png" alt="" class="hero__image"></picture>
+            <button type="button" class="hero__btn">Посмотреть товары</button>
+          </div>
+          <div class="swiper-slide hero__slide">
+            <h1>2Распродажа вертикальных многоступенчатых насосов CDL</h1>
+            <p>
+              Сейчас насосы Ensi QB доступны по специальной цене, поэтому это отличная возможность приобрести надежное
+              оборудование с выгодой. Насосы серии QB от бренда Ensi — это надежное решение для тех, кто ценит качество
+              и
+              удобство в использовании.
+            </p>
+            <picture><source srcset="img/hero__image.webp" type="image/webp"><img src="img/hero__image.png" alt="" class="hero__image"></picture>
+            <button type="button" class="hero__btn">Посмотреть товары</button>
+          </div>
+        </div>
+        <div class="hero__arrows">
+          <div class="swiper-button-prev hero__arrow-prev"></div>
+          <div class="swiper-button-next hero__arrow-next"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
