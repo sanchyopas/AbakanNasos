@@ -1106,18 +1106,6 @@ def category_blog_remove(request, pk):
   return redirect(request.META.get('HTTP_REFERER'))
 
 # Новые views
-
-def socials(request):
-    items = Socials.objects.all()
-
-    context = {
-        "items": items,
-        "title": "Социальные сети",
-        "add_url": "socials_add"
-    }
-
-    return render(request, "common-template/list-items.html", context)
-
 def list_items(request, model, title, add_url):
     items = model.objects.all()
 
@@ -1128,6 +1116,9 @@ def list_items(request, model, title, add_url):
     }
 
     return render(request, "common-template/list-items.html", context)
+
+def socials(request):
+    return list_items(request, Socials, "Соц.сети", "socials_add")
 
 def socials_add(request):
     form = SocialsForm()
