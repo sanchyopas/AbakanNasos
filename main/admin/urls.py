@@ -13,7 +13,9 @@ urlpatterns = [
     # Новые urls
     path('socials/', views.socials, name='socials'),
     path('socials/add/', views.socials_add, name='socials_add'),
-    path('socials/edit/<int:pk>/', views.socials_edit, name='socials_edit'),
+    path('socials/<int:pk>/edit/', views.socials_edit, name='socials_edit'),
+    path('socials/<int:pk>/delete/', views.socials_delete, name='socials_delete'),
+
     # Новые конец urls
     
     #URl - отвечающие за загрузку данных

@@ -501,17 +501,50 @@ class SubdomainContactForm(forms.ModelForm):
         }),
     }
 
+class AutoStyledModelForm(forms.ModelForm):
+    DEFAULT_INPUT_CLASS = "form__controls"
+    DEFAULT_SELECT_CLASS = "form__controls-select"
+    DEFAULT_TEXTAREA_CLASS = "form__controls-textarea"
+
+    class Meta:
+        abstract = True
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        field_styles = {
+            forms.CharField: self.DEFAULT_INPUT_CLASS,
+            forms.TextInput: self.DEFAULT_INPUT_CLASS,
+            forms.EmailInput: self.DEFAULT_INPUT_CLASS,
+            forms.NumberInput: self.DEFAULT_INPUT_CLASS,
+            forms.DateInput: self.DEFAULT_INPUT_CLASS,
+            forms.DateTimeInput: self.DEFAULT_INPUT_CLASS,
+            forms.ChoiceField: self.DEFAULT_SELECT_CLASS,
+            forms.ModelChoiceField: self.DEFAULT_SELECT_CLASS,
+            forms.Textarea: self.DEFAULT_TEXTAREA_CLASS,
+        }
+
+        for field_name, field in self.fields.items():
+            for widget_type, css_class in field_styles.items():
+                if isinstance(field.widget, widget_type) or isinstance(field, widget_type):
+                    field.widget.attrs.setdefault('class', css_class)
+                    break
+
 # Новые и нужные формы
-class SocialsForm(forms.ModelForm):
+""" Если нужно добавить дополнительные атрибуты к вставляем вот этот код в класс с создание формы
+def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Для TextField добавляем rows
+        self.fields['description'].widget.attrs['rows'] = 7
+        self.fields['phone'].widget.attrs['placeholder'] = 'Основной телефон'
+"""
+
+class SocialsForm(AutoStyledModelForm):
   class Meta:
     model = Socials
     fields = "__all__"
-    widgets = {
-        'name': forms.TextInput(attrs={
-          'class': INPUT_CLASS
-        }),
-        'link': forms.TextInput(attrs={
-            'class': INPUT_CLASS,
-        }),
 
-    }
+class SliderHeroForm(AutoStyledModelForm):
+  class Meta:
+    model = SliderHero
+    fields = "__all__"

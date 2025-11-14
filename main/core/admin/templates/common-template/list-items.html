@@ -46,7 +46,7 @@
           <div class="grid-item__content">
             <p class="grid-item__title">{{ item.name }}</p>
             {% if item.price %}<p>{{ item.price }} ₽</p>{% endif %}
-            {% include 'common/_edit-block.html' with edit_url='socials_edit' delete_url='service_delete' %}
+            {% include 'common/_edit-block.html' with edit_url='socials_edit' delete_url='socials_delete' %}
           </div>
         </div>
         {% endfor %}

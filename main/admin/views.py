@@ -2,7 +2,7 @@ import math
 import os
 import zipfile
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
 from admin.forms import *
@@ -1117,8 +1117,15 @@ def list_items(request, model, title, add_url):
 
     return render(request, "common-template/list-items.html", context)
 
+def delete_item(request, model, pk):
+    item = model.objects.get(id=pk)
+    item.delete()
+    messages.success(request, 'Успешно удалено!')
+    return redirect(request.META.get('HTTP_REFERER'))
+
 def socials(request):
     return list_items(request, Socials, "Соц.сети", "socials_add")
+
 
 def socials_add(request):
     form = SocialsForm()
@@ -1156,3 +1163,12 @@ def socials_edit(request, pk):
   }
 
   return render(request, "common-template/template-edit-add-page.html", context)
+
+def socials_delete(request, pk):
+    return delete_item(request, Socials, pk)
+
+
+# Слайдеры
+
+def slider(request):
+    return list_items(request, Socials, "Соц.сети", "socials_add")
