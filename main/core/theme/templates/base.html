@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %}{% load image_path %}
 <html lang="ru" class="">
 <head>
   <title>{% block title %}{% endblock %}</title>
@@ -18,7 +18,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
 
   <style>
-
+      .breadcrumbs__item:not(:last-child)::after{
+          background-image: url("{% image_path 'arrow-right-bred.svg' %}");
+      }
   </style>
 
 </head>

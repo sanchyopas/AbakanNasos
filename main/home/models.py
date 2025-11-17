@@ -4,8 +4,8 @@ from django.urls import reverse
 from admin.singleton_model import SingletonModel
 
 class BaseSettings(SingletonModel):
-  logo = models.ImageField(upload_to="base-settings", blank=True, null=True, verbose_name="Логотип")
-  logo_dark = models.ImageField(upload_to="base-settings", blank=True, null=True, verbose_name="Логотип Темный")
+  logo = models.ImageField(upload_to="base-settings/", blank=True, null=True, verbose_name="Логотип")
+  logo_dark = models.ImageField(upload_to="base-settings/", blank=True, null=True, verbose_name="Логотип Footer")
   logo_width = models.CharField(max_length=250, blank=True, null=True, db_index=True, verbose_name="Ширина")
   logo_height = models.CharField(max_length=250, blank=True, null=True, db_index=True, verbose_name="Высота")
   phone = models.CharField(max_length=50, blank=True, null=True, db_index=True, verbose_name="Номер телефона")
@@ -20,12 +20,17 @@ class BaseSettings(SingletonModel):
   
 
 class HomeTemplate(SingletonModel):
-  banner = models.ImageField(upload_to="home-page", blank=True, null=True, verbose_name="Картинка главной страницы")
+  banner = models.ImageField(upload_to="home-page/", blank=True, null=True, verbose_name="Картинка главной страницы")
   meta_h1 = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок первого уровня")
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
   sale_text = models.CharField(max_length=250, blank=True, null=True, verbose_name="Текст скидки в всплывающем окне")
+
+class CallBackBlock(SingletonModel):
+  image = models.ImageField(upload_to="home-page/", blank=True, null=True, verbose_name="Паттерн")
+  title = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок")
+  description = models.TextField(blank=True, null=True, verbose_name="Описание")
 
 class ContactPage(SingletonModel):
   activate_page = models.BooleanField(default=False, verbose_name="Включить страницу")
@@ -62,7 +67,7 @@ class SliderHero(models.Model):
 
     title = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок")
     description = models.TextField(blank=True, null=True, verbose_name="Описание")
-    icon_white = models.ImageField(upload_to="sliders/", blank=True, null=True, verbose_name="Изображение")
+    image = models.ImageField(upload_to="sliders/", blank=True, null=True, verbose_name="Изображение")
     link = models.CharField(max_length=250, blank=True, null=True, verbose_name="Ссылка")
     status = models.CharField(
         max_length=20,

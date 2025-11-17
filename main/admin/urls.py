@@ -16,17 +16,30 @@ urlpatterns = [
     path('socials/<int:pk>/edit/', views.socials_edit, name='socials_edit'),
     path('socials/<int:pk>/delete/', views.socials_delete, name='socials_delete'),
 
+    path('sliders/', views.sliders, name='sliders'),
+    path('sliders/add/', views.sliders_add, name='sliders_add'),
+    path('sliders/<int:pk>/edit/', views.sliders_edit, name='sliders_edit'),
+    path('sliders/<int:pk>/delete/', views.sliders_delete, name='sliders_delete'),
+
+    path('branch/', views.admin_branch, name='admin_branch'),
+    path('branch/add/', views.branch_add, name='branch_add'),
+    path('branch/<int:pk>/edit/', views.branch_edit, name='branch_edit'),
+    path('branch/<int:pk>/delete/', views.branch_delete, name='branch_delete'),
+
+    path('callback-block/', views.admin_callback_block, name='admin_callback_block'),
+    path('home-page/', views.admin_home_page, name='admin_home_page'),
+
+    #URl - отвечающие за отображение категорий, редактирование и удаление категории
+    path('category/', views.admin_category, name='admin_category'),
+    path('category/add/', views.category_add, name='category_add'),
+    path('category/<int:pk>/edit/', views.category_edit, name='category_edit'),
+    path('category/<int:pk>/delete/', views.category_delete, name='category_delete'),
+
     # Новые конец urls
     
     #URl - отвечающие за загрузку данных
     path('upload-goods/', views.upload_goods, name="upload_goods"),
     path('upload-succes/', views.upload_succes, name="upload-succes"),
-    
-    #URl - отвечающие за отображение категорий, редактирование и удаление категории
-    path('category/', views.admin_category, name='admin_category'),
-    path('category/add/', views.category_add, name='category_add'),
-    path('category/edit/<int:pk>/', views.category_edit, name='category_edit'),
-    path('category/delete/<int:pk>/', views.category_delete, name='category_delete'),
 
     #URl - отвечающие за отображение товаров, редактирование и удаление товара
     path('product/', views.admin_product, name='admin_product'),
@@ -53,15 +66,13 @@ urlpatterns = [
     path('serv/add/', views.service_add, name='service_add'),
     path('serv/edit/<int:pk>/', views.service_edit, name='service_edit'),
     path('serv/delete/<int:pk>/', views.service_delete, name='service_delete'),
-    
-    #URl - Шаблон главной страницы
-    path('home/', views.admin_home, name='admin_home'),
+
     
     #URl - Шаблон общих настроек сайта
     path('settings/', views.admin_settings, name='admin_settings'),
     path('robots/', views.robots, name='robots'),
     
-    path('home-page/', views.admin_home_page, name='admin_home_page'),
+
     path('prod-page/', views.admin_prod_page, name='admin_prod_page'),
 
 

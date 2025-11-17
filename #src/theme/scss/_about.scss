@@ -1,0 +1,47 @@
+.about {
+
+  &__row {
+    display: grid;
+    gap: 30px;
+    border: 1px solid rgba(1, 112, 184, 0.4);
+    border-radius: 40px;
+    padding: 20px;
+
+    @media screen and (min-width: 1200px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__info {
+  }
+
+  &__title {
+    margin-bottom: 20px;
+  }
+
+  &__text {
+  }
+
+  &__image {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    min-height: 500px;
+    padding: 30px 20px;
+  }
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    border-radius: 20px;
+  }
+
+  &__logo {
+  }
+
+}

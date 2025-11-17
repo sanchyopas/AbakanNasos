@@ -10,14 +10,18 @@ def index(request):
   try: 
     settings = HomeTemplate.objects.get()
   except:
-      settings = HomeTemplate.objects.all()
+      settings = HomeTemplate()
+
+  slides = SliderHero.objects.filter(status='published')
+  category = Category.objects.filter(parent=None)
 
   context = {
     "settings": settings,
+    "slides": slides,
+    "category": category
   }
 
   return render(request, 'pages/index.html', context)
-
 
 
 def politika(request):

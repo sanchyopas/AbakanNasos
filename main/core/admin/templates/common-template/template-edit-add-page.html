@@ -24,6 +24,7 @@
         </div>
       </div>
       {% csrf_token %}
+      {{ form.media }}
       <div class="page-content _show" id="basic">
         <div class="page-content__row">
           <div class="page-content__col">
@@ -31,6 +32,13 @@
             <div class="form__group">
               <label for="{{ form.name.id_for_label }}" class="form__controls-label">Наименование: </label>
               {{ form.name }} {{ form.name.errors }}
+            </div>
+            {% endif %}
+
+            {% if form.title %}
+            <div class="form__group">
+              <label for="{{ form.title.id_for_label }}" class="form__controls-label">Заголовок: </label>
+              {{ form.title }} {{ form.title.errors }}
             </div>
             {% endif %}
 
@@ -142,6 +150,33 @@
               </div>
               {% endif %}
 
+              {% if form.phone_one %}
+              <div class="form__group">
+                <label for="{{ form.phone_one.id_for_label }}" class="form__controls-label">
+                  Номер телефона:
+                </label>
+                {{ form.phone_one }} {{ form.phone_one.errors }}
+              </div>
+              {% endif %}
+
+              {% if form.phone_two %}
+              <div class="form__group">
+                <label for="{{ form.phone_two.id_for_label }}" class="form__controls-label">
+                  Номер телефона:
+                </label>
+                {{ form.phone_two }} {{ form.phone_two.errors }}
+              </div>
+              {% endif %}
+
+              {% if form.email %}
+              <div class="form__group">
+                <label for="{{ form.email.id_for_label }}" class="form__controls-label">
+                  Email:
+                </label>
+                {{ form.email }} {{ form.email.errors }}
+              </div>
+              {% endif %}
+
               {% if form.phone %}
               <div class="form__group">
                 <label for="{{ form.phone.id_for_label }}" class="form__controls-label">
@@ -190,14 +225,20 @@
               {{ form.slug }} {{ form.slug.errors }}
             </div>
             {% endif %}
+
+            {% if form.category %}
             <div class="form__group">
-              <label for="{{ form.category.id_for_label }}" class="form__controls-label">Выбор категории :</label>
+              <label for="{{ form.category.id_for_label }}" class="form__controls-label">Выбор категории:</label>
               {{ form.category }} {{ form.category.errors }}
             </div>
-            <!--            <div class="form__group">-->
-            <!--              <label for="{{ form.categories.id_for_label }}" class="form__controls-label">Выбор категории :</label>-->
-            <!--              {{ form.categories }} {{ form.categories.errors }}-->
-            <!--            </div>-->
+            {% endif %}
+
+            {% if form.parent %}
+            <div class="form__group">
+              <label for="{{ form.parent.id_for_label }}" class="form__controls-label">Родительская категория:</label>
+              {{ form.parent }} {{ form.parent.errors }}
+            </div>
+            {% endif %}
 
             {% if form.image %}
             <div class="form__group form__group-image">
@@ -226,20 +267,28 @@
                    style="max-width: 100px; max-height: 100px"/>
             </a>
             {% endif %}
+
+            {% if form.latest %}
             <div class="form__group-checkbox">
               {{ form.latest }} {{ form.latest.errors }}
               <label for="{{ form.latest.id_for_label }}" class="form__controls-label"> Новинка ? :</label>
             </div>
+            {% endif %}
+
+            {% if form.type_image %}
             <div class="form__group-checkbox">
               {{ form.type_image }} {{ form.type_image.errors }}
               <label for="{{ form.type_image.id_for_label }}" class="form__controls-label">Отображение картинки ?
                 : </label>
             </div>
+            {% endif %}
 
-            <div class="form__group-checkbox">
+            {% if form.status %}
+            <div class="form__group">
               {{ form.status }} {{ form.status.errors }}
               <label for="{{ form.status.id_for_label }}" class="form__controls-label"> Опубликовать ? :</label>
             </div>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -248,23 +297,22 @@
         <div class="page-content__row">
           <div class="page-content__onecol">
             <div class="form__group">
-              <label for="{{ form.meta_h1.id_for_label }}" class="form__controls-label"> Заголовок h1 : </label>
+              <label for="{{ form.meta_h1.id_for_label }}" class="form__controls-label"> Заголовок h1: </label>
               {{ form.meta_h1 }} {{ form.meta_h1.errors }}
             </div>
             <div class="form__group">
-              <label for="{{ form.meta_title.id_for_label }}" class="form__controls-label"> Мета заголовок : </label>
+              <label for="{{ form.meta_title.id_for_label }}" class="form__controls-label"> Мета заголовок: </label>
               {{ form.meta_title }} {{ form.meta_title.errors }}
             </div>
             <div class="form__group">
               <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label">
-                Мета описание :
+                Мета описание:
                 <div class="meta-lenght">0</div>
               </label>
               {{ form.meta_description }} {{ form.meta_description.errors }}
             </div>
             <div class="form__group">
-              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label"> Мета keywords
-                : </label>
+              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label"> Мета keywords: </label>
               {{ form.meta_keywords }} {{ form.meta_keywords.errors }}
             </div>
           </div>

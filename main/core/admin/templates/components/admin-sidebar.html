@@ -50,7 +50,7 @@
         </div>
         <div class="menu-sidebar__dropdown-content">
           <ul>
-            <li><a href="{% url 'admin_category' %}">Список категорий</a></li>
+            <li><a href="{% url 'admin_category' %}">Категории</a></li>
             <li><a href="{% url 'category_add' %}">Добавить категорию</a></li>
           </ul>
         </div>
@@ -168,13 +168,21 @@
     </div>
     <div class="menu-sidebar__item">
       <p class="menu-sidebar__item-title">Редактируемые блоки</p>
-      <a href="" class="menu-sidebar__link-general">
+      <a href="{% url 'sliders' %}" class="menu-sidebar__link-general">
         <i class="fas fa-photo-video"></i>
         <span>Слайдеры</span>
       </a>
       <a href="{% url 'socials' %}">
-        <i class="fas fa-photo-video"></i>
+        <i class="fa-solid fa-square-share-nodes"></i>
         <span>Соц. сети</span>
+      </a>
+      <a href="{% url 'admin_branch' %}">
+        <i class="fa-solid fa-square-share-nodes"></i>
+        <span>Филиалы</span>
+      </a>
+      <a href="{% url 'admin_callback_block' %}">
+        <i class="fa-solid fa-square-share-nodes"></i>
+        <span>Блок обратной связи</span>
       </a>
     </div>
     <div class="menu-sidebar__item">

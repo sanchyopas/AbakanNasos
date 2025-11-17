@@ -22,7 +22,6 @@ class Category(models.Model):
   meta_description = models.TextField(null=True, blank=True, verbose_name="META описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="META keywords")
   add_menu = models.BooleanField(default=False, blank=True, null=True, verbose_name="Выводить в меню ? ")
-  sale_text = models.CharField(max_length=250, blank=True, null=True, verbose_name="Текст скидки в всплывающем окне")
   updated_at = models.DateTimeField(auto_now=True)
   
   class Meta:

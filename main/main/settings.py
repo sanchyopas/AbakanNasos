@@ -69,6 +69,8 @@ TEMPLATES = [
                 "home.context_processors.services",
                 "home.context_processors.reviews",
                 "home.context_processors.socials",
+                "home.context_processors.branch",
+                "home.context_processors.callback_block",
             ],
         },
     },

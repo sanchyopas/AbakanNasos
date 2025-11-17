@@ -3,12 +3,23 @@ from shop.models import Category
 from blog.models import BlogCategory
 from service.models import Service
 from reviews.models import Reviews
+from branch.models import Branch
+
+# проверенные функции
 
 def socials(request):
     return {"socials": Socials.objects.filter(status='published')}
+
+def callback_block(request):
+    return {"callback": CallBackBlock.load()}
+
+def branch(request):
+    return {"branch": Branch.objects.filter(status='published')}
  
 def load_settings(request):
     return {'site_settings': BaseSettings.load()}
+
+# проверенные функции
 
 def category_menu(request):
     return {'category_menu': Category.objects.all()}

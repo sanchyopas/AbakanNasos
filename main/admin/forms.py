@@ -4,6 +4,7 @@ from blog.models import *
 from subdomain.models import *
 from service.models import *
 from shop.models import *
+from branch.models import *
 from .widgets import CustomImageWidget
 from django_ckeditor_5.widgets import CKEditor5Widget
 
@@ -299,57 +300,7 @@ class BlogCategoryForm(forms.ModelForm):
 
 
 
-class CategoryForm(forms.ModelForm):
-  """ Form, отвечает за создание категорий и редактирование категорий"""
-  class Meta:
-    model = Category
-    fields = "__all__"
-    widgets = {
-      "name": forms.TextInput(attrs={
-          "class": "form__controls",
-          "id":"name"
-          # "placeholder": "Название  категории"
-      }),
-      "slug": forms.TextInput(attrs={
-        "class":"form__controls",
-        "id": "slug"
-        # "placeholder": "Название категори"
-      }),
-      'add_menu': forms.CheckboxInput(attrs={
-        'class': 'form__controls-checkbox',
-      }),
-      "description": forms.Textarea(attrs={
-        "class":"form__controls",
-      }),
-      "meta_h1": forms.TextInput(attrs={
-        "class":"form__controls",
-        # "placeholder": "Заголовок H1"
-      }),
-      "meta_title": forms.TextInput(attrs={
-        "class":"form__controls meta_field",
-        "id": "meta_title"
-        # "placeholder": "Meta заголовок"
-      }),
-      "meta_description": forms.Textarea(attrs={
-        "class":"form__controls meta_field",
-        # "placeholder": "Meta Описание",
-        "rows": "5"
-      }),
-      "meta_keywords": forms.TextInput(attrs={
-        "class":"form__controls",
-        # "placeholder": "Meta keywords"
-      }),
-      'description':CKEditor5Widget(
-          attrs={'class': 'django_ckeditor_5'},
-          config_name='extends'
-      )
-    }
 
-    def __init__(self, *args, **kwargs):
-      super().__init__(*args, **kwargs)
-
-      # Показывать только корневые категории
-      self.fields['parent'].queryset = Category.objects.filter(parent__isnull=True).exclude(id=self.instance.id if self.instance.pk else None)
 
     
 class HomeTemplateForm(forms.ModelForm):
@@ -504,7 +455,8 @@ class SubdomainContactForm(forms.ModelForm):
 class AutoStyledModelForm(forms.ModelForm):
     DEFAULT_INPUT_CLASS = "form__controls"
     DEFAULT_SELECT_CLASS = "form__controls-select"
-    DEFAULT_TEXTAREA_CLASS = "form__controls-textarea"
+    DEFAULT_TEXTAREA_CLASS = "form__controls-textarea",
+    DEFAULT_SELECT_CLASS = "form__controls-select",
 
     class Meta:
         abstract = True
@@ -522,6 +474,7 @@ class AutoStyledModelForm(forms.ModelForm):
             forms.ChoiceField: self.DEFAULT_SELECT_CLASS,
             forms.ModelChoiceField: self.DEFAULT_SELECT_CLASS,
             forms.Textarea: self.DEFAULT_TEXTAREA_CLASS,
+            forms.Select: self.DEFAULT_SELECT_CLASS,
         }
 
         for field_name, field in self.fields.items():
@@ -539,6 +492,21 @@ def __init__(self, *args, **kwargs):
         self.fields['phone'].widget.attrs['placeholder'] = 'Основной телефон'
 """
 
+
+class GlobalSettingsForm(forms.ModelForm):
+  """ Form, глобальные и общие настройки сайта(лого, телефон, email)"""
+  # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
+  class Meta:
+    model = BaseSettings
+    fields = "__all__"
+
+    widgets = {
+        'description':CKEditor5Widget(
+            attrs={'class': 'django_ckeditor_5'},
+            config_name='extends'
+        )
+    }
+
 class SocialsForm(AutoStyledModelForm):
   class Meta:
     model = Socials
@@ -548,3 +516,26 @@ class SliderHeroForm(AutoStyledModelForm):
   class Meta:
     model = SliderHero
     fields = "__all__"
+
+class BranchForm(AutoStyledModelForm):
+  class Meta:
+    model = Branch
+    fields = "__all__"
+
+class CallBackBlockForm(AutoStyledModelForm):
+  class Meta:
+    model = CallBackBlock
+    fields = "__all__"
+
+class CategoryForm(AutoStyledModelForm):
+  """ Form, отвечает за создание категорий и редактирование категорий"""
+  class Meta:
+    model = Category
+    fields = "__all__"
+
+    widgets = {
+      'description':CKEditor5Widget(
+          attrs={'class': 'django_ckeditor_5'},
+          config_name='extends'
+      )
+    }

@@ -17,7 +17,7 @@ def category(request):
   except: 
     shop_setup = ShopSettings()
 
-  category = Category.objects.filter(parent__isnull=True)
+  category = Category.objects.filter(parent=None)
 
   context = {
     "category":category,
@@ -30,28 +30,13 @@ import urllib.parse
 def category_detail(request, slug):
   page = request.GET.get("page", 1)
   category = Category.objects.get(slug=slug)
-  products = Product.objects.filter(category=category)
-  count =  int(request.GET.get('count', 16))
-  paginator = Paginator(products, count)
-  current_page = paginator.page(int(page))
+  subcategories = category.children.all()
 
-
-  text_sale = category.sale_text
-
-  for product in products:
-      if product.image:
-        product.image_url = urllib.parse.quote(product.image.url, safe="/:")
 
   context = {
     "category": category,
-    "title": "Название товара",
-    "products": current_page,
-    "count": count
+    "subcategories": subcategories
   }
-
-  if text_sale:
-      context["page_name"] = category.slug
-      context["text_sale"] = text_sale
 
   return render(request, "pages/catalog/category-details.html", context)
 
