@@ -43,13 +43,42 @@ def product(request, category_path, product_slug):
   product = Product.objects.get(slug=product_slug)
   category = Category.objects.get(slug=category_path)
   images = ProductImage.objects.filter(parent=product)
+  models_qs = Models.objects.all()
 
-  print(category)
+  if not models_qs.exists():
+    return render(request, "models_table.html", {
+      "columns": [],
+      "models_list": [],
+    })
+
+  columns = []
+
+  # Берём все поля модели
+  for field in Models._meta.fields:
+    name = field.name
+
+    # Пропускаем технические поля, если не нужны
+    if name in ("id", "status", "parent"):
+      continue
+
+    verbose = field.verbose_name
+
+    # Проверяем, есть ли заполненные данные хотя бы у одного объекта
+    has_value = models_qs.exclude(**{name: None}).exclude(**{name: ""}).exists()
+
+    if has_value:
+      columns.append({
+        "name": name,
+        "verbose": verbose
+      })
 
   context = {
     "category": category,
     "product": product,
-    "images": images
+    "images": images,
+#     "models": models,
+    "columns": columns,
+    "models_list": models_qs,
   }
 
   return render(request, "pages/catalog/product.html", context)

@@ -338,33 +338,6 @@ def admin_delivery_page(request):
 
   return render(request, "template-page/delivery_page.html", context)
 
-@user_passes_test(lambda u: u.is_superuser)
-def admin_shop(request):
-  try:
-    shop_setup = ShopSettings.objects.get()
-    form = ShopSettingsForm(instance=shop_setup)
-  except:
-    form = ShopSettingsForm()
-
-  if request.method == "POST":
-    try:
-      shop_setup = ShopSettings.objects.get()
-    except ShopSettings.DoesNotExist:
-      shop_setup = None
-    form_new = ShopSettingsForm(request.POST, request.FILES, instance=shop_setup)
-
-    if form_new.is_valid:
-      form_new.save()
-
-      return redirect('admin_shop')
-    else:
-      return render(request, "shop/settings.html", {"form": form})
-
-  context = {
-    "form": form,
-  }
-  return render(request, "shop/settings.html", context)
-
 def blog_settings(request):
   try:
     setup = BlogSettings.objects.get()
@@ -961,6 +934,12 @@ def admin_callback_block(request):
 """ Настройки главной страницы """
 def admin_home_page(request):
   return generic_singleton_edit(request, HomeTemplateForm, HomeTemplate, "Настройки главной страницы", template_name=None)
+
+
+""" Настройки страницы каталога """
+@user_passes_test(lambda u: u.is_superuser)
+def admin_shop(request):
+  return generic_singleton_edit(request, ShopSettingsForm, ShopSettings, "Настройки страницы каталога", template_name=None)
 
 
 """ Категории товаров """

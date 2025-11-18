@@ -89,12 +89,27 @@
                 {{ form.max_capacity }} {{ form.max_capacity.errors }}
               </div>
               {% endif %}
+              {% if form.max_capacity_min %}
+              <div class="form__group">
+                <label for="{{ form.max_capacity_min.id_for_label }}" class="form__controls-label">{{ form.max_capacity_min.label }}: </label>
+                {{ form.max_capacity_min }} {{ form.max_capacity_min.errors }}
+              </div>
+              {% endif %}
+
               {% if form.nom_head %}
               <div class="form__group">
                 <label for="{{ form.nom_head.id_for_label }}" class="form__controls-label">{{ form.nom_head.label }}: </label>
                 {{ form.nom_head }} {{ form.nom_head.errors }}
               </div>
               {% endif %}
+
+              {% if form.max_head %}
+              <div class="form__group">
+                <label for="{{ form.max_head.id_for_label }}" class="form__controls-label">{{ form.max_head.label }}: </label>
+                {{ form.max_head }} {{ form.max_head.errors }}
+              </div>
+              {% endif %}
+
               {% if form.suction_depth %}
               <div class="form__group">
                 <label for="{{ form.suction_depth.id_for_label }}" class="form__controls-label">{{ form.suction_depth.label }}: </label>

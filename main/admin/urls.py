@@ -28,6 +28,7 @@ urlpatterns = [
 
     path('callback-block/', views.admin_callback_block, name='admin_callback_block'),
     path('home-page/', views.admin_home_page, name='admin_home_page'),
+    path('admin-shop/', views.admin_shop, name='admin_shop'),
 
     #URl - отвечающие за отображение категорий, редактирование и удаление категории
     path('category/', views.admin_category, name='admin_category'),
@@ -82,7 +83,7 @@ urlpatterns = [
     path('prod-page/', views.admin_prod_page, name='admin_prod_page'),
 
 
-    path('admin-shop/', views.admin_shop, name='admin_shop'),
+
 
     #URl - цвета памятников
     path('color-product/', views.admin_color, name='admin_color'),

@@ -122,16 +122,29 @@ class Product(models.Model):
       })
 
 class Models(models.Model):
+  STATUS_CHOICES = [
+      ('published', 'Опубликовано'),
+      ('draft', 'Черновик'),
+      ('hidden', 'Скрыто'),
+  ]
+
   parent = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="models_parent", verbose_name="Продукт")
   model = models.CharField(max_length=150, default="", db_index=True, verbose_name="Модель")
-  power = models.CharField(max_length=150, default="", blank=True, null=True, db_index=True, verbose_name="Мощность")
-  el_network = models.CharField(max_length=150, blank=True, null=True, default="", db_index=True, verbose_name="Электрическая сеть")
-  nom_capacity = models.CharField(max_length=150, blank=True, null=True, default="", db_index=True, verbose_name="Номинальная Производительность")
-  max_capacity = models.CharField(max_length=150, blank=True, null=True, default="", db_index=True, verbose_name="Максимальная Производительность")
-  nom_head = models.CharField(max_length=150, blank=True, null=True, default="", db_index=True, verbose_name="Номинальный напор")
-  suction_depth = models.CharField(max_length=150, blank=True, null=True, default="", db_index=True, verbose_name="Максимальная глуб. всасывания")
-  сon_size = models.CharField(max_length=150, blank=True, null=True, default="", db_index=True, verbose_name="Присоединительный размер")
-
+  power = models.CharField(max_length=150, blank=True, null=True, db_index=True, verbose_name="Мощность")
+  el_network = models.CharField(max_length=150, blank=True, null=True,  db_index=True, verbose_name="Электрическая сеть")
+  nom_capacity = models.CharField(max_length=150, blank=True, null=True, db_index=True, verbose_name="Ном. Производительность(м3/час)")
+  max_capacity = models.CharField(max_length=150, blank=True, null=True,  db_index=True, verbose_name="Макс. Производительность(м3/час)")
+  max_capacity_min = models.CharField(max_length=150, blank=True, null=True,  db_index=True, verbose_name="Макс. производительность (л/мин)")
+  nom_head = models.CharField(max_length=150, blank=True, null=True, db_index=True, verbose_name="Номинальный напор(м)")
+  max_head = models.CharField(max_length=150, blank=True, null=True, db_index=True, verbose_name="Максимальный напор (м)")
+  suction_depth = models.CharField(max_length=150, blank=True, null=True, db_index=True, verbose_name="Максимальная глуб. всасывания(м)")
+  сon_size = models.CharField(max_length=150, blank=True, null=True, db_index=True, verbose_name="Присоединительный размер (дюйм)")
+  status = models.CharField(
+      max_length=20,
+      choices=STATUS_CHOICES,
+      default='draft',
+      verbose_name="Статус"
+    )
 
 class ProductImage(models.Model):
     parent = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="Привязка к продукту")
