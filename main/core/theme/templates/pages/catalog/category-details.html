@@ -32,11 +32,11 @@
       <h1 class="top-page__title title">{{ category.name }}</h1>
     </div>
   </div>
-  {% if subcategories %}
+  {% if products %}
   <section class="services">
     <div class="container">
       <div class="services__grid">
-        {% for item in subcategories %}
+        {% for item in products %}
         <a href="{{ item.get_absolute_url }}" class="services__item">
           <p class="services__title">{{ item.name }}</p>
           {% if item.image %}

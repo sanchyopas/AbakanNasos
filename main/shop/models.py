@@ -32,32 +32,48 @@ class Category(models.Model):
   def __str__(self):
     return self.name
   
-  def get_absolute_url(self):
-        return reverse("category_detail", kwargs={"slug": self.slug})
+  """ def get_absolute_url(self):
+        return reverse("category_detail", kwargs={"category_path": self.slug}) """
 
-# Продукт
+  def get_absolute_url(self):
+      parts = []
+      current = self
+
+      while current is not None:
+          parts.append(current.slug)
+          current = current.parent
+
+      parts.reverse()
+
+      category_path = "/".join(parts)
+
+      return reverse("category_detail", kwargs={"category_path": category_path})
+
+
 class Product(models.Model):
-  article = models.CharField(max_length=255, blank=True, null=True, verbose_name="Артикул")
+  STATUS_CHOICES = [
+    ('published', 'Опубликовано'),
+    ('draft', 'Черновик'),
+    ('hidden', 'Скрыто'),
+  ]
+
   name = models.CharField(max_length=150, db_index=True, verbose_name="Наименование")
   slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, verbose_name="URL")
-  category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='main_products', null=True, blank=True)
-#   categories = models.ManyToManyField(Category, related_name='related_products', blank=True, verbose_name="Категории")
-  manufacturer = models.CharField(max_length=250, db_index=True, null=True, blank=True, verbose_name="Производитель")
-  manufacturer_description = models.TextField(blank=True, null=True, verbose_name="Описание производителя")
-  colors = models.CharField(max_length=250, null=True, blank=True, verbose_name="Цветовая схема")
-  image = models.ImageField(upload_to="product_iamge", blank=True, null=True, verbose_name="Изображение товара")
-  price = models.CharField(max_length=250, db_index=True, null=True, blank=True, verbose_name="Цена")
-  installment = models.CharField(max_length=50, blank=True, null=True, verbose_name="Рассрочка")
-  sale = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Скидка")
-  quantity = models.PositiveIntegerField(default=0, verbose_name="Количество")
-  quantity_purchase = models.IntegerField(default=0, verbose_name="Количество купленных")
-  status = models.BooleanField(default=True, verbose_name="Опубликовать ?")
+  category = models.ManyToManyField(Category, null=True, blank=True, verbose_name="Категории")
+  image = models.ImageField(upload_to="product-image/", blank=True, null=True, verbose_name="Изображение товара")
+  description = models.TextField(null=True, blank=True,  verbose_name="Описание категории")
+  text = models.TextField(null=True, blank=True,  verbose_name="Текст на странице")
   meta_h1 = models.CharField(max_length=250, null=True, blank=True, verbose_name="Заголовок первого уровня")
   meta_title = models.CharField(max_length=250, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
   updated_at = models.DateTimeField(auto_now=True)
-
+  status = models.CharField(
+    max_length=20,
+    choices=STATUS_CHOICES,
+    default='draft',
+    verbose_name="Статус"
+  )
 
   class Meta:
     db_table = 'product'
@@ -66,7 +82,7 @@ class Product(models.Model):
     ordering = ("-id",)
 
   def __str__(self):
-    return f'{self.name} Кол-во - {self.quantity}'
+    return f'{self.name}'
 
   """ Данный метод добавляет к id нули в начале """
   def display_id(self):
@@ -79,32 +95,51 @@ class Product(models.Model):
 
     return self.price
 
+  """ def get_absolute_url(self):
+        return reverse("product", kwargs={"product_slug": self.slug}) """
+
   def get_absolute_url(self):
-        return reverse("product", kwargs={"slug": self.slug})
+      category = self.category.first()
+      if not category:
+          return reverse("product", kwargs={
+              "category_path": "",
+              "product_slug": self.slug
+          })
 
-""" Характеристики товара """
-class Properties(models.Model):
-    parent =  models.ForeignKey(Product, on_delete=models.CASCADE, null=True, related_name="properties", verbose_name='Родитель')
-    name = models.CharField(max_length=250, null=True, blank=True, verbose_name="Название характеристки")
-    value = models.CharField(max_length=250, null=True, blank=True, verbose_name="Значение характеристки")
+      parts = []
+      current = category
 
-    def __str__(self):
-      return self.name
+      while current is not None:
+          parts.append(current.slug)
+          current = current.parent
+
+      parts.reverse()
+      category_path = "/".join(parts)
+
+      return reverse("product", kwargs={
+          "category_path": category_path,
+          "product_slug": self.slug
+      })
+
+class Models(models.Model):
+  parent = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="models_parent", verbose_name="Продукт")
+  model = models.CharField(max_length=150, default="", db_index=True, verbose_name="Модель")
+  power = models.CharField(max_length=150, default="", blank=True, null=True, db_index=True, verbose_name="Мощность")
+  el_network = models.CharField(max_length=150, blank=True, null=True, default="", db_index=True, verbose_name="Электрическая сеть")
+  nom_capacity = models.CharField(max_length=150, blank=True, null=True, default="", db_index=True, verbose_name="Номинальная Производительность")
+  max_capacity = models.CharField(max_length=150, blank=True, null=True, default="", db_index=True, verbose_name="Максимальная Производительность")
+  nom_head = models.CharField(max_length=150, blank=True, null=True, default="", db_index=True, verbose_name="Номинальный напор")
+  suction_depth = models.CharField(max_length=150, blank=True, null=True, default="", db_index=True, verbose_name="Максимальная глуб. всасывания")
+  сon_size = models.CharField(max_length=150, blank=True, null=True, default="", db_index=True, verbose_name="Присоединительный размер")
+
 
 class ProductImage(models.Model):
     parent = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="Привязка к продукту")
-    src = models.ImageField(upload_to="product_iamge", null=True, blank=True, verbose_name="Дополнительны изображения")
+    src = models.ImageField(upload_to="product-image/", null=True, blank=True, verbose_name="Дополнительны изображения")
 
     class Meta:
       verbose_name = 'Изображение'
 
-
-        
-class ColorProduct(models.Model):
-  name = models.CharField(max_length=250, unique=True, null=True, blank=True, verbose_name="Название цвета")
-  code_color = models.CharField(max_length=250, unique=True, null=True, blank=True, verbose_name="Код цвета")
-  image_color = models.ImageField(upload_to="product_color", null=True, blank=True, verbose_name="Изображение цвета")
-  active = models.BooleanField(default=True, verbose_name="Выводить на сайте")
 
 
 

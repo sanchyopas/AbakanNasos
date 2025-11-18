@@ -7,12 +7,12 @@ from django.urls import reverse
 from django.contrib import messages
 from admin.forms import *
 from home.models import *
-from blog.models import BlogSettings, Post, BlogCategory
+from blog.models import *
 from main.settings import BASE_DIR
-from subdomain.models import Subdomain
-from service.models import Service, ServicePage
+from subdomain.models import *
+from service.models import *
 
-from shop.models import ColorProduct, Product, Category, ProductImage, Properties, ShopSettings
+
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 import openpyxl
@@ -24,6 +24,7 @@ import numpy as np
 import math
 
 # Проверенные импорты
+from shop.models import *
 from .utils.views import generic_add, generic_edit, generic_list, generic_delete, generic_singleton_edit
 
 general_url_product = "/admin/product/"
@@ -222,107 +223,6 @@ def robots(request):
   }
 
   return render(request, "settings/robots.html", context)
-
-def admin_product(request):
-  """
-  View, которая возвращаяет и отрисовывает все товары на странице
-  и разбивает их на пагинацию
-  """
-  page = request.GET.get('page', 1)
-  products = Product.objects.all()
-  paginator = Paginator(products, 20)
-  current_page = paginator.page(int(page))
-
-  context = {
-    "items": current_page
-  }
-  return render(request, "shop/product/product.html", context)
-
-def product_edit(request, pk):
-  """
-    View, которая получает данные из формы редактирования товара
-    и изменяет данные внесенные данные товара в базе данных
-  """
-  product = Product.objects.get(id=pk)
-  product_image = ProductImage.objects.filter(parent=product)
-  all_chars = Properties.objects.filter(parent=product)
-  properties_form = ProductPropertiesForm()
-
-  form = ProductForm(instance=product)
-
-  form_new = ProductForm(request.POST, request.FILES, instance=product)
-
-  if request.method == 'POST':
-      if form_new.is_valid():
-          form_new.save()
-          product = Product.objects.get(id=pk)
-
-          # Добавление новых характеристик
-          prop_names = request.POST.getlist('new_name')
-          prop_values = request.POST.getlist('new_value')
-
-          for i in range(min(len(prop_names), len(prop_values))):
-            Properties.objects.create(
-                name=prop_names[i].strip(),
-                value=prop_values[i].strip(),
-                parent=product
-            )
-
-          # Обновление старых характеристик
-          old_ids = request.POST.getlist('old_id')
-          old_names = request.POST.getlist('old_name')
-          old_values = request.POST.getlist('old_value')
-
-          for i in range(min(len(old_ids), len(old_names), len(old_values))):
-              prop = Properties.objects.get(id=old_ids[i])
-              prop.name = old_names[i]
-              prop.value = old_values[i]
-              prop.save()
-
-
-          images = request.FILES.getlist('src')
-
-          for image in images:
-              img = ProductImage(parent=product, src=image)
-              img.save()
-
-          return redirect(request.META.get('HTTP_REFERER'))
-      else:
-          return render(request, 'common-template/template-edit-add-page.html', {'form': form_new})
-  context = {
-    "form":form,
-    "all_chars": all_chars,
-    "title": "Страница редактирования",
-    "url": general_url_product,
-    "properties_form":properties_form,
-    "product_image": product_image,
-  }
-  return render(request, "common-template/template-edit-add-page.html", context)
-
-def product_add(request):
-  form = ProductForm()
-
-  if request.method == "POST":
-    form_new = ProductForm(request.POST, request.FILES)
-    if form_new.is_valid():
-      form_new.save()
-      return redirect('admin_product')
-    else:
-      return render(request, "common-template/template-edit-add-page.html", {"form": form_new})
-
-  context = {
-   "title": "Страница добавление",
-   "url": general_url_product,
-   "form": form
-  }
-
-  return render(request, 'common-template/template-edit-add-page.html', context)
-
-def product_delete(request,pk):
-  product = Product.objects.get(id=pk)
-  product.delete()
-
-  return redirect('admin_product')
 
 def delete_properties(request,pk):
   propertie = Properties.objects.get(id=pk)
@@ -1075,4 +975,82 @@ def category_edit(request, pk):
 
 def category_delete(request, pk):
   return generic_delete(request, Category, pk)
+
+""" Товары """
+def admin_product(request):
+  return generic_list(request, Product, "Товары", "product_add", "product_edit", "product_delete")
+
+def product_edit(request, pk):
+  """
+    View, которая получает данные из формы редактирования товара
+    и изменяет данные внесенные данные товара в базе данных
+  """
+  product = Product.objects.get(id=pk)
+  images = ProductImage.objects.filter(parent_id=pk)
+  models = Models.objects.filter(parent_id=pk)
+  form = ProductForm(instance=product)
+  form_new = ProductForm(request.POST, request.FILES, instance=product)
+
+  if request.method == 'POST':
+      if form_new.is_valid():
+          form_new.save()
+          product = Product.objects.get(id=pk)
+          images = request.FILES.getlist('src')
+
+          for image in images:
+              img = ProductImage(parent=product, src=image)
+              img.save()
+
+          return redirect(request.META.get('HTTP_REFERER'))
+      else:
+          return render(request, 'common-template/template-edit-add-page.html', {'form': form_new})
+
+  context = {
+    "form": form,
+    "title": "Страница редактирования",
+    "url": general_url_product,
+    "images": images,
+  }
+
+  if models:
+    context["models"] = models
+
+  return render(request, "common-template/template-edit-add-page.html", context)
+
+def product_add(request):
+  form = ProductForm()
+
+  if request.method == "POST":
+    form_new = ProductForm(request.POST, request.FILES)
+    if form_new.is_valid():
+      form_new.save()
+      return redirect('admin_product')
+    else:
+      return render(request, "common-template/template-edit-add-page.html", {"form": form_new})
+
+  context = {
+    "models": models,
+    "title": "Страница добавление",
+    "url": general_url_product,
+    "form": form
+  }
+
+  return render(request, 'common-template/template-edit-add-page.html', context)
+
+def product_delete(request,pk):
+  return generic_delete(request, Product, pk)
+
+
+""" Модели товаров """
+def admin_model(request):
+  return generic_list(request, Models, "Модели", "model_add", "model_edit", "model_delete")
+
+def model_add(request):
+  return generic_add(request, ModelsForm, "admin_model", "Добавление модели",  template_name=None)
+
+def model_edit(request, pk):
+  return generic_edit(  request,  pk, Models,  ModelsForm, "admin_model", "Редактирование модели", template_name=None)
+
+def model_delete(request, pk):
+  return generic_delete(request, Models, pk)
 

@@ -35,17 +35,23 @@ urlpatterns = [
     path('category/<int:pk>/edit/', views.category_edit, name='category_edit'),
     path('category/<int:pk>/delete/', views.category_delete, name='category_delete'),
 
+    path('product/', views.admin_product, name='admin_product'),
+    path('product/add/', views.product_add, name='product_add'),
+    path('product/<int:pk>/edit/', views.product_edit, name='product_edit'),
+    path('product/<int:pk>/delete/', views.product_delete, name='product_delete'),
+
+    path('model/', views.admin_model, name='admin_model'),
+    path('model/add/', views.model_add, name='model_add'),
+    path('model/<int:pk>/edit/', views.model_edit, name='model_edit'),
+    path('model/<int:pk>/delete/', views.model_delete, name='model_delete'),
+
     # Новые конец urls
     
     #URl - отвечающие за загрузку данных
     path('upload-goods/', views.upload_goods, name="upload_goods"),
     path('upload-succes/', views.upload_succes, name="upload-succes"),
 
-    #URl - отвечающие за отображение товаров, редактирование и удаление товара
-    path('product/', views.admin_product, name='admin_product'),
-    path('product/add/', views.product_add, name='product_add'),
-    path('product/edit/<int:pk>/', views.product_edit, name='product_edit'),
-    path('product/delete/<int:pk>/', views.product_delete, name='product_delete'),
+
 
     path('product/delete_properties/<int:pk>/', views.delete_properties, name='delete_properties'),
 

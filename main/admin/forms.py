@@ -116,110 +116,6 @@ class BlogSettingsForm(forms.ModelForm):
 
       }
 
-class ProductForm(forms.ModelForm):
-    """ Form, отвечает за создание товара и редактирование товара"""
-    # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
-
-    class Meta:
-        model = Product
-        fields = "__all__"
-        widgets = {
-            'article': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-                "id":"article"
-            }),
-            'name': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-                "id":"name"
-            }),
-            'slug': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-                "id": "slug"
-            }),
-            'category': forms.Select(attrs={
-                'class': INPUT_CLASS,
-            }),
-#             'categories': forms.CheckboxSelectMultiple,
-            'manufacturer': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'manufacturer_description': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-             'manufacturer_description': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'price': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'sale': forms.NumberInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'installment': forms.Textarea(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'quantity': forms.NumberInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'quantity_purchase': forms.NumberInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'status': forms.CheckboxInput(attrs={
-              'class': 'form__controls-checkbox',
-            }),
-            'meta_h1': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'meta_title': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'meta_description': forms.Textarea(attrs={
-                'class': INPUT_CLASS,
-                "id": "meta_description"
-            }),
-            'meta_keywords': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-
-        }
-
-class ProductPropertiesForm(forms.ModelForm):
-    class Meta:
-        model = Properties
-        fields = "__all__"
-        widgets = {
-            'name': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-                'placeholder': 'Название характеристики',
-                'id': 'id_char_name',
-
-            }),
-            'value': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-                'placeholder': 'Значение',
-                'id': 'id_char_value'
-            }),
-        }
-
-# Товар и опции товара
-class ProductImageForm(forms.ModelForm):
-    class Meta:
-        model = ProductImage
-
-        fields = [
-            'parent',
-            'src'
-        ]
-        labels = {
-            'src': 'Выбрать изображение'
-        }
-        widgets = {
-            'parent': forms.Select(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'src': CustomImageWidget(),
-        }
-
 class PostForm(forms.ModelForm):
     """ Form, отвечает за создание товара и редактирование товара"""
     # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
@@ -415,21 +311,7 @@ class SubdomainForm(forms.ModelForm):
             'class': INPUT_CLASS,
         }),
     }
-    
-    
-class ColorProductForm(forms.ModelForm):
-  class Meta:
-    model = ColorProduct
-    fields = "__all__"
-    widgets = {
-        'name': forms.TextInput(attrs={
-          'class': INPUT_CLASS
-        }),
-        'code_color': forms.TextInput(attrs={
-            'class': INPUT_CLASS,
-        }),
-    }
-    
+
 class SubdomainContactForm(forms.ModelForm):
   class Meta:
     model = SubdomainContact
@@ -456,7 +338,6 @@ class AutoStyledModelForm(forms.ModelForm):
     DEFAULT_INPUT_CLASS = "form__controls"
     DEFAULT_SELECT_CLASS = "form__controls-select"
     DEFAULT_TEXTAREA_CLASS = "form__controls-textarea",
-    DEFAULT_SELECT_CLASS = "form__controls-select",
 
     class Meta:
         abstract = True
@@ -527,6 +408,11 @@ class CallBackBlockForm(AutoStyledModelForm):
     model = CallBackBlock
     fields = "__all__"
 
+class ModelsForm(AutoStyledModelForm):
+  class Meta:
+    model = Models
+    fields = "__all__"
+
 class CategoryForm(AutoStyledModelForm):
   """ Form, отвечает за создание категорий и редактирование категорий"""
   class Meta:
@@ -538,4 +424,33 @@ class CategoryForm(AutoStyledModelForm):
           attrs={'class': 'django_ckeditor_5'},
           config_name='extends'
       )
+    }
+
+
+class ProductForm(AutoStyledModelForm):
+  """ Form, отвечает за создание товара и редактирование товара"""
+
+  class Meta:
+    model = Product
+    fields = "__all__"
+
+    widgets = {
+      'description':CKEditor5Widget(
+        attrs={'class': 'django_ckeditor_5'},
+        config_name='extends'
+      ),
+      'text':CKEditor5Widget(
+        attrs={'class': 'django_ckeditor_5'},
+        config_name='extends'
+      ),
+      'category': forms.CheckboxSelectMultiple,
+    }
+
+class ProductImageForm(AutoStyledModelForm):
+  class Meta:
+    model = ProductImage
+    fields = "__all__"
+
+    widgets = {
+        'src': CustomImageWidget(),
     }

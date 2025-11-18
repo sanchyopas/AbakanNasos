@@ -40,6 +40,21 @@
           </ul>
         </div>
       </div>
+      <div class="menu-sidebar__dropdown" id="products">
+        <div class="menu-sidebar__dropdown-title">
+          <div class="menu-sidebar__dropdow-inner">
+            <i class="fas fa-sliders-h"></i>
+            <span>Модели</span>
+          </div>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="menu-sidebar__dropdown-content">
+          <ul>
+            <li><a href="{% url 'admin_model' %}">Список моделей</a></li>
+            <li><a href="{% url 'model_add' %}">Добавить модель</a></li>
+          </ul>
+        </div>
+      </div>
       <div class="menu-sidebar__dropdown" id="category">
         <div class="menu-sidebar__dropdown-title">
           <div class="menu-sidebar__dropdow-inner">

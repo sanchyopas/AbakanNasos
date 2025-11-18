@@ -13,42 +13,43 @@ import json
 
 def category(request):
   try:
-    shop_setup = ShopSettings.objects.get()
+    settings = ShopSettings.objects.get()
   except: 
-    shop_setup = ShopSettings()
+    settings = ShopSettings()
 
   category = Category.objects.filter(parent=None)
 
   context = {
     "category":category,
-    "shop_setup": shop_setup,
+    "settings": settings,
   }
 
   return render(request, "pages/catalog/category.html", context)
 import urllib.parse
 
-def category_detail(request, slug):
+def category_detail(request, category_path):
   page = request.GET.get("page", 1)
-  category = Category.objects.get(slug=slug)
-  subcategories = category.children.all()
-
+  category = Category.objects.get(slug=category_path)
+  products = Product.objects.filter(category=category)
 
   context = {
     "category": category,
-    "subcategories": subcategories
+    "products": products
   }
 
   return render(request, "pages/catalog/category-details.html", context)
 
-def product(request, slug):
-  product = Product.objects.get(slug=slug)
-  properties = Properties.objects.filter(parent=product)
-  products = Product.objects.filter(status=True).exclude(id=product.id)[:4]
-   
+def product(request, category_path, product_slug):
+  product = Product.objects.get(slug=product_slug)
+  category = Category.objects.get(slug=category_path)
+  images = ProductImage.objects.filter(parent=product)
+
+  print(category)
+
   context = {
+    "category": category,
     "product": product,
-    "products": products,
-    "properties": properties,
+    "images": images
   }
 
   return render(request, "pages/catalog/product.html", context)
