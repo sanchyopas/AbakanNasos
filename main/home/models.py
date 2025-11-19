@@ -24,57 +24,104 @@ class HomeTemplate(SingletonModel):
   meta_h1 = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок первого уровня")
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
-  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
-  sale_text = models.CharField(max_length=250, blank=True, null=True, verbose_name="Текст скидки в всплывающем окне")
+  meta_keywords = models.CharField(max_length=350, null=True, blank=True, verbose_name="Meta keywords")
+
+class AboutPage(SingletonModel):
+  image = models.ImageField(upload_to="about-page/", blank=True, null=True, verbose_name="Изображение")
+  title = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок")
+  description = models.TextField(blank=True, null=True, verbose_name="Текст справа от картинки")
+  text = models.TextField(blank=True, null=True, verbose_name="Текст на странице")
+  meta_h1 = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок первого уровня")
+  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
+  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
+  meta_keywords = models.CharField(max_length=350, null=True, blank=True, verbose_name="Meta keywords")
 
 class CallBackBlock(SingletonModel):
   image = models.ImageField(upload_to="home-page/", blank=True, null=True, verbose_name="Паттерн")
   title = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок")
   description = models.TextField(blank=True, null=True, verbose_name="Описание")
 
+class Clients(models.Model):
+  STATUS_CHOICES = [
+    ('published', 'Опубликовано'),
+    ('draft', 'Черновик'),
+    ('hidden', 'Скрыто'),
+  ]
+
+  image = models.ImageField(upload_to="home-page/", default="", verbose_name="Логотип")
+  title = models.CharField(max_length=250, default="", verbose_name="Заголовок")
+  status = models.CharField(
+    max_length=20,
+    choices=STATUS_CHOICES,
+    default='draft',
+    verbose_name="Статус"
+  )
+
 class ContactPage(SingletonModel):
-  activate_page = models.BooleanField(default=False, verbose_name="Включить страницу")
-  map = models.TextField(null=True, blank=True, verbose_name="Код карты")
+  description = models.TextField(blank=True, null=True, verbose_name="Описание")
   meta_h1 = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок первого уровня")
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
-  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
+  meta_keywords = models.CharField(max_length=350, null=True, blank=True, verbose_name="Meta keywords")
 
 class Socials(models.Model):
-    STATUS_CHOICES = [
-        ('published', 'Опубликовано'),
-        ('draft', 'Черновик'),
-        ('hidden', 'Скрыто'),
-    ]
+  STATUS_CHOICES = [
+    ('published', 'Опубликовано'),
+    ('draft', 'Черновик'),
+    ('hidden', 'Скрыто'),
+  ]
 
-    name = models.CharField(max_length=250, blank=True, null=True, verbose_name="Название соц.сети")
-    icon_white = models.FileField(upload_to="icons/", blank=True, null=True, verbose_name="Иконка светлая")
-    icon_dark = models.FileField(upload_to="icons/", blank=True, null=True, verbose_name="Иконка темная")
-    link = models.CharField(max_length=250, blank=True, null=True, verbose_name="Ссылка")
-    status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default='draft',
-        verbose_name="Статус"
-    )
+  name = models.CharField(max_length=250, blank=True, null=True, verbose_name="Название соц.сети")
+  icon_white = models.FileField(upload_to="icons/", blank=True, null=True, verbose_name="Иконка светлая")
+  icon_dark = models.FileField(upload_to="icons/", blank=True, null=True, verbose_name="Иконка темная")
+  link = models.CharField(max_length=250, blank=True, null=True, verbose_name="Ссылка")
+  status = models.CharField(
+    max_length=20,
+    choices=STATUS_CHOICES,
+    default='draft',
+    verbose_name="Статус"
+  )
 
 class SliderHero(models.Model):
-    STATUS_CHOICES = [
-        ('published', 'Опубликовано'),
-        ('draft', 'Черновик'),
-        ('hidden', 'Скрыто'),
-    ]
+  STATUS_CHOICES = [
+    ('published', 'Опубликовано'),
+    ('draft', 'Черновик'),
+    ('hidden', 'Скрыто'),
+  ]
 
-    title = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок")
-    description = models.TextField(blank=True, null=True, verbose_name="Описание")
-    image = models.ImageField(upload_to="sliders/", blank=True, null=True, verbose_name="Изображение")
-    link = models.CharField(max_length=250, blank=True, null=True, verbose_name="Ссылка")
-    status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default='draft',
-        verbose_name="Статус"
-    )
+  title = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок")
+  description = models.TextField(blank=True, null=True, verbose_name="Описание")
+  image = models.ImageField(upload_to="sliders/", blank=True, null=True, verbose_name="Изображение")
+  link = models.CharField(max_length=250, blank=True, null=True, verbose_name="Ссылка")
+  status = models.CharField(
+    max_length=20,
+    choices=STATUS_CHOICES,
+    default='draft',
+    verbose_name="Статус"
+  )
+
+class GalleryPage(SingletonModel):
+  title = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок")
+  description = models.TextField(blank=True, null=True, verbose_name="Текст на странице")
+  meta_h1 = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок первого уровня")
+  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
+  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
+  meta_keywords = models.CharField(max_length=350, null=True, blank=True, verbose_name="Meta keywords")
+
+class GalleryItem(models.Model):
+  STATUS_CHOICES = [
+      ('published', 'Опубликовано'),
+      ('draft', 'Черновик'),
+      ('hidden', 'Скрыто'),
+  ]
+  title = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок(alt/title)")
+  image = models.ImageField(upload_to="gallery/", blank=True, null=True, verbose_name="Изображение")
+  status = models.CharField(
+      max_length=20,
+      choices=STATUS_CHOICES,
+      default='draft',
+      verbose_name="Статус"
+  )
 
 
 class RobotsTxt(models.Model):

@@ -14,189 +14,164 @@
 
 {% block content %}
 
-<main class="page">
-  <div class="top-page">
-    <div class="container">
-      <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
-        <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
-           class="breadcrumbs__item">
-          Главная
-          <meta itemprop="position" content="1"/>
-        </a>
-        <a href="{% url 'category' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
-           class="breadcrumbs__item">
-          Каталог
-          <meta itemprop="position" content="1"/>
-        </a>
-        <a href="{{ category.get_absolute_url }}" itemprop="itemListElement" itemscope=""
-           itemtype="http://schema.org/ListItem"
-           class="breadcrumbs__item">
-          {{ category.name }}
-          <meta itemprop="position" content="1"/>
-        </a>
-        <span itemprop="name" class="breadcrumbs__item">
+<div class="top-page">
+  <div class="container">
+    <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+      <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+         class="breadcrumbs__item">
+        Главная
+        <meta itemprop="position" content="1"/>
+      </a>
+      <a href="{% url 'category' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+         class="breadcrumbs__item">
+        Каталог
+        <meta itemprop="position" content="1"/>
+      </a>
+      <a href="{{ category.get_absolute_url }}" itemprop="itemListElement" itemscope=""
+         itemtype="http://schema.org/ListItem"
+         class="breadcrumbs__item">
+        {{ category.name }}
+        <meta itemprop="position" content="1"/>
+      </a>
+      <span itemprop="name" class="breadcrumbs__item">
             {{ product.name }}
             <meta itemprop="position" content="3"/>
         </span>
-      </div>
     </div>
   </div>
+</div>
 
-  <div class="info">
-    <div class="container">
-      <div class="info__row">
-        <div class="info__image">
-          <div class="info__thumb">
-            <div class="swiper info__slider-thumb">
-              <div class="swiper-wrapper">
-                {% if images %}
-                {% for image in images %}
-                <div class="swiper-slide info__slide-thumb">
-                  <img src="{{ image.src.url }}" alt="">
-                </div>
-                {% endfor %}
-                {% endif %}
-
-                {% if product.image %}
-                <div class="swiper-slide info__slide-thumb">
-                  <img src="{{ product.image.url }}" alt="">
-                </div>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper info__slider">
+<div class="info">
+  <div class="container">
+    <div class="info__row">
+      <div class="info__image">
+        <div class="info__thumb">
+          <div class="swiper info__slider-thumb">
             <div class="swiper-wrapper">
-              {% if product.image %}
-              <div class="swiper-slide info__slide">
-                <img src="{{ product.image.url }}" alt="">
-              </div>
-              {% endif %}
               {% if images %}
               {% for image in images %}
-              <div class="swiper-slide info__slide">
+              <div class="swiper-slide info__slide-thumb">
                 <img src="{{ image.src.url }}" alt="">
               </div>
               {% endfor %}
               {% endif %}
+
+              {% if product.image %}
+              <div class="swiper-slide info__slide-thumb">
+                <img src="{{ product.image.url }}" alt="">
+              </div>
+              {% endif %}
             </div>
           </div>
         </div>
-        <div class="info__text">
-          <h1 class="info__title">
-            {{ product.category.name }}
-            {% if product.meta_h1 %}{{ product.meta_h1 }}{% else %}{{ product.name }}{% endif %}
-          </h1>
-          {% if product.description %}
-          <div class="text">
 
-            {{ product.description|safe }}
+        <div class="swiper info__slider">
+          <div class="swiper-wrapper">
+            {% if product.image %}
+            <div class="swiper-slide info__slide">
+              <img src="{{ product.image.url }}" alt="">
+            </div>
+            {% endif %}
+            {% if images %}
+            {% for image in images %}
+            <div class="swiper-slide info__slide">
+              <img src="{{ image.src.url }}" alt="">
+            </div>
+            {% endfor %}
+            {% endif %}
           </div>
-          {% endif %}
-          <div class="info__btns">
-            <button type="button" class="info__btn btn btn--outline" data-name="{{ product.name }}">
-              Оставить заявку
-            </button>
-            <button type="button" class="info__btn btn">Связаться с нами</button>
-          </div>
+        </div>
+      </div>
+      <div class="info__text">
+        <h1 class="info__title">
+          {% if product.meta_h1 %}{{ product.meta_h1 }}{% else %}{{ product.name }}{% endif %}
+        </h1>
+        {% if product.description %}
+        <div class="text">
+
+          {{ product.description|safe }}
+        </div>
+        {% endif %}
+        <div class="info__btns">
+          <button type="button" class="info__btn btn btn--outline" data-name="{{ product.name }}">
+            Оставить заявку
+          </button>
+          <button type="button" class="info__btn btn btn--primary">Связаться с нами</button>
         </div>
       </div>
     </div>
   </div>
-  {{ columns }}
-  {{ models_list }}
-  <div class="table py">
-    <div class="container">
-      <table>
-        <thead>
-        <tr>
-          <th><p>Модель</p></th>
-          <th><p>Мощность</p></th>
-          <th><p>Подача</p></th>
-          <th><p>Напор</p></th>
-          <th><p>Подключение</p></th>
-          <th><p>Под вопросом</p></th>
-          <th><p>Под вопросом</p></th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td data-label="QB60">QB60</td>
-          <td data-label="350">350</td>
-          <td data-label="5">5</td>
-          <td data-label="Напор">5</td>
-          <td data-label="Подключение">1</td>
-          <td data-label="Под вопросом">1</td>
-          <td data-label="Под вопросом">1</td>
-          <td data-label="Под вопросом">
-            <button>Заказать</button>
-          </td>
-        </tr>
-        <tr>
-          <td data-label="QB60">QB60</td>
-          <td data-label="350">350</td>
-          <td data-label="5">5</td>
-          <td data-label="Напор">5</td>
-          <td data-label="Подключение">1</td>
-          <td data-label="Под вопросом">1</td>
-          <td data-label="Под вопросом">1</td>
-        </tr>
-        <tr>
-          <td data-label="QB60">QB60</td>
-          <td data-label="350">350</td>
-          <td data-label="5">5</td>
-          <td data-label="Напор">5</td>
-          <td data-label="Подключение">1</td>
-          <td data-label="Под вопросом">1</td>
-          <td data-label="Под вопросом">1</td>
-        </tr>
-        <tr>
-          <td data-label="QB60">QB60</td>
-          <td data-label="350">350</td>
-          <td data-label="5">5</td>
-          <td data-label="Напор">5</td>
-          <td data-label="Подключение">1</td>
-          <td data-label="Под вопросом">1</td>
-          <td data-label="Под вопросом">1</td>
-        </tr>
-        <tr>
-          <td data-label="QB60">QB60</td>
-          <td data-label="350">350</td>
-          <td data-label="5">5</td>
-          <td data-label="Напор">5</td>
-          <td data-label="Подключение">1</td>
-          <td data-label="Под вопросом">1</td>
-          <td data-label="Под вопросом">1</td>
-        </tr>
-        <tr>
-          <td data-label="QB60">QB60</td>
-          <td data-label="350">350</td>
-          <td data-label="5">5</td>
-          <td data-label="Напор">5</td>
-          <td data-label="Подключение">1</td>
-          <td data-label="Под вопросом">1</td>
-          <td data-label="Под вопросом">1</td>
-        </tr>
-        </tbody>
-      </table>
+</div>
+{% if models %}
+<div class="table py">
+  <div class="container">
+    <table>
+      {% if columns %}
+      <thead>
+      <tr>
+        {% for column in columns %}
+        <th><p>{{ column.verbose }}</p></th>
+        {% endfor %}
+        <th><p>Закажите</p></th>
+      </tr>
+      </thead>
+      {% endif %}
+      <tbody>
+      {% for model in models_list %}
+      <tr>
+        {% if model.model %}
+        <td data-label="{{ model.model }}">{{ model.model }}</td>
+        {% endif %}
+        {% if model.power %}
+        <td data-label="{{ model.power }}">{{ model.power }}</td>
+        {% endif %}
+        {% if model.el_network %}
+        <td data-label="{{ model.el_network }}">{{ model.el_network }}</td>
+        {% endif %}
+        {% if model.nom_capacity %}
+        <td data-label="{{ model.nom_capacity }}">{{ model.nom_capacity }}</td>
+        {% endif %}
+        {% if model.max_capacity %}
+        <td data-label="{{ model.max_capacity }}">{{ model.max_capacity }}</td>
+        {% endif %}
+        {% if model.max_capacity_min %}
+        <td data-label="{{ model.max_capacity_min }}">{{ model.max_capacity_min }}</td>
+        {% endif %}
+        {% if model.nom_head %}
+        <td data-label="{{ model.nom_head }}">{{ model.nom_head }}</td>
+        {% endif %}
+        {% if model.max_head %}
+        <td data-label="{{ model.max_head }}">{{ model.max_head }}</td>
+        {% endif %}
+        {% if model.suction_depth %}
+        <td data-label="{{ model.suction_depth }}">{{ model.suction_depth }}</td>
+        {% endif %}
+        {% if model.сon_size %}
+        <td data-label="{{ model.сon_size }}">{{ model.сon_size }}</td>
+        {% endif %}
+        <td data-label="Под вопросом">
+          <button type="button" data-name="{{ model.model }}">Заказать</button>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+{% if product.text%}
+<section class="py border-l">
+  <div class="container">
+    <div class="text">
+      {{ product.text|safe }}
     </div>
   </div>
-  {% if product.text%}
-  <section class="py border-l">
-    <div class="container">
-      <div class="text">
-        {{ product.text|safe }}
-      </div>
-    </div>
-  </section>
-  {% endif %}
+</section>
+{% endif %}
 
-  {% include "../../includes/_callback.html" %}
+{% include "../../includes/_callback.html" %}
 
-  {% include "../../includes/_contact.html" %}
+{% include "../../includes/_contact.html" %}
 
-</main>
 
 {% endblock content %}

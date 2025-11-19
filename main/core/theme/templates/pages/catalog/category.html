@@ -9,42 +9,29 @@
 
 {% block content %}
 
-<main>
-  <div class="top-page">
-    <div class="container">
-      <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
-        <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
-           class="breadcrumbs__item">
-          Главная
-          <meta itemprop="position" content="1"/>
-        </a>
-        <span itemprop="name" class="breadcrumbs__item">
-            Каталог
-            <meta itemprop="position" content="3"/>
-        </span>
-      </div>
-      <h1 class="top-page__title title">{% if category.meta_h1 %}{{ category.meta_h1 }}{% else %}Каталог{% endif %}</h1>
-    </div>
-  </div>
-  <section class="services">
-    <div class="container">
-      <div class="services__grid">
-        {% for item in category %}
-        <a href="{{ item.get_absolute_url }}" class="services__item">
-          <p class="services__title">{{ item.name }}</p>
-          {% if item.image %}
-          {% thumbnail site_settings.logo_dark "214x184" format="WEBP" crop="center" as im %}
-          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ item.name }}"
-               title="{{ item.name }}" class="services__image">
-          {% endthumbnail %}
-          {% endif %}
-        </a>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
 
-  {% include "../../includes/_callback.html" %}
-  {% include "../../includes/_contact.html" %}
-</main>
+<div class="top-page">
+  <div class="container">
+    <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+      <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+         class="breadcrumbs__item">
+        Главная
+        <meta itemprop="position" content="1"/>
+      </a>
+      <span itemprop="name" class="breadcrumbs__item">
+            Каталог
+            <meta itemprop="position" content="2"/>
+        </span>
+    </div>
+    <h1 class="top-page__title title">{% if category.meta_h1 %}{{ category.meta_h1 }}{% else %}Каталог{% endif %}</h1>
+  </div>
+</div>
+
+{% if category %}
+{% include "../../section/services.html" with category=category %}
+{% endif %}
+
+{% include "../../includes/_callback.html" %}
+{% include "../../includes/_contact.html" %}
+
 {% endblock content %}

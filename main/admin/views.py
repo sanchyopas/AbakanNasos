@@ -22,6 +22,9 @@ from django.contrib.auth.decorators import user_passes_test
 import uuid
 import numpy as np
 import math
+from pytils.translit import slugify
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 
 # Проверенные импорты
 from shop.models import *
@@ -170,33 +173,6 @@ def admin(request):
   """Данная предстовление отобразает главную страницу админ панели"""
   return render(request, "page/index.html")
 
-def admin_settings(request):
-  try:
-    settings = BaseSettings.objects.get()
-  except:
-    settings = BaseSettings()
-    settings.save()
-
-  if request.method == "POST":
-    form_new = GlobalSettingsForm(request.POST, request.FILES, instance=settings)
-    if form_new.is_valid():
-      form_new.save()
-
-      # subprocess.call(["touch", RESET_FILE])
-      return redirect(request.META.get('HTTP_REFERER'))
-    else:
-      return render(request, "settings/general_settings.html", {"form": form_new})
-
-  settings = BaseSettings.objects.get()
-
-  form = GlobalSettingsForm(instance=settings)
-  context = {
-    "form": form,
-    "settings":settings
-  }
-
-  return render(request, "settings/general_settings.html", context)
-
 def robots(request):
   try:
     robots = RobotsTxt.objects.get()
@@ -284,33 +260,6 @@ def admin_contact(request):
 
   return render(request, "page/contact.html", context)
 
-def admin_about_page(request):
-  try:
-    settings = About.objects.get()
-  except:
-    settings = About()
-    settings.save()
-
-  if request.method == "POST":
-    form_new = AboutTemplateForm(request.POST, request.FILES, instance=settings)
-    if form_new.is_valid():
-      form_new.save()
-
-      # subprocess.call(["touch", RESET_FILE])
-      return redirect(request.META.get('HTTP_REFERER'))
-    else:
-      return render(request, "template-page/about_page.html", {"form": form_new})
-
-  settings = About.objects.get()
-
-  form = AboutTemplateForm(instance=settings)
-  context = {
-    "form": form,
-    "settings":settings
-  }
-
-  return render(request, "template-page/about_page.html", context)
-
 def admin_delivery_page(request):
   try:
     settings = Delivery.objects.get()
@@ -337,63 +286,6 @@ def admin_delivery_page(request):
   }
 
   return render(request, "template-page/delivery_page.html", context)
-
-def blog_settings(request):
-  try:
-    setup = BlogSettings.objects.get()
-    form = BlogSettingsForm(instance=setup)
-  except:
-    form = BlogSettingsForm()
-
-  if request.method == "POST":
-    try:
-      setup = BlogSettings.objects.get()
-    except BlogSettings.DoesNotExist:
-      setup = None
-    form_new = BlogSettingsForm(request.POST, request.FILES, instance=setup)
-
-    if form_new.is_valid:
-      form_new.save()
-
-      return redirect('.')
-    else:
-      return render(request, "blog/settings.html", {"form": form})
-
-  context = {
-    "form": form,
-  }
-  return render(request, "blog/settings.html", context)
-
-def gallery_settings(request):
-  try:
-    home_page = GalleryCategory.objects.get()
-  except:
-    home_page = GalleryCategory()
-    home_page.save()
-
-  if request.method == "POST":
-    form_new = GalleryCategoryForm(request.POST, request.FILES, instance=home_page)
-    if form_new.is_valid():
-      form_new.save()
-
-      # subprocess.call(["touch", RESET_FILE])
-      return redirect(".")
-    else:
-      return render(request, "gallery/gallery_settings.html", {"form": form_new})
-
-  home_page = GalleryCategory.objects.get()
-  works = Gallery.objects.all()
-  work_list = Works.objects.all()
-  form = GalleryCategoryForm(instance=home_page)
-  context = {
-    "form": form,
-    "home_page":home_page,
-    "items":works,
-    "works": work_list
-  }
-
-  return render(request, "gallery/gallery_settings.html", context)
-
 
 
 def admin_attribute(request):
@@ -450,9 +342,7 @@ def upload_goods(request):
 def upload_succes(request):
   return render(request, "upload/upload-succes.html")
 
-from pytils.translit import slugify
-from django.core.exceptions import ObjectDoesNotExist
-from django.db import IntegrityError
+
 
 def admin_service_page(request):
   try:
@@ -576,313 +466,36 @@ def service_delete(request, pk):
   url = reverse("admin_service_page") + "?tab=list"
   return redirect(url)
 
-def admin_color(request):
-  items = ColorProduct.objects.all()
-
-  context = {
-    "items": items,
-  }
-
-  return render(request, "shop/color/color.html", context)
-
-
-def admin_color_add(request):
-  form = ColorProductForm()
-
-  if request.method == "POST":
-    form_new = ColorProductForm(request.POST, request.FILES)
-    if form_new.is_valid():
-      form_new.save()
-      return redirect('admin_color')
-    else:
-      return render(request, "shop/color/color_add.html", { "form": form_new })
-
-  context = {
-    "form": form,
-  }
-
-  return render(request, "shop/color/color_add.html", context)
-
-def admin_color_edit(request, pk):
-  item = ColorProduct.objects.get(id=pk)
-
-  if request.method == "POST":
-    form_new = ColorProductForm(request.POST, request.FILES, instance=item)
-
-    if form_new.is_valid():
-      form_new.save()
-      return redirect('admin_color')
-    else:
-      return render(request, "shop/color/color_edit.html", { "form": form_new })
-
-  form = ColorProductForm(instance=item)
-  context = {
-    "form": form,
-  }
-
-  return render(request, "shop/color/color_edit.html", context)
-
-def admin_color_delete(request, pk):
-  subdomain = Subdomain.objects.get(id=pk)
-  subdomain.delete()
-  return redirect(request.META.get('HTTP_REFERER'))
-
-def admin_gallery(request):
-  items = Gallery.objects.all()
-
-  context = {
-    "items": items,
-  }
-
-  return render(request, "gallery/gallery.html", context)
-
-
-def admin_gallery_add(request):
-  form = GalleryForm()
-
-  if request.method == "POST":
-    form_new = GalleryForm(request.POST, request.FILES)
-    if form_new.is_valid():
-      form_new.save()
-      url = reverse("gallery_settings") + "?tab=list"
-      return redirect(url)
-    else:
-      return render(request, "gallery/gallery_add.html", { "form": form_new })
-
-  context = {
-    "form": form,
-  }
-
-  return render(request, "gallery/gallery_add.html", context)
-
-def admin_gallery_edit(request, pk):
-  item = Gallery.objects.get(id=pk)
-
-  if request.method == "POST":
-    form_new = GalleryForm(request.POST, request.FILES, instance=item)
-
-    if form_new.is_valid():
-      form_new.save()
-      url = reverse("gallery_settings") + "?tab=list"
-      return redirect(url)
-    else:
-      return render(request, "gallery/gallery_edit.html", { "form": form_new })
-
-  form = GalleryForm(instance=item)
-  context = {
-    "form": form,
-  }
-
-  return render(request, "gallery/gallery_edit.html", context)
-
-def admin_gallery_delete(request, pk):
-  pass
-
-
-def admin_work_add(request):
-  form = WorksForm()
-
-  if request.method == "POST":
-    form_new = WorksForm(request.POST, request.FILES)
-    if form_new.is_valid():
-      form_new.save()
-      url = reverse("gallery_settings") + "?tab=works"
-      return redirect(url)
-    else:
-      return render(request, "works/works_add.html", { "form": form_new })
-
-  context = {
-    "form": form,
-  }
-
-  return render(request, "works/works_add.html", context)
-
-def admin_work_edit(request, pk):
-  item = Works.objects.get(id=pk)
-
-  if request.method == "POST":
-    form_new = WorksForm(request.POST, request.FILES, instance=item)
-
-    if form_new.is_valid():
-      form_new.save()
-      url = reverse("gallery_settings") + "?tab=works"
-      return redirect(url)
-    else:
-      return render(request, "works/works_edit.html", { "form": form_new })
-
-  form = WorksForm(instance=item)
-  context = {
-    "form": form,
-  }
-
-  return render(request, "works/works_edit.html", context)
-
-def admin_work_delete(request, pk):
-  pass
-
-def admin_color_delete(request, pk):
-  subdomain = Subdomain.objects.get(id=pk)
-  subdomain.delete()
-  return redirect(request.META.get('HTTP_REFERER'))
-
-
-def admin_gallery_category(request):
-  items = GalleryCategory.objects.all()
-
-  context = {
-    "items": items,
-  }
-
-  return render(request, "gallery/gallery_category.html", context)
-
-
-def gallery_category_add(request):
-  form = GalleryCategoryForm()
-
-  if request.method == "POST":
-    form_new = GalleryCategoryForm(request.POST, request.FILES)
-    if form_new.is_valid():
-      form_new.save()
-      return redirect('admin_gallery_category')
-    else:
-      return render(request, "gallery/gallery_category_add.html", { "form": form_new })
-
-  context = {
-    "form": form,
-  }
-
-  return render(request, "gallery/gallery_category_add.html", context)
-
-def gallery_category_edit(request, pk):
-  item = GalleryCategory.objects.get(id=pk)
-
-  if request.method == "POST":
-    form_new = GalleryCategoryForm(request.POST, request.FILES, instance=item)
-
-    if form_new.is_valid():
-      form_new.save()
-      return redirect('admin_gallery')
-    else:
-      return render(request, "gallery/gallery_category_edit.html", { "form": form_new })
-
-  form = GalleryCategoryForm(instance=item)
-  context = {
-    "form": form,
-  }
-
-  return render(request, "gallery/gallery_category_edit.html", context)
-
-def gallery_category_delete(request):
-  pass
-
-
-
-def article(request):
-  items = Post.objects.all()
-
-  context ={
-    "items": items,
-  }
-  return render(request, "blog/blog_post/blog_post.html", context)
-
-def article_add(request):
-  form = PostForm()
-  if request.method == "POST":
-    form_new = PostForm(request.POST, request.FILES)
-    if form_new.is_valid():
-      form_new.save()
-      return redirect("article")
-    else:
-      return render(request, "blog/blog_post/post_add.html", {"form": form_new})
-
-  context = {
-    "form": form
-  }
-
-  return render(request, "blog/blog_post/post_add.html", context)
-
-def article_edit(request, pk):
-  item = Post.objects.get(id=pk)
-  form = PostForm(request.POST, request.FILES, instance=item)
-
-  if request.method == "POST":
-
-    if form.is_valid():
-      form.save()
-      return redirect("article")
-    else:
-      return render(request, "blog/blog_post/post_edit.html", {"form": form, 'image_path': image_path})
-
-  context = {
-    "form": PostForm(instance=item),
-    "item": item
-  }
-
-  return render(request, "blog/blog_post/post_edit.html", context)
-
-def article_delete(request, pk):
-  category = Post.objects.get(id=pk)
-  category.delete()
-
-  return redirect(request.META.get("HTTP_REFERER"))
-
-def category_blog_settings(request):
-    return render(request, "blog/blog_category/blog_category.html", context)
-
-def category_blog(request):
-  items = BlogCategory.objects.all()
-
-  context ={
-    "items": items,
-  }
-  return render(request, "blog/blog_category/blog_category.html", context)
-
-def category_blog_add(request):
-  form = BlogCategoryForm()
-  if request.method == "POST":
-    form_new = BlogCategoryForm(request.POST, request.FILES)
-    if form_new.is_valid():
-      form_new.save()
-      return redirect("category_blog")
-    else:
-      return render(request, "blog/blog_category/blog_category_add.html", {"form": form_new})
-
-  context = {
-    "form": form
-  }
-
-  return render(request, "blog/blog_category/blog_category_add.html", context)
-
-def category_blog_edit(request, pk):
-  item = BlogCategory.objects.get(id=pk)
-  form = BlogCategoryForm(request.POST, request.FILES, instance=item)
-
-  if request.method == "POST":
-
-    if form.is_valid():
-      form.save()
-      return redirect(request.META.get('HTTP_REFERER'))
-    else:
-      return render(request, "blog/blog_category/blog_category_edit.html", {"form": form, 'image_path': image_path})
-
-  context = {
-    "form": BlogCategoryForm(instance=item),
-    "item": item
-  }
-
-  return render(request, "blog/blog_category/blog_category_edit.html", context)
-
-def category_blog_remove(request, pk):
-  category = BlogCategory.objects.get(id=pk)
-  category.delete()
-
-  return redirect(request.META.get('HTTP_REFERER'))
-
-
-
-
 
 # Новые views
+
+def admin_settings(request):
+  try:
+    settings = BaseSettings.objects.get()
+  except:
+    settings = BaseSettings()
+    settings.save()
+
+  if request.method == "POST":
+    form_new = GlobalSettingsForm(request.POST, request.FILES, instance=settings)
+    if form_new.is_valid():
+      form_new.save()
+
+      # subprocess.call(["touch", RESET_FILE])
+      return redirect(request.META.get('HTTP_REFERER'))
+    else:
+      return render(request, "settings/general_settings.html", {"form": form_new})
+
+  settings = BaseSettings.objects.get()
+
+  form = GlobalSettingsForm(instance=settings)
+  context = {
+    "form": form,
+    "settings":settings
+  }
+
+  return render(request, "settings/general_settings.html", context)
+
 """ Социальные сети """
 def socials(request):
     return generic_list(request, Socials, "Соц.сети", "socials_add", "socials_edit", "socials_delete")
@@ -940,6 +553,21 @@ def admin_home_page(request):
 @user_passes_test(lambda u: u.is_superuser)
 def admin_shop(request):
   return generic_singleton_edit(request, ShopSettingsForm, ShopSettings, "Настройки страницы каталога", template_name=None)
+
+
+""" Настройки страницы о нас """
+def admin_about_page(request):
+  return generic_singleton_edit(request, AboutPageForm, AboutPage, "Настройки страницы о нас", template_name=None)
+
+
+""" Настройки страницы о нас """
+def admin_contact_page(request):
+  return generic_singleton_edit(request, ContactPageForm, ContactPage, "Настройки страницы контакты", template_name=None)
+
+
+""" Настройки страницы блога """
+def blog_settings(request):
+  return generic_singleton_edit(request, BlogSettingsForm, BlogSettings, "Настройки страницы блога", template_name=None)
 
 
 """ Категории товаров """
@@ -1032,4 +660,60 @@ def model_edit(request, pk):
 
 def model_delete(request, pk):
   return generic_delete(request, Models, pk)
+
+
+""" Наши клиенты блок """
+def admin_clients(request):
+  return generic_list(request, Clients, "Наши клиенты", "clients_add", "clients_edit", "clients_delete")
+
+def clients_add(request):
+  return generic_add(request, ClientsForm, "admin_clients", "Добавление блока",  template_name=None)
+
+def clients_edit(request, pk):
+  return generic_edit(  request,  pk, Clients,  ClientsForm, "admin_clients", "Редактирование блока", template_name=None)
+
+def clients_delete(request, pk):
+  return generic_delete(request, Clients, pk)
+
+
+""" Настройки блога """
+def admin_post(request):
+  return generic_list(request, Post, "Статьи", "post_add", "post_edit", "post_delete")
+
+def post_add(request):
+  return generic_add(request, PostForm, "admin_post", "Добавление статьи",  template_name=None)
+
+def post_edit(request, pk):
+  return generic_edit(  request,  pk, Post,  PostForm, "admin_post", "Редактирование статьи", template_name=None)
+
+def post_delete(request, pk):
+  return generic_delete(request, Post, pk)
+
+
+""" Настройки категорий блога """
+def category_blog(request):
+  return generic_list(request, BlogCategory, "Категории статей", "category_blog_add", "category_blog_edit", "category_blog_delete")
+
+def category_blog_add(request):
+  return generic_add(request, BlogCategoryForm, "category_blog", "Добавление категории статей",  template_name=None)
+
+def category_blog_edit(request, pk):
+  return generic_edit(request,  pk, BlogCategory,  BlogCategoryForm, "category_blog", "Редактирование категории статей", template_name=None)
+
+def category_blog_delete(request, pk):
+  return generic_delete(request, BlogCategory, pk)
+
+
+""" Настройки Галереи """
+def gallery_settings(request):
+  return generic_singleton_edit(request, GalleryPageForm, GalleryPage, "Настройки страницы галерея", template_name=None)
+
+def gallery_add(request):
+  return generic_add(request, GalleryItemForm, "gallery_settings", "Добавление фотографии",  template_name=None)
+
+def gallery_edit(request, pk):
+  return generic_edit(request,  pk, GalleryItem,  GalleryItemForm, "gallery_settings", "Редактирование фотографии", template_name=None)
+
+def gallery_delete(request, pk):
+  return generic_delete(request, GalleryItem, pk)
 

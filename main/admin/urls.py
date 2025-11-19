@@ -28,6 +28,8 @@ urlpatterns = [
 
     path('callback-block/', views.admin_callback_block, name='admin_callback_block'),
     path('home-page/', views.admin_home_page, name='admin_home_page'),
+    path('about-page/', views.admin_about_page, name='admin_about_page'),
+    path('contact-page/', views.admin_contact_page, name='admin_contact_page'),
     path('admin-shop/', views.admin_shop, name='admin_shop'),
 
     #URl - отвечающие за отображение категорий, редактирование и удаление категории
@@ -45,6 +47,30 @@ urlpatterns = [
     path('model/add/', views.model_add, name='model_add'),
     path('model/<int:pk>/edit/', views.model_edit, name='model_edit'),
     path('model/<int:pk>/delete/', views.model_delete, name='model_delete'),
+
+    path('clients/', views.admin_clients, name='admin_clients'),
+    path('clients/add/', views.clients_add, name='clients_add'),
+    path('clients/<int:pk>/edit/', views.clients_edit, name='clients_edit'),
+    path('clients/<int:pk>/delete/', views.clients_delete, name='clients_delete'),
+
+    #URl - отвечающие за отображение категории Страниц блога, редактирование и удаление категории
+    path('blog-settings/', views.blog_settings, name='blog_settings'),
+    path('post/', views.admin_post, name='admin_post'),
+    path('post/add/', views.post_add, name='post_add'),
+    path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
+    path('post/<int:pk>/delete/', views.post_delete, name='post_delete'),
+
+    path('category-blog/', views.category_blog, name='category_blog'),
+    path('category-blog/add/', views.category_blog_add, name='category_blog_add'),
+    path('category-blog/<int:pk>/edit/', views.category_blog_edit, name='category_blog_edit'),
+    path('category-blog/<int:pk>/delete/', views.category_blog_delete, name='category_blog_delete'),
+
+
+    path('gallery-settings/', views.gallery_settings, name='gallery_settings'),
+#     path('gallery/', views.admin_gallery, name='admin_gallery'),
+    path('gallery/add/', views.gallery_add, name='gallery_add'),
+    path('gallery/<int:pk>/edit/', views.gallery_edit, name='gallery_edit'),
+    path('gallery/<int:pk>/delete/', views.gallery_delete, name='gallery_delete'),
 
     # Новые конец urls
     
@@ -78,46 +104,7 @@ urlpatterns = [
     #URl - Шаблон общих настроек сайта
     path('settings/', views.admin_settings, name='admin_settings'),
     path('robots/', views.robots, name='robots'),
-    
-
-    path('prod-page/', views.admin_prod_page, name='admin_prod_page'),
 
 
-
-
-    #URl - цвета памятников
-    path('color-product/', views.admin_color, name='admin_color'),
-    path('color-product/add/', views.admin_color_add, name='admin_color_add'),
-    path('color-product/edit/<int:pk>/', views.admin_color_edit, name='admin_color_edit'),
-    # path('subdomain/delete/<int:pk>/', views.subdomain_delete, name='subdomain_delete'),
-
-    # Наши работы
-    path('gallery-settings/', views.gallery_settings, name='gallery_settings'),
-    path('gallery/add/', views.admin_gallery_add, name='admin_gallery_add'),
-    path('gallery/edit/<int:pk>/', views.admin_gallery_edit, name='admin_gallery_edit'),
-    path('gallery/delete/<int:pk>/', views.admin_gallery_delete, name='admin_gallery_delete'),
-
-    path('work/add/', views.admin_work_add, name='admin_work_add'),
-    path('work/edit/<int:pk>/', views.admin_work_edit, name='admin_work_edit'),
-    path('work/delete/<int:pk>/', views.admin_work_delete, name='admin_work_delete'),
-    
-    #URl - отвечающие за отображение категории Галлереи, редактирование и удаление категории
-    path('gallery-category/', views.admin_gallery_category, name='admin_gallery_category'),
-    path('gallery-category/add/', views.gallery_category_add, name='gallery_category_add'),
-    path('gallery-category/edit/<int:pk>/', views.gallery_category_edit, name='gallery_category_edit'),
-    path('gallery-category/delete/<int:pk>/', views.gallery_category_delete, name='gallery_category_delete'),
-    
-    #URl - отвечающие за отображение категории Страниц блога, редактирование и удаление категории
-    path('blog-settings/', views.blog_settings, name='blog_settings'),
-    path('article/', views.article, name='article'),
-    path('article/add/', views.article_add, name='article_add'),
-    path('article/edit/<int:pk>/', views.article_edit, name='article_edit'),
-    path('article/delete/<int:pk>/', views.article_delete, name='article_delete'),
-
-    path('category-blog-settings/', views.category_blog_settings, name='category_blog_settings'),
-    path('category-blog/', views.category_blog, name='category_blog'),
-    path('category-blog/add/', views.category_blog_add, name='category_blog_add'),
-    path('category-blog/edit/<int:pk>/', views.category_blog_edit, name='category_blog_edit'),
-    path('category-blog/delete/<int:pk>/', views.category_blog_remove, name='category_blog_remove'),
 
 ]

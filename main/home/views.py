@@ -9,8 +9,10 @@ from home.callback_send import email_callback
 def index(request):
   try: 
     settings = HomeTemplate.objects.get()
+    about = AboutPage.objects.get()
   except:
       settings = HomeTemplate()
+      about = AboutPage()
 
   slides = SliderHero.objects.filter(status='published')
   category = Category.objects.filter(parent=None)
@@ -18,14 +20,56 @@ def index(request):
   context = {
     "settings": settings,
     "slides": slides,
-    "category": category
+    "category": category,
+    "about": about,
   }
 
   return render(request, 'pages/index.html', context)
 
 
-def politika(request):
-  return render(request, "pages/politika.html")
+def about(request):
+  try:
+    about = AboutPage.objects.get()
+  except:
+    about = AboutPage()
+
+  context = {
+    "about": about,
+  }
+
+  return render(request, 'pages/about.html', context)
+
+
+def contact(request):
+  try:
+    contact = ContactPage.objects.get()
+  except:
+    contact = ContactPage()
+
+  context = {
+    "contact": contact,
+  }
+
+  return render(request, 'pages/contact.html', context)
+
+def gallery(request):
+  try:
+    gallery = GalleryPage.objects.get()
+  except:
+    gallery = GalleryPage()
+
+  items = GalleryItem.objects.filter(status="published")
+
+  context = {
+    "gallery": gallery,
+    "items": items,
+  }
+
+  return render(request, 'pages/gallery.html', context)
+
+
+def privacy(request):
+  return render(request, "pages/privacy.html")
 
 def cookie(request):
   return render(request, "pages/cookie.html")

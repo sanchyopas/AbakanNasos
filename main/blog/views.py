@@ -13,19 +13,19 @@ def blog(request):
   
   context = {
     "posts": posts,
-    "categorys": category,
-    "setup_blog": setup
+    "category": category,
+    "blog": setup
   }
   return render(request, "pages/blog/blog.html", context)
 
 def category_post(request, category_slug):
   category = BlogCategory.objects.get(slug=category_slug)
-  categorys = BlogCategory.objects.all()
+  categories = BlogCategory.objects.all()
   post = Post.objects.filter(category=category)
 
   context = {
     "category": category,
-    "categorys": categorys,
+    "categories": categories,
     "posts": post
   }
   return render(request, "pages/blog/blog_category.html", context)

@@ -1,4 +1,4 @@
-{% extends 'admin_base.html' %}{% load static %} {% block body %}
+{% extends 'admin_base.html' %}{% load static %}{% load thumbnail %} {% block body %}
 <div class="page">
   <div class="page__inner">
     <div class="page__top">
@@ -14,6 +14,7 @@
         <div class="page__head-tab">
           <button type="button" data-tab="basic" class="page__head-btn _active">Основные</button>
           <button type="button" data-tab="seo" class="page__head-btn">Поля SEO</button>
+          <button type="button" data-tab="gallery" class="page__head-btn">Фотографии</button>
           {% if models %}<button type="button" data-tab="model" class="page__head-btn">Модели</button>{% endif %}
         </div>
         <div class="page__head-right">
@@ -37,7 +38,7 @@
 
             {% if form.title %}
             <div class="form__group">
-              <label for="{{ form.title.id_for_label }}" class="form__controls-label">Заголовок: </label>
+              <label for="{{ form.title.id_for_label }}" class="form__controls-label">{{ form.title.label }}: </label>
               {{ form.title }} {{ form.title.errors }}
             </div>
             {% endif %}
@@ -323,7 +324,7 @@
 
             {% if form.image %}
             <div class="form__group form__group-image">
-              <label for="{{ form.image.id_for_label }}" class="form__controls-label">Выбор изображения товара :</label>
+              <label for="{{ form.image.id_for_label }}" class="form__controls-label">{{ form.image.label }}:</label>
               {{ form.image }} {{ form.image.errors }}
             </div>
             {% endif %}
@@ -420,6 +421,33 @@
           </div>
         </div>
         <button type="button" id="add-property" class="form__add-property">Добавить характеристику</button>
+      </div>
+      <div class="page-content" id="gallery">
+        <a href="{% url 'gallery_add' %}" class="form__add-property">Создать</button>
+        <div class="page-content__row">
+          <div class="page-content__onecol">
+            <div class="grid-items">
+              {% for item in items %}
+              <div class="grid-item">
+                {% if item.image %}
+                <div class="grid-item__image">
+                  {% thumbnail item.image "250x250" format="WEBP" crop="center" as im %}
+                  <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
+                  {% endthumbnail %}
+                </div>
+                {% endif %}
+                <div class="grid-item__content">
+                  <p class="grid-item__title">
+                    {% if item.title %}{{ item.title }} {% endif %}
+                    {{ item.name }}
+                  </p>
+                  {% include 'common/_edit-block.html' with edit_url=edit_url delete_url=delete_url %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
       </div>
     </form>
 

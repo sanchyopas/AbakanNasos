@@ -26,12 +26,12 @@
 </head>
 
 <body>
-<div class="wrapper">
   {% include "./includes/_header.html" %}
-  {% block content %} {% endblock %}
+  <main>
+    {% block content %} {% endblock %}
+  </main>
   {% include "./includes/_footer.html" %}
   {% include "./includes/_popup.html" %}
-</div>
 
 <script type="module" src="{% static 'theme/js/app.min.js' %}"></script>
 </body>

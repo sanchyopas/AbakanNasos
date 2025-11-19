@@ -7,6 +7,9 @@ from branch.models import Branch
 
 # проверенные функции
 
+def clients(request):
+    return {"clients": Clients.objects.filter(status='published')}
+
 def socials(request):
     return {"socials": Socials.objects.filter(status='published')}
 

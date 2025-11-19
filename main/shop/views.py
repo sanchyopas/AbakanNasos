@@ -42,8 +42,11 @@ def category_detail(request, category_path):
 def product(request, category_path, product_slug):
   product = Product.objects.get(slug=product_slug)
   category = Category.objects.get(slug=category_path)
+
   images = ProductImage.objects.filter(parent=product)
   models_qs = Models.objects.all()
+
+  models = Models.objects.filter(parent=product)
 
   if not models_qs.exists():
     return render(request, "models_table.html", {
@@ -76,7 +79,7 @@ def product(request, category_path, product_slug):
     "category": category,
     "product": product,
     "images": images,
-#     "models": models,
+    "models": models,
     "columns": columns,
     "models_list": models_qs,
   }
