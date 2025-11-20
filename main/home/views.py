@@ -15,7 +15,7 @@ def index(request):
       about = AboutPage()
 
   slides = SliderHero.objects.filter(status='published')
-  category = Category.objects.filter(parent=None)
+  category = Category.objects.filter(parent=None, status='published')
 
   context = {
     "settings": settings,

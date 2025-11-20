@@ -79,13 +79,19 @@
         </article>
         {% endfor %}
       </div>
-      {% else %}
-      <div class="empty-block">
-        <p>Тут пока пусто</p>
-      </div>
       {% endif %}
     </div>
   </div>
 </section>
+
+{% if category.description %}
+<section class="py border-t">
+  <div class="container">
+    <div class="section-text text">
+      {{ category.description|safe }}
+    </div>
+  </div>
+</section>
+{% endif %}
 
 {% endblock %}

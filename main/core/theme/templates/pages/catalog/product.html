@@ -105,57 +105,59 @@
 {% if models %}
 <div class="table py">
   <div class="container">
-    <table>
-      {% if columns %}
-      <thead>
-      <tr>
-        {% for column in columns %}
-        <th><p>{{ column.verbose }}</p></th>
-        {% endfor %}
-        <th><p>Закажите</p></th>
-      </tr>
-      </thead>
-      {% endif %}
-      <tbody>
-      {% for model in models_list %}
-      <tr>
-        {% if model.model %}
-        <td data-label="{{ model.model }}">{{ model.model }}</td>
-        {% endif %}
-        {% if model.power %}
-        <td data-label="{{ model.power }}">{{ model.power }}</td>
-        {% endif %}
-        {% if model.el_network %}
-        <td data-label="{{ model.el_network }}">{{ model.el_network }}</td>
-        {% endif %}
-        {% if model.nom_capacity %}
-        <td data-label="{{ model.nom_capacity }}">{{ model.nom_capacity }}</td>
-        {% endif %}
-        {% if model.max_capacity %}
-        <td data-label="{{ model.max_capacity }}">{{ model.max_capacity }}</td>
-        {% endif %}
-        {% if model.max_capacity_min %}
-        <td data-label="{{ model.max_capacity_min }}">{{ model.max_capacity_min }}</td>
-        {% endif %}
-        {% if model.nom_head %}
-        <td data-label="{{ model.nom_head }}">{{ model.nom_head }}</td>
-        {% endif %}
-        {% if model.max_head %}
-        <td data-label="{{ model.max_head }}">{{ model.max_head }}</td>
-        {% endif %}
-        {% if model.suction_depth %}
-        <td data-label="{{ model.suction_depth }}">{{ model.suction_depth }}</td>
-        {% endif %}
-        {% if model.сon_size %}
-        <td data-label="{{ model.сon_size }}">{{ model.сon_size }}</td>
-        {% endif %}
-        <td data-label="Под вопросом">
-          <button type="button" data-name="{{ model.model }}">Заказать</button>
-        </td>
-      </tr>
-      {% endfor %}
-      </tbody>
-    </table>
+   <div class="table__inner">
+     <table>
+       {% if columns %}
+       <thead>
+       <tr>
+         {% for column in columns %}
+         <th><p>{{ column.verbose }}</p></th>
+         {% endfor %}
+         <th><p>Закажите</p></th>
+       </tr>
+       </thead>
+       {% endif %}
+       <tbody>
+       {% for model in models %}
+       <tr>
+         {% if model.model %}
+         <td data-label="{{ model.model }}">{{ model.model }}</td>
+         {% endif %}
+         {% if model.power %}
+         <td data-label="{{ model.power }}">{{ model.power }}</td>
+         {% endif %}
+         {% if model.el_network %}
+         <td data-label="{{ model.el_network }}">{{ model.el_network }}</td>
+         {% endif %}
+         {% if model.nom_capacity %}
+         <td data-label="{{ model.nom_capacity }}">{{ model.nom_capacity }}</td>
+         {% endif %}
+         {% if model.max_capacity %}
+         <td data-label="{{ model.max_capacity }}">{{ model.max_capacity }}</td>
+         {% endif %}
+         {% if model.max_capacity_min %}
+         <td data-label="{{ model.max_capacity_min }}">{{ model.max_capacity_min }}</td>
+         {% endif %}
+         {% if model.nom_head %}
+         <td data-label="{{ model.nom_head }}">{{ model.nom_head }}</td>
+         {% endif %}
+         {% if model.max_head %}
+         <td data-label="{{ model.max_head }}">{{ model.max_head }}</td>
+         {% endif %}
+         {% if model.suction_depth %}
+         <td data-label="{{ model.suction_depth }}">{{ model.suction_depth }}</td>
+         {% endif %}
+         {% if model.сon_size %}
+         <td data-label="{{ model.сon_size }}">{{ model.сon_size }}</td>
+         {% endif %}
+         <td data-label="Под вопросом">
+           <button type="button" data-name="{{ model.model }}">Заказать</button>
+         </td>
+       </tr>
+       {% endfor %}
+       </tbody>
+     </table>
+   </div>
   </div>
 </div>
 {% endif %}

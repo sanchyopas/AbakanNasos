@@ -15,7 +15,9 @@
           <button type="button" data-tab="basic" class="page__head-btn _active">Основные</button>
           <button type="button" data-tab="seo" class="page__head-btn">Поля SEO</button>
           <button type="button" data-tab="gallery" class="page__head-btn">Фотографии</button>
-          {% if models %}<button type="button" data-tab="model" class="page__head-btn">Модели</button>{% endif %}
+          {% if models %}
+          <button type="button" data-tab="model" class="page__head-btn">Модели</button>
+          {% endif %}
         </div>
         <div class="page__head-right">
           <button type="submit" class="form__btn">
@@ -42,7 +44,6 @@
               {{ form.title }} {{ form.title.errors }}
             </div>
             {% endif %}
-
 
 
             {% if form.link %}
@@ -74,52 +75,60 @@
               {% endif %}
               {% if form.el_network %}
               <div class="form__group">
-                <label for="{{ form.el_network.id_for_label }}" class="form__controls-label">{{ form.el_network.label }}: </label>
+                <label for="{{ form.el_network.id_for_label }}" class="form__controls-label">{{ form.el_network.label
+                  }}: </label>
                 {{ form.el_network }} {{ form.el_network.errors }}
               </div>
               {% endif %}
               {% if form.nom_capacity %}
               <div class="form__group">
-                <label for="{{ form.nom_capacity.id_for_label }}" class="form__controls-label">{{ form.nom_capacity.label }}: </label>
+                <label for="{{ form.nom_capacity.id_for_label }}" class="form__controls-label">{{
+                  form.nom_capacity.label }}: </label>
                 {{ form.nom_capacity }} {{ form.nom_capacity.errors }}
               </div>
               {% endif %}
               {% if form.max_capacity %}
               <div class="form__group">
-                <label for="{{ form.max_capacity.id_for_label }}" class="form__controls-label">{{ form.max_capacity.label }}: </label>
+                <label for="{{ form.max_capacity.id_for_label }}" class="form__controls-label">{{
+                  form.max_capacity.label }}: </label>
                 {{ form.max_capacity }} {{ form.max_capacity.errors }}
               </div>
               {% endif %}
               {% if form.max_capacity_min %}
               <div class="form__group">
-                <label for="{{ form.max_capacity_min.id_for_label }}" class="form__controls-label">{{ form.max_capacity_min.label }}: </label>
+                <label for="{{ form.max_capacity_min.id_for_label }}" class="form__controls-label">{{
+                  form.max_capacity_min.label }}: </label>
                 {{ form.max_capacity_min }} {{ form.max_capacity_min.errors }}
               </div>
               {% endif %}
 
               {% if form.nom_head %}
               <div class="form__group">
-                <label for="{{ form.nom_head.id_for_label }}" class="form__controls-label">{{ form.nom_head.label }}: </label>
+                <label for="{{ form.nom_head.id_for_label }}" class="form__controls-label">{{ form.nom_head.label
+                  }}: </label>
                 {{ form.nom_head }} {{ form.nom_head.errors }}
               </div>
               {% endif %}
 
               {% if form.max_head %}
               <div class="form__group">
-                <label for="{{ form.max_head.id_for_label }}" class="form__controls-label">{{ form.max_head.label }}: </label>
+                <label for="{{ form.max_head.id_for_label }}" class="form__controls-label">{{ form.max_head.label
+                  }}: </label>
                 {{ form.max_head }} {{ form.max_head.errors }}
               </div>
               {% endif %}
 
               {% if form.suction_depth %}
               <div class="form__group">
-                <label for="{{ form.suction_depth.id_for_label }}" class="form__controls-label">{{ form.suction_depth.label }}: </label>
+                <label for="{{ form.suction_depth.id_for_label }}" class="form__controls-label">{{
+                  form.suction_depth.label }}: </label>
                 {{ form.suction_depth }} {{ form.suction_depth.errors }}
               </div>
               {% endif %}
               {% if form.сon_size %}
               <div class="form__group">
-                <label for="{{ form.сon_size.id_for_label }}" class="form__controls-label">{{ form.сon_size.label }}: </label>
+                <label for="{{ form.сon_size.id_for_label }}" class="form__controls-label">{{ form.сon_size.label
+                  }}: </label>
                 {{ form.сon_size }} {{ form.сon_size.errors }}
               </div>
               {% endif %}
@@ -254,7 +263,7 @@
               {% if form.phone %}
               <div class="form__group">
                 <label for="{{ form.phone.id_for_label }}" class="form__controls-label">
-                  Номер телефона :
+                  {{ form.phone.label }}:
                 </label>
                 {{ form.phone }} {{ form.phone.errors }}
               </div>
@@ -273,7 +282,8 @@
 
             {% if image_form %}
             <div class="form__group form__group-image">
-              <label for="{{ image_form.src.id_for_label }}" class="form__controls-label"> Дополнительные изображения: </label>
+              <label for="{{ image_form.src.id_for_label }}" class="form__controls-label"> Дополнительные
+                изображения: </label>
               {{ image_form.src }} {{ image_form.src.errors }}
             </div>
             <div class="product-field"></div>
@@ -329,6 +339,41 @@
             </div>
             {% endif %}
 
+            {% if form.logo %}
+            <div class="form__group form__group-image">
+              <label for="{{ form.logo.id_for_label }}" class="form__controls-label">{{ form.logo.label }}:</label>
+              {{ form.logo }} {{ form.logo.errors }}
+            </div>
+            {% endif %}
+
+
+            {% if form.logo_dark %}
+            <div class="form__group form__group-image">
+              <label for="{{ form.logo_dark.id_for_label }}" class="form__controls-label">{{ form.logo_dark.label
+                }}:</label>
+              {{ form.logo_dark }} {{ form.logo_dark.errors }}
+            </div>
+            {% endif %}
+            <div class="" style="display: flex; align-items: center; gap: 10px;">
+              {% if form.logo_width %}
+              <div class="form__group form__group-image">
+                <label for="{{ form.logo_width.id_for_label }}" class="form__controls-label">
+                  {{ form.logo_width.label }}:
+                </label>
+                {{ form.logo_width }} {{ form.logo_width.errors }}
+              </div>
+              {% endif %}
+
+              {% if form.logo_height %}
+              <div class="form__group form__group-image">
+                <label for="{{ form.logo_height.id_for_label }}" class="form__controls-label">
+                  {{ form.logo_height.label }}:
+                </label>
+                {{ form.logo_height }} {{ form.logo_height.errors }}
+              </div>
+              {% endif %}
+            </div>
+
             {% if form.icon_white %}
             <div class="form__group form__group-image">
               <label for="{{ form.icon_white.id_for_label }}" class="form__controls-label">Иконка светлая :</label>
@@ -367,10 +412,11 @@
 
             {% if form.status %}
             <div class="form__group">
-              <label for="{{ form.status.id_for_label }}" class="form__controls-label"> Опубликовать ? :</label>
+              <label for="{{ form.status.id_for_label }}" class="form__controls-label">{{ form.status.label }}:</label>
               {{ form.status }} {{ form.status.errors }}
             </div>
             {% endif %}
+
           </div>
         </div>
       </div>
@@ -394,7 +440,8 @@
               {{ form.meta_description }} {{ form.meta_description.errors }}
             </div>
             <div class="form__group">
-              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label"> Мета keywords: </label>
+              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label"> Мета
+                keywords: </label>
               {{ form.meta_keywords }} {{ form.meta_keywords.errors }}
             </div>
           </div>
@@ -424,30 +471,30 @@
       </div>
       <div class="page-content" id="gallery">
         <a href="{% url 'gallery_add' %}" class="form__add-property">Создать</button>
-        <div class="page-content__row">
-          <div class="page-content__onecol">
-            <div class="grid-items">
-              {% for item in items %}
-              <div class="grid-item">
-                {% if item.image %}
-                <div class="grid-item__image">
-                  {% thumbnail item.image "250x250" format="WEBP" crop="center" as im %}
-                  <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
-                  {% endthumbnail %}
+          <div class="page-content__row">
+            <div class="page-content__onecol">
+              <div class="grid-items">
+                {% for item in items %}
+                <div class="grid-item">
+                  {% if item.image %}
+                  <div class="grid-item__image">
+                    {% thumbnail item.image "250x250" format="WEBP" crop="center" as im %}
+                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
+                    {% endthumbnail %}
+                  </div>
+                  {% endif %}
+                  <div class="grid-item__content">
+                    <p class="grid-item__title">
+                      {% if item.title %}{{ item.title }} {% endif %}
+                      {{ item.name }}
+                    </p>
+                    {% include 'common/_edit-block.html' with edit_url=edit_url delete_url=delete_url %}
+                  </div>
                 </div>
-                {% endif %}
-                <div class="grid-item__content">
-                  <p class="grid-item__title">
-                    {% if item.title %}{{ item.title }} {% endif %}
-                    {{ item.name }}
-                  </p>
-                  {% include 'common/_edit-block.html' with edit_url=edit_url delete_url=delete_url %}
-                </div>
+                {% endfor %}
               </div>
-              {% endfor %}
             </div>
           </div>
-        </div>
       </div>
     </form>
 

@@ -234,6 +234,13 @@ class ShopSettingsForm(AutoStyledModelForm):
       model = ShopSettings
       fields = "__all__"
 
+      widgets = {
+        'description':CKEditor5Widget(
+          attrs={'class': 'django_ckeditor_5'},
+          config_name='extends'
+        )
+      }
+
 class CategoryForm(AutoStyledModelForm):
   class Meta:
     model = Category

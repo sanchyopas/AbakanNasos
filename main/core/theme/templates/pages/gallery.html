@@ -33,7 +33,8 @@
     </h1>
     <div class="gallery__grid">
       {% for item in items %}
-      <a href="{{ item.image.url }}" class="gallery__item" data-gal="gallery">
+      <a href="{{ item.image.url }}" class="gallery__item" data-fancybox="gallery">
+        <i class="fa-solid fa-expand"></i>
         <img src="{{ item.image.url }}" alt="{{ item.title }}" title="{{ item.title }}">
       </a>
       {% endfor %}

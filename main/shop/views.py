@@ -17,7 +17,7 @@ def category(request):
   except: 
     settings = ShopSettings()
 
-  category = Category.objects.filter(parent=None)
+  category = Category.objects.filter(parent=None, status='published')
 
   context = {
     "category":category,
@@ -27,64 +27,75 @@ def category(request):
   return render(request, "pages/catalog/category.html", context)
 import urllib.parse
 
-def category_detail(request, category_path):
+def category_detail(request, slug):
   page = request.GET.get("page", 1)
-  category = Category.objects.get(slug=category_path)
-  products = Product.objects.filter(category=category)
+  category = category = get_object_or_404(Category, slug=slug)
+  products = Product.objects.filter(status='published', category=category)
+
+  if category.children:
+    subcategories = Category.objects.filter(parent_id=category)
 
   context = {
+    "subcategories": subcategories,
     "category": category,
     "products": products
   }
 
   return render(request, "pages/catalog/category-details.html", context)
 
-def product(request, category_path, product_slug):
-  product = Product.objects.get(slug=product_slug)
-  category = Category.objects.get(slug=category_path)
 
-  images = ProductImage.objects.filter(parent=product)
-  models_qs = Models.objects.all()
+def product(request, parent, slug):
+    product = Product.objects.get(slug=slug)
+    category = Category.objects.get(slug=parent)
 
-  models = Models.objects.filter(parent=product)
+    images = ProductImage.objects.filter(parent=product)
 
-  if not models_qs.exists():
-    return render(request, "models_table.html", {
-      "columns": [],
-      "models_list": [],
-    })
+    # МОДЕЛИ ТОЛЬКО ТЕКУЩЕГО ПРОДУКТА
+    models_qs = Models.objects.filter(parent=product)
 
-  columns = []
+    # Если моделей нет — выводим пустые таблицы
+    if not models_qs.exists():
+        return render(request, "pages/catalog/product.html", {
+            "category": category,
+            "product": product,
+            "images": images,
+            "models": [],
+            "columns": [],
+            "models_list": [],
+        })
 
-  # Берём все поля модели
-  for field in Models._meta.fields:
-    name = field.name
+    columns = []
 
-    # Пропускаем технические поля, если не нужны
-    if name in ("id", "status", "parent"):
-      continue
+    # Проходимся по полям модели
+    for field in Models._meta.fields:
+        name = field.name
 
-    verbose = field.verbose_name
+        # Пропускаем служебные поля
+        if name in ("id", "status", "parent"):
+            continue
 
-    # Проверяем, есть ли заполненные данные хотя бы у одного объекта
-    has_value = models_qs.exclude(**{name: None}).exclude(**{name: ""}).exists()
+        verbose = field.verbose_name
 
-    if has_value:
-      columns.append({
-        "name": name,
-        "verbose": verbose
-      })
+        # Проверяем, что хотя бы у одной модели этого продукта есть значение
+        has_value = models_qs.exclude(**{name: None}).exclude(**{name: ""}).exists()
 
-  context = {
-    "category": category,
-    "product": product,
-    "images": images,
-    "models": models,
-    "columns": columns,
-    "models_list": models_qs,
-  }
+        if has_value:
+            columns.append({
+                "name": name,
+                "verbose": verbose
+            })
 
-  return render(request, "pages/catalog/product.html", context)
+    context = {
+        "category": category,
+        "product": product,
+        "images": images,
+        "models": models_qs,
+        "columns": columns,
+        "models_list": models_qs,
+    }
+
+    return render(request, "pages/catalog/product.html", context)
+
 
 @csrf_exempt
 def catalog_search(request):

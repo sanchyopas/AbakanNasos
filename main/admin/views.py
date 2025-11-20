@@ -49,19 +49,33 @@ def get_unique_slug(model, base_slug):
         counter += 1
     return slug
 
+def parse_excel_column(value):
+    """ Превращает ячейку Excel в список значений.
+        Пустые ячейки -> [''] (одно пустое значение) """
+    if pd.isna(value) or value is None:
+        return [''], True  # как список
+
+    # Делаем строки и разделяем
+    items = [x.strip() for x in str(value).split(',')]
+
+    # Если после очистки пусто → одно пустое значение
+    if not any(items):
+        return [''], True
+
+    return items, True
+
 def import_products_from_excel(file_path):
     Product.objects.all().delete()
-    Properties.objects.all().delete()
     Category.objects.all().delete()
+    Models.objects.all().delete()
 
     # Загружаем данные из Excel
     df = pd.read_excel(file_path, engine='openpyxl')
 
     for _, row in df.iterrows():
-      article=row[0]
-      name = row[1].strip()
+      name = row.iloc[1].strip()
       slug = get_unique_slug(Product, slugify(name))
-      category = row[2]
+      category = row.iloc[0]
       category_slug = slugify(category)
 
       try:
@@ -70,90 +84,97 @@ def import_products_from_excel(file_path):
         if not Category.objects.filter(name=category).exists():
           category = Category.objects.create(
             name=category,
-            slug=category_slug
-        )
-      try:
-        manufacturer = row[3]
-      except:
-        pass
+            slug=category_slug,
+            status='published'
+          )
 
-      manufacturer_description = row[4]
-
-      try:
-        colors = row[5]
-        if isinstance(colors, float) and math.isnan(colors):  # Проверяем, является ли значением NaN
-          colors = ""
-      except:
-        colors = ""
-
-      image = f"goods/{row[6]}"
-
-
-      try:
-          price = row[7]
-          if isinstance(price, float) and math.isnan(price):  # Проверяем, является ли значением NaN
-            price = 0
-      except:
-          price = 0
-
-      try:
-        installment = row[8]
-        if isinstance(installment, float) and math.isnan(installment):  # Проверяем, является ли значением NaN
-          installment = ""
-      except:
-        installment = ""
-
-      try:
-          properties = row[10]
-      except:
-          properties = ""
-
-      sale = 0
-
+#       image = f"goods/{row[6]}"
+#
+#
+#       try:
+#           price = row[7]
+#           if isinstance(price, float) and math.isnan(price):  # Проверяем, является ли значением NaN
+#             price = 0
+#       except:
+#           price = 0
+#
+#       try:
+#         installment = row[8]
+#         if isinstance(installment, float) and math.isnan(installment):  # Проверяем, является ли значением NaN
+#           installment = ""
+#       except:
+#         installment = ""
+#
+#       try:
+#           properties = row[10]
+#       except:
+#           properties = ""
+#
+#       sale = 0
+#
       try:
           new_product = Product.objects.create(
-              article=article,
               name=name,
               slug=slug,
-              category=category,
-              manufacturer=manufacturer,
-              manufacturer_description=manufacturer_description,
-              colors=colors,
-              image=image,
-              price=price,
-              installment=installment,
-              sale=sale,
+              status='published'
           )
       except IntegrityError:
           print(f"Duplicate slug detected: {slug}, generating a new one.")
           slug = get_unique_slug(Product, slug)
           new_product = Product.objects.create(
-              article=article,
               name=name,
               slug=slug,
-              category=category,
-              manufacturer=manufacturer,
-              manufacturer_description=manufacturer_description,
-              colors=colors,
-              image=image,
-              price=price,
-              installment=installment,
-              sale=sale,
+              status='published'
           )
+      new_product.category.add(category)
 
       try:
-          properties = properties.split(';')
-          for ch in properties:
-            try:
-              new_properties = Properties.objects.create(
-                parent = new_product,
-                name = ch.split(":")[0].strip(),
-                value = ch.split(":")[1].strip()
+          models_list, _ = parse_excel_column(row.iloc[5])
+          power_list, _ = parse_excel_column(row.iloc[6])
+          el_network_list, _ = parse_excel_column(row.iloc[7])
+          nom_capacity_list, _ = parse_excel_column(row.iloc[8])
+          max_capacity_list, _ = parse_excel_column(row.iloc[9])
+          max_capacity_min_list, _ = parse_excel_column(row.iloc[10])
+          now_head_list, _ = parse_excel_column(row.iloc[11])
+          max_head_list, _ = parse_excel_column(row.iloc[12])
+          suction_depth_list, _ = parse_excel_column(row.iloc[13])
+          con_size_list, _ = parse_excel_column(row.iloc[14])
+
+          # длина
+          count = len(models_list)
+
+          for i in range(count):
+              Models.objects.create(
+                  parent=new_product,
+                  model=models_list[i],
+                  power=power_list[i] if i < len(power_list) else "",
+                  el_network=el_network_list[i] if i < len(el_network_list) else "",
+                  nom_capacity=nom_capacity_list[i] if i < len(nom_capacity_list) else "",
+                  max_capacity=max_capacity_list[i] if i < len(max_capacity_list) else "",
+                  max_capacity_min=max_capacity_min_list[i] if i < len(max_capacity_min_list) else "",
+                  now_head=now_head_list[i] if i < len(now_head_list) else "",
+                  max_head=max_head_list[i] if i < len(max_head_list) else "",
+                  suction_depth=suction_depth_list[i] if i < len(suction_depth_list) else "",
+                  con_size=con_size_list[i] if i < len(con_size_list) else "",
+                  status='published'
               )
-            except Exception as e:
-                pass
-      except:
-          pass
+
+      except Exception as e:
+          print("Ошибка при импорте модели:", e)
+#
+#       try:
+#           properties = properties.split(';')
+#           for ch in properties:
+#             try:
+#               new_properties = Properties.objects.create(
+#                 parent = new_product,
+#                 name = ch.split(":")[0].strip(),
+#                 value = ch.split(":")[1].strip()
+#               )
+#             except Exception as e:
+#                 pass
+#       except:
+#           pass
 
 # @user_passes_test(lambda u: u.is_superuser)
 # def sidebar_show(request):
@@ -167,7 +188,7 @@ import urllib.parse
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin(request):
-  #import_products_from_excel(path_to_excel)
+  import_products_from_excel(path_to_excel)
 
   # unzip_archive()
   """Данная предстовление отобразает главную страницу админ панели"""
@@ -469,32 +490,10 @@ def service_delete(request, pk):
 
 # Новые views
 
+""" Общие настройки сайта """
 def admin_settings(request):
-  try:
-    settings = BaseSettings.objects.get()
-  except:
-    settings = BaseSettings()
-    settings.save()
+  return generic_singleton_edit(request, GlobalSettingsForm, BaseSettings, "Общие настройки", template_name=None)
 
-  if request.method == "POST":
-    form_new = GlobalSettingsForm(request.POST, request.FILES, instance=settings)
-    if form_new.is_valid():
-      form_new.save()
-
-      # subprocess.call(["touch", RESET_FILE])
-      return redirect(request.META.get('HTTP_REFERER'))
-    else:
-      return render(request, "settings/general_settings.html", {"form": form_new})
-
-  settings = BaseSettings.objects.get()
-
-  form = GlobalSettingsForm(instance=settings)
-  context = {
-    "form": form,
-    "settings":settings
-  }
-
-  return render(request, "settings/general_settings.html", context)
 
 """ Социальные сети """
 def socials(request):

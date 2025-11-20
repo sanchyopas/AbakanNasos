@@ -31,6 +31,16 @@
 {% include "../../section/services.html" with category=category %}
 {% endif %}
 
+{% if settings.description %}
+<section class="py border-t">
+  <div class="container">
+    <div class="section-text text">
+      {{ settings.description|safe }}
+    </div>
+  </div>
+</section>
+{% endif %}
+
 {% include "../../includes/_callback.html" %}
 {% include "../../includes/_contact.html" %}
 
