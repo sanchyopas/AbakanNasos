@@ -65,13 +65,16 @@
         </div>
         {% endif %}
 
+
+
+
         {% if product.image %}
         <div class="swiper info__slider">
           <div class="swiper-wrapper">
             <div class="swiper-slide info__slide">
               <img src="{{ product.image.url }}" alt="">
             </div>
-            {% endif %}
+
             {% if images %}
             {% for image in images %}
             <div class="swiper-slide info__slide">
@@ -88,7 +91,6 @@
         </h1>
         {% if product.description %}
         <div class="text">
-
           {{ product.description|safe }}
         </div>
         {% endif %}
