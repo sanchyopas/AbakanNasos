@@ -4,6 +4,23 @@
   flex-direction: column;
   gap: 20px;
 
+  //.form__controls-select
+  &__controls-select {
+    padding: 15px 20px;
+    border: 1px solid rgba($color: $mainColor, $alpha: .1);
+    border-radius: 4px;
+    font-size: 14px;
+    color: rgba($color: $mainColor, $alpha: .9);
+    resize: none;
+
+    &:focus,
+    &:focus-visible,
+    &:focus-within {
+      outline: none;
+      border-color: rgba($color: $mainColor, $alpha: .4);
+    }
+  }
+
   // .form__file
 
   &__file {

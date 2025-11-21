@@ -1,9 +1,43 @@
+.table {
+
+  &__inner {
+    width: 100%;
+    padding-bottom: 30px;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+      height: 2px;
+      cursor: pointer;
+
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(40, 101, 168, 0.1);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(1, 112, 184, 1);
+      border-radius: 20px;
+    }
+
+    &:hover {
+      &::-webkit-scrollbar {
+        height: 10px;
+      }
+    }
+
+  }
+}
+
 table {
   width: 100%;
   margin: 0;
   padding: 0;
   border-collapse: collapse;
   border-spacing: 0;
+
+
+
 }
 
 table tr {
@@ -15,12 +49,13 @@ table td {
 }
 
 table th {
-  width: 166px;
+  min-width: 166px;
   padding-inline: 7px;
 
   p {
     font-weight: 400;
     padding: 7px;
+    white-space: nowrap;
     border: 1px solid rgba(1, 112, 184, 1);
     border-radius: 30px;
   }

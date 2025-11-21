@@ -31,7 +31,7 @@ def category_post(request, category_slug):
   return render(request, "pages/blog/blog_category.html", context)
 
 def post(request, category_slug, slug):
-    post = Post.objects.get(slug=slug)
+    post = Post.objects.get(slug=slug, category__slug=category_slug)
     viewed_articles = request.session.get('viewed_articles', [])
     
     # Проверяем, просматривал ли пользователь эту статью ранее.

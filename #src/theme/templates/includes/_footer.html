@@ -1,17 +1,45 @@
-{% load static %}
-
-
-<div id="cookie-notice"
-     style="display: none; width: 60%; position: fixed; bottom: 10px; line-height: 150%; left: 10px; background-color: rgb(51, 51, 51); color: white; padding: 15px; border-radius: 5px; z-index: 1000;">
-  Мы используем cookie. Это позволяет нам анализировать взаимодействие посетителей с сайтом и делать его лучше.
-  Продолжая пользоваться сайтом, вы соглашаетесь с использованием файлов <a
-  href="{% url 'cookie' %}" target="_blank"
-  style="color: red; text-decoration: underline;">cookie</a> и
-  <a href="{% url 'politika' %}" target="_blank"  style="color: red; text-decoration: underline;">
-    политикой конфиденциальности.</a>
-  <button id="accept-cookies"
-          style="margin-left: 10px; padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 5px;">
-    Я согласен
-  </button>
+{% load static %}{% load thumbnail %}
+<div class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <nav class="footer__nav">
+        <ul class="footer__nav-list">
+          <li><a href="{% url 'category' %}">Каталог</a></li>
+          <li><a href="{% url 'about' %}">О нас</a></li>
+          <li><a href="{% url 'gallery' %}">Галлерея</a></li>
+          <li><a href="{% url 'blog' %}">Новости</a></li>
+          <li><a href="{% url 'contact' %}">Контакты</a></li>
+        </ul>
+      </nav>
+      <div class="footer__wrp">
+        {% if socials %}
+        <div class="footer__social social">
+          {% for social in socials %}
+          <a href="{{ social.link }}">
+            {% if social.icon_white %}
+            {% thumbnail social.icon_white "32x32" format="WEBP" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ social.name }}"
+                 title="{{ social.name }}">
+            {% endthumbnail %}
+            {% endif %}
+          </a>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <a href="{% url 'home' %}" class="footer__logo">
+          {% if site_settings.logo_dark %}
+          {% thumbnail site_settings.logo_dark "145x46" format="WEBP" crop="center" as im %}
+          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="Логотип АбаканНасос"
+               title="Логотип АбаканНасос">
+          {% endthumbnail %}
+          {% endif %}
+        </a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="copyright">© 2025 “АбаканНасос”</div>
+      <a href="" class="footer__link">Политика конфиденциальности</a>
+    </div>
+  </div>
 </div>
 

@@ -10,6 +10,7 @@ class ShopSettings(SingletonModel):
   meta_description = models.TextField(null=True, blank=True, verbose_name="META описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="META keywords")
   description = models.TextField(null=True, blank=True,  verbose_name="Текст на странице")
+  pattern_seo = models.CharField(max_length=250, null=True, blank=True, verbose_name="Паттерн автозаполнения META-title у товаров")
 
 
 # Категория
@@ -61,7 +62,7 @@ class Product(models.Model):
   slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, verbose_name="URL")
   category = models.ManyToManyField(Category, null=True, blank=True, verbose_name="Категории")
   image = models.ImageField(upload_to="product-image/", blank=True, null=True, verbose_name="Изображение товара")
-  description = models.TextField(null=True, blank=True,  verbose_name="Описание категории")
+  description = models.TextField(null=True, blank=True,  verbose_name="Описание")
   text = models.TextField(null=True, blank=True,  verbose_name="Текст на странице")
   meta_h1 = models.CharField(max_length=250, null=True, blank=True, verbose_name="Заголовок первого уровня")
   meta_title = models.CharField(max_length=250, null=True, blank=True, verbose_name="Мета заголовок")

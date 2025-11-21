@@ -28,7 +28,7 @@ from django.db import IntegrityError
 
 # Проверенные импорты
 from shop.models import *
-from .utils.views import generic_add, generic_edit, generic_list, generic_delete, generic_singleton_edit
+from .utils.views import *
 
 general_url_product = "/admin/product/"
 
@@ -64,6 +64,24 @@ def parse_excel_column(value):
 
     return items, True
 
+def get_value(values, index, total_count):
+    # Если список пустой — вернуть пустую строку
+    if not values:
+        return ""
+
+    # Если одно значение — использовать его для всех
+    if len(values) == 1:
+        return values[0]
+
+    # Если значений много — использовать по индексу (если хватает)
+    if index < len(values):
+        return values[index]
+
+    # Если значений меньше чем моделей — пусто
+    return ""
+
+
+
 def import_products_from_excel(file_path):
     Product.objects.all().delete()
     Category.objects.all().delete()
@@ -77,6 +95,7 @@ def import_products_from_excel(file_path):
       slug = get_unique_slug(Product, slugify(name))
       category = row.iloc[0]
       category_slug = slugify(category)
+      description = row.iloc[2]
 
       try:
         category = Category.objects.get(slug=category_slug)
@@ -89,33 +108,12 @@ def import_products_from_excel(file_path):
           )
 
 #       image = f"goods/{row[6]}"
-#
-#
-#       try:
-#           price = row[7]
-#           if isinstance(price, float) and math.isnan(price):  # Проверяем, является ли значением NaN
-#             price = 0
-#       except:
-#           price = 0
-#
-#       try:
-#         installment = row[8]
-#         if isinstance(installment, float) and math.isnan(installment):  # Проверяем, является ли значением NaN
-#           installment = ""
-#       except:
-#         installment = ""
-#
-#       try:
-#           properties = row[10]
-#       except:
-#           properties = ""
-#
-#       sale = 0
-#
+
       try:
           new_product = Product.objects.create(
               name=name,
               slug=slug,
+              description=description,
               status='published'
           )
       except IntegrityError:
@@ -140,41 +138,27 @@ def import_products_from_excel(file_path):
           suction_depth_list, _ = parse_excel_column(row.iloc[13])
           con_size_list, _ = parse_excel_column(row.iloc[14])
 
-          # длина
           count = len(models_list)
 
           for i in range(count):
               Models.objects.create(
                   parent=new_product,
-                  model=models_list[i],
-                  power=power_list[i] if i < len(power_list) else "",
-                  el_network=el_network_list[i] if i < len(el_network_list) else "",
-                  nom_capacity=nom_capacity_list[i] if i < len(nom_capacity_list) else "",
-                  max_capacity=max_capacity_list[i] if i < len(max_capacity_list) else "",
-                  max_capacity_min=max_capacity_min_list[i] if i < len(max_capacity_min_list) else "",
-                  now_head=now_head_list[i] if i < len(now_head_list) else "",
-                  max_head=max_head_list[i] if i < len(max_head_list) else "",
-                  suction_depth=suction_depth_list[i] if i < len(suction_depth_list) else "",
-                  con_size=con_size_list[i] if i < len(con_size_list) else "",
+                  model=get_value(models_list, i, count),
+                  power=get_value(power_list, i, count),
+                  el_network=get_value(el_network_list, i, count),
+                  nom_capacity=get_value(nom_capacity_list, i, count),
+                  max_capacity=get_value(max_capacity_list, i, count),
+                  max_capacity_min=get_value(max_capacity_min_list, i, count),
+                  now_head=get_value(now_head_list, i, count),
+                  max_head=get_value(max_head_list, i, count),
+                  suction_depth=get_value(suction_depth_list, i, count),
+                  con_size=get_value(con_size_list, i, count),
                   status='published'
               )
 
       except Exception as e:
           print("Ошибка при импорте модели:", e)
-#
-#       try:
-#           properties = properties.split(';')
-#           for ch in properties:
-#             try:
-#               new_properties = Properties.objects.create(
-#                 parent = new_product,
-#                 name = ch.split(":")[0].strip(),
-#                 value = ch.split(":")[1].strip()
-#               )
-#             except Exception as e:
-#                 pass
-#       except:
-#           pass
+
 
 # @user_passes_test(lambda u: u.is_superuser)
 # def sidebar_show(request):
@@ -188,7 +172,7 @@ import urllib.parse
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin(request):
-  import_products_from_excel(path_to_excel)
+#   import_products_from_excel(path_to_excel)
 
   # unzip_archive()
   """Данная предстовление отобразает главную страницу админ панели"""
@@ -220,104 +204,6 @@ def robots(request):
   }
 
   return render(request, "settings/robots.html", context)
-
-def delete_properties(request,pk):
-  propertie = Properties.objects.get(id=pk)
-  propertie.delete()
-
-  return redirect(request.META.get('HTTP_REFERER'))
-
-def admin_prod_page(request):
-  try:
-    settings = Production.objects.get()
-  except:
-    settings = Production()
-    settings.save()
-
-  if request.method == "POST":
-    form_new = ProductionForm(request.POST, request.FILES, instance=settings)
-    if form_new.is_valid():
-      form_new.save()
-
-      # subprocess.call(["touch", RESET_FILE])
-      return redirect(request.META.get('HTTP_REFERER'))
-    else:
-      return render(request, "page/production.html", {"form": form_new})
-
-  settings = Production.objects.get()
-
-  form = ProductionForm(instance=settings)
-  context = {
-    "form": form,
-    "settings":settings
-  }
-
-  return render(request, "page/production.html", context)
-
-def admin_contact(request):
-  try:
-    settings = ContactTemplate.objects.get()
-  except:
-    settings = ContactTemplate()
-    settings.save()
-
-  if request.method == "POST":
-    form_new = ContactTemplateForm(request.POST, request.FILES, instance=settings)
-    if form_new.is_valid():
-      form_new.save()
-
-      # subprocess.call(["touch", RESET_FILE])
-      return redirect(request.META.get('HTTP_REFERER'))
-    else:
-      return render(request, "page/contact.html", {"form": form_new})
-
-  settings = ContactTemplate.objects.get()
-
-  form = ContactTemplateForm(instance=settings)
-  context = {
-    "form": form,
-    "settings": settings
-  }
-
-  return render(request, "page/contact.html", context)
-
-def admin_delivery_page(request):
-  try:
-    settings = Delivery.objects.get()
-  except:
-    settings = Delivery()
-    settings.save()
-
-  if request.method == "POST":
-    form_new = DeliveryForm(request.POST, request.FILES, instance=settings)
-    if form_new.is_valid():
-      form_new.save()
-
-      # subprocess.call(["touch", RESET_FILE])
-      return redirect(request.META.get('HTTP_REFERER'))
-    else:
-      return render(request, "template-page/delivery_page.html", {"form": form_new})
-
-  settings = Delivery.objects.get()
-
-  form = DeliveryForm(instance=settings)
-  context = {
-    "form": form,
-    "settings":settings
-  }
-
-  return render(request, "template-page/delivery_page.html", context)
-
-
-def admin_attribute(request):
-  chars = ProductSpecification.objects.all()
-
-  context = {
-    "title": "Характеристики товара",
-    "chars": chars,
-  }
-
-  return render(request, "shop/char/char.html", context)
 
 folder = 'upload/'
 
@@ -362,131 +248,6 @@ def upload_goods(request):
 
 def upload_succes(request):
   return render(request, "upload/upload-succes.html")
-
-
-
-def admin_service_page(request):
-  try:
-     serv_page = ServicePage.objects.get()
-  except:
-     serv_page = ServicePage()
-     serv_page.save()
-
-  try:
-    items = Service.objects.all()
-  except:
-    items = Service()
-
-  if request.method == "POST":
-     form_new = ServicePageForm(request.POST, request.FILES, instance=serv_page)
-     if form_new.is_valid():
-       form_new.save()
-
-       return redirect(request.META.get('HTTP_REFERER'))
-     else:
-       return render(request, "serv/serv_settings.html", {"form": form_new})
-
-  serv_page = ServicePage.objects.get()
-
-  form = ServicePageForm(instance=serv_page)
-  context = {
-     "form": form,
-     "serv_page":serv_page,
-     "items": items
-  }
-
-  return render(request, "serv/serv_settings.html", context)
-
-def admin_stock(request):
-  stocks = Stock.objects.all()
-
-  context = {
-    "stocks": stocks
-  }
-
-  return render(request, "stock/stock.html", context)
-
-def stock_add(request):
-  form = StockForm()
-
-  if request.method == "POST":
-    form_new = StockForm(request.POST, request.FILES)
-    if form_new.is_valid():
-      form_new.save()
-      return redirect("admin_stock")
-    else:
-      return render(request, "stock/stock_add.html", {"form": form_new})
-
-  context = {
-    "form": form
-  }
-
-  return render(request, "stock/stock_add.html", context)
-
-def stock_edit(request, pk):
-  stock = Stock.objects.get(id=pk)
-  form = StockForm(instance=stock)
-  if request.method == "POST":
-    form_new = StockForm(request.POST, request.FILES, instance=stock)
-    if form_new.is_valid():
-      form_new.save()
-      return redirect("admin_stock")
-    else:
-      return render(request, "stock/stock_edit.html", {"form": form_new})
-
-  context = {
-    "form": form
-  }
-
-  return render(request, "stock/stock_edit.html", context)
-
-def stock_delete(request, pk):
-  stock = Stock.objects.get(id=pk)
-  stock.delete()
-  return redirect("admin_stock")
-
-def service_add(request):
-  form = ServiceForm()
-
-  if request.method == "POST":
-    form_new = ServiceForm(request.POST, request.FILES)
-    if form_new.is_valid():
-      form_new.save()
-      url = reverse("admin_service_page") + "?tab=list"
-      return redirect(url)
-    else:
-      return render(request, "serv/serv_add.html", {"form": form_new})
-
-  context = {
-    "form": form
-  }
-
-  return render(request, "serv/serv_add.html", context)
-
-def service_edit(request, pk):
-  services = Service.objects.get(id=pk)
-  form = ServiceForm(instance=services)
-  if request.method == "POST":
-    form_new = ServiceForm(request.POST, request.FILES, instance=services)
-    if form_new.is_valid():
-      form_new.save()
-      url = reverse("admin_service_page") + "?tab=list"
-      return redirect(url)
-    else:
-      return render(request, "serv/stock_edit.html", {"form": form_new})
-
-  context = {
-    "form": form
-  }
-
-  return render(request, "serv/serv_edit.html", context)
-
-def service_delete(request, pk):
-  service = Service.objects.get(id=pk)
-  service.delete()
-  url = reverse("admin_service_page") + "?tab=list"
-  return redirect(url)
-
 
 # Новые views
 
@@ -715,4 +476,80 @@ def gallery_edit(request, pk):
 
 def gallery_delete(request, pk):
   return generic_delete(request, GalleryItem, pk)
+
+
+""" Настройки услуг """
+def admin_services(request):
+  try:
+     serv_page = ServicePage.objects.get()
+  except:
+     serv_page = ServicePage()
+     serv_page.save()
+
+  try:
+    items = Service.objects.all()
+  except:
+    items = Service()
+
+  if request.method == "POST":
+     form_new = ServicePageForm(request.POST, request.FILES, instance=serv_page)
+     if form_new.is_valid():
+       form_new.save()
+
+       return redirect(request.META.get('HTTP_REFERER'))
+     else:
+       return render(request, "serv/serv_settings.html", {"form": form_new})
+
+  serv_page = ServicePage.objects.get()
+
+  form = ServicePageForm(instance=serv_page)
+  context = {
+     "form": form,
+     "serv_page":serv_page,
+     "items": items
+  }
+
+  return render(request, "serv/serv_settings.html", context)
+
+def services_add(request):
+  form = ServiceForm()
+
+  if request.method == "POST":
+    form_new = ServiceForm(request.POST, request.FILES)
+    if form_new.is_valid():
+      form_new.save()
+      url = reverse("admin_service_page") + "?tab=list"
+      return redirect(url)
+    else:
+      return render(request, "serv/serv_add.html", {"form": form_new})
+
+  context = {
+    "form": form
+  }
+
+  return render(request, "serv/serv_add.html", context)
+
+def services_edit(request, pk):
+  services = Service.objects.get(id=pk)
+  form = ServiceForm(instance=services)
+  if request.method == "POST":
+    form_new = ServiceForm(request.POST, request.FILES, instance=services)
+    if form_new.is_valid():
+      form_new.save()
+      url = reverse("admin_service_page") + "?tab=list"
+      return redirect(url)
+    else:
+      return render(request, "serv/stock_edit.html", {"form": form_new})
+
+  context = {
+    "form": form
+  }
+
+  return render(request, "serv/serv_edit.html", context)
+
+def services_delete(request, pk):
+  service = Service.objects.get(id=pk)
+  service.delete()
+  url = reverse("admin_service_page") + "?tab=list"
+  return redirect(url)
 

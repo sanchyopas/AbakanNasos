@@ -9,27 +9,49 @@
       {% endif %}
       {% include '../components/search-form.html' %}
 
+      {% if branch %}
       <div class="header__info">
+        {% for branch in branch %}
         <div class="header__info-inner">
-          <p class="header__address address">г. Томск,Нечевский переулок, 32/1</p>
-          <a href="tel:+73822431552" class="header__phone phone">+7 (3822) 43-15-52</a>
-          <a href="tel:+79966377682" class="header__phone phone">+7 (996) 637-76-82</a>
-          <a href="mailto:mail@tompc.ru" class="header__mail mail">mail@tompc.ru</a>
+          {% if branch.address %}
+          <p class="header__address address">
+            {{ branch.address }}
+          </p>
+          {% endif %}
+
+          {% if branch.phone_one %}
+          <a href="tel:{{ branch.phone_one }}" class="header__phone phone">
+            {{ branch.phone_one }}
+          </a>
+          {% endif %}
+
+          {% if branch.phone_two %}
+          <a href="tel:{{ branch.phone_two }}" class="header__phone phone">
+            {{ branch.phone_two }}
+          </a>
+          {% endif %}
+
+          {% if branch.email %}
+          <a href="mailto:{{ branch.email }}" class="header__mail mail">
+            {{ branch.email }}
+          </a>
+          {% endif %}
         </div>
-        <div class="header__info-inner">
-          <p class="header__address address">г. Томск,ул. Пролетарская 33/2</p>
-          <a href="tel:+73822400018" class="header__phone phone">+7 (3822) 40-00-18</a>
-          <a href="tel:+79039535237" class="header__phone phone">+7 (903) 953-52-37</a>
-          <a href="mailto:pumps@tompc.ru" class="header__mail mail">pumps@tompc.ru</a>
-        </div>
-      </div>
-      {% if socials %}
-      <div class="header__social social">
-        {% for social in socials %}
-        <a href="{{ social.link }}"><img src="{{ social.icon_dark.url }}" alt="{{ social.name }}"></a>
         {% endfor %}
       </div>
       {% endif %}
+
+      {% if socials %}
+      <div class="header__social social">
+        <button type="button" class="social__mobile-btn"><i class="fa-solid fa-share-nodes"></i></button>
+        <div class="social__mobile-cnt">
+          {% for social in socials %}
+          <a href="{{ social.link }}"><img src="{{ social.icon_dark.url }}" alt="{{ social.name }}"></a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
       <button type="button" class="header__burger" id="burger">
         <i class="fa-solid fa-bars-staggered"></i>
       </button>
@@ -37,13 +59,15 @@
     <nav class="header__nav nav">
       <button class="nav__close" id="close"><i class="fa-solid fa-xmark"></i></button>
       <ul class="nav__list">
-        <li class="nav__item"><a href="" class="nav__link nav__link--first">Каталог</a></li>
-        <li class="nav__item"><a href="" class="nav__link">О нас</a></li>
-        <li class="nav__item"><a href="" class="nav__link">Галерея</a></li>
-        <li class="nav__item"><a href="" class="nav__link">Новости</a></li>
-        <li class="nav__item"><a href="" class="nav__link">Контакты</a></li>
+        <li class="nav__item"><a href="{% url 'category' %}" class="nav__link nav__link--first">Каталог</a></li>
+        <li class="nav__item"><a href="{% url 'about' %}" class="nav__link">О нас</a></li>
+        <li class="nav__item"><a href="{% url 'gallery' %}" class="nav__link">Галерея</a></li>
+        <li class="nav__item"><a href="{% url 'blog' %}" class="nav__link">Новости</a></li>
+        <li class="nav__item"><a href="{% url 'contact' %}" class="nav__link">Контакты</a></li>
       </ul>
-      <a href="" class="header__btn">Распродажа</a>
+      {% if site_settings.status == 'published' %}
+      <a href="/category/rasprodazha/" class="header__btn">Распродажа</a>
+      {% endif %}
     </nav>
   </div>
 </div>

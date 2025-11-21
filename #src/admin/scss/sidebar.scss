@@ -62,6 +62,9 @@
   // .menu-sidebar__item
 
   &__item {
+    display: flex;
+    flex-direction: column;
+
     i{
       opacity: 0.8;
       font-size: 13px;

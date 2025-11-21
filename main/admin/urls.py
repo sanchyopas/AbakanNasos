@@ -71,35 +71,19 @@ urlpatterns = [
     path('gallery/<int:pk>/edit/', views.gallery_edit, name='gallery_edit'),
     path('gallery/<int:pk>/delete/', views.gallery_delete, name='gallery_delete'),
 
+    path('services/', views.admin_services, name='admin_services'),
+    path('services/add/', views.services_add, name='services_add'),
+    path('services/<int:pk>/edit/', views.services_edit, name='services_edit'),
+    path('services/<int:pk>/delete/', views.services_delete, name='services_delete'),
+
     # Новые конец urls
     
     #URl - отвечающие за загрузку данных
     path('upload-goods/', views.upload_goods, name="upload_goods"),
     path('upload-succes/', views.upload_succes, name="upload-succes"),
 
-
-
-    path('product/delete_properties/<int:pk>/', views.delete_properties, name='delete_properties'),
-
-    #URl - отвечающие за отображение отзывов, редактирование и удаление отзывов
-    path('admin-reviews/', admin.admin_reviews, name='admin_reviews'),
-    path('admin-reviews/add/', admin.admin_reviews_add, name='admin_reviews_add'),
-    path('admin-reviews/edit/<int:pk>/', admin.admin_reviews_edit, name='admin_reviews_edit'),
-    path('admin_reviews/delete/<int:pk>/', admin.admin_reviews_delete, name='admin_reviews_delete'),
     
-    #URl - отвечающие за отображение акций, редактирование и удаление акций
-    path('stock/', views.admin_stock, name='admin_stock'),
-    path('stock/add/', views.stock_add, name='stock_add'),
-    path('stock/edit/<int:pk>/', views.stock_edit, name='stock_edit'),
-    path('stock/delete/<int:pk>/', views.stock_delete, name='stock_delete'),
-    
-    #URl - отвечающие за отображение услуг, редактирование и удаление услуг
-    path('service-page/', views.admin_service_page, name='admin_service_page'),
-    path('serv/add/', views.service_add, name='service_add'),
-    path('serv/edit/<int:pk>/', views.service_edit, name='service_edit'),
-    path('serv/delete/<int:pk>/', views.service_delete, name='service_delete'),
 
-    
     #URl - Шаблон общих настроек сайта
     path('settings/', views.admin_settings, name='admin_settings'),
     path('robots/', views.robots, name='robots'),

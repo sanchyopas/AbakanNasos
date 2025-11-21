@@ -1,0 +1,9 @@
+<section class="services py">
+  <div class="container">
+    <div class="services__grid">
+      {% for cat in category %}
+      {% include "../components/product-card.html" with category=cat %}
+      {% endfor %}
+    </div>
+  </div>
+</section>

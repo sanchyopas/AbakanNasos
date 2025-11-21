@@ -72,6 +72,7 @@ TEMPLATES = [
                 "home.context_processors.branch",
                 "home.context_processors.callback_block",
                 "home.context_processors.clients",
+                "shop.context_processors.settings_shop",
             ],
         },
     },

@@ -7,11 +7,11 @@
   }
 
   &__slide {
-    display: flex;
+    position: relative;
+    display: flex !important;
     flex-direction: column;
     justify-content: space-between;
     gap: 20px;
-    position: relative;
     min-height: 400px;
     padding: 30px 40px;
     border-radius: 40px;
@@ -57,7 +57,7 @@
   }
 
   &__btn {
-    position: relative;
+    position: relative !important;
     align-self: flex-end;
     padding: 15px 18px;
     border-radius: 30px;
@@ -109,7 +109,7 @@
   }
 
   &__arrows {
-    position: absolute;
+    position: absolute !important;
     bottom: 30px;
     left: 40px;
     display: flex;
@@ -126,14 +126,14 @@
 
   &__arrow-next,
   &__arrow-prev {
-    position: relative;
+    position: relative !important;
     margin: 0 !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
-    width: 60px;
-    height: 60px;
+    width: 60px !important;
+    height: 60px !important;
     border: 1px solid rgba(0, 50, 82, 1);
     border-radius: 15px;
     background: linear-gradient(180.00deg, rgba(10.650540351867676, 107.5530014038086, 170.4086456298828, 1), rgba(99.51506805419922, 188.6202850341797, 246.41827392578125, 1) 100%);

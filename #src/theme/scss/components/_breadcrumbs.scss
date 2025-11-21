@@ -1,5 +1,6 @@
 .breadcrumbs {
   display: flex;
+  flex-wrap: wrap;
   position: relative;
   padding: 0 0 30px;
   z-index: 2;
@@ -21,7 +22,6 @@
       &::after {
         content: '';
         display: block;
-        background-image: url("/img/arrow-right-bred.svg");
         background-repeat: no-repeat;
         background-position: center;
         width: 20px;

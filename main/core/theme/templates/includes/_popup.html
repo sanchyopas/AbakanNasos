@@ -1,5 +1,32 @@
 {% load static %}
-{% comment %}
+<div id="leave-request" class="popup">
+  <div class="popup__wrapper">
+    <div class="popup__content">
+      <div class="popup__top">
+        <button data-close type="button" class="popup__close close"></button>
+      </div>
+      <div class="popup__loading">
+        <img src="{% static 'theme/mb/images/loading.gif' %}" alt="Загрузка" title="Загрузка"/>
+      </div>
+      <h2 class="popup__title">Оставить заявку</h2>
+      <form action="" class="popup__form form" method="POST" id="order-form">
+        {% csrf_token %}
+        <input type="text" name="name" class="form__input" placeholder="Ваше имя" required/>
+        <input type="tel" name="phone" class="form__input" placeholder="номер телефона" required data-tel-input/>
+        <input type="text" name="product" id="order-product" class="form__input form__input--hidden"/>
+        <div class="form__pivacy">
+          <input type="checkbox" id="agree" class="form__checkbox">
+          <label for="agree">
+            Я даю свое согласие на обработку персональных данных и подтверждаю, что ознакомлен(а)
+            с <a href="{% url 'privacy' %}">политикой конфиденциальности и обработки персональных данных</a>
+          </label>
+        </div>
+        <button type="submit" class="form__submit">Отправить</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div id="callback" class="popup ">
   <div class="popup__wrapper">
     <div class="popup__content">
@@ -24,17 +51,6 @@
     </div>
   </div>
 </div>
-
-<div id="success" class="notification">
-  <div class="notification__content">
-    <div class="notification__success-image">
-      <img src="{% static 'theme/mb/images/tick.png' %}" alt="Обратный звонок" title="Обратный звонок"/>
-    </div>
-    <p class="notification__success-text">Успешно</p>
-  </div>
-</div>
-
-{% endcomment %}
 
 
 
