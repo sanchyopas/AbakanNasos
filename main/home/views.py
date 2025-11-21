@@ -11,8 +11,8 @@ def index(request):
     settings = HomeTemplate.objects.get()
     about = AboutPage.objects.get()
   except:
-      settings = HomeTemplate()
-      about = AboutPage()
+    settings = HomeTemplate()
+    about = AboutPage()
 
   slides = SliderHero.objects.filter(status='published')
   category = Category.objects.filter(parent=None, status='published')
