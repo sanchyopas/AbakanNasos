@@ -11,7 +11,7 @@ Fancybox.bind("[data-fancybox]", {
 });
 
 const socialBtn = document.querySelector('.social__mobile-btn');
-socialBtn.addEventListener('click', (e) => {
+socialBtn?.addEventListener('click', (e) => {
   e.currentTarget.classList.toggle('active');
   document.querySelector('.social__mobile-cnt').classList.toggle('active');
 })
