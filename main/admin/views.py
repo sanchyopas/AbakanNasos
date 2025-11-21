@@ -91,11 +91,11 @@ def import_products_from_excel(file_path):
     df = pd.read_excel(file_path, engine='openpyxl')
 
     for _, row in df.iterrows():
-      name = row[1].strip()
+      name = row.iloc[1].strip()
       slug = get_unique_slug(Product, slugify(name))
-      category = row[0]
+      category = row.iloc[0]
       category_slug = slugify(category)
-      description = row[2]
+      description = row.iloc[2]
 
       try:
         category = Category.objects.get(slug=category_slug)
@@ -117,6 +117,7 @@ def import_products_from_excel(file_path):
               status='published'
           )
       except IntegrityError:
+          print(f"Duplicate slug detected: {slug}, generating a new one.")
           slug = get_unique_slug(Product, slug)
           new_product = Product.objects.create(
               name=name,
@@ -126,16 +127,16 @@ def import_products_from_excel(file_path):
       new_product.category.add(category)
 
       try:
-          models_list, _ = parse_excel_column(row[5])
-          power_list, _ = parse_excel_column(row[6])
-          el_network_list, _ = parse_excel_column(row[7])
-          nom_capacity_list, _ = parse_excel_column(row[8])
-          max_capacity_list, _ = parse_excel_column(row[9])
-          max_capacity_min_list, _ = parse_excel_column(row[10])
-          now_head_list, _ = parse_excel_column(row[11])
-          max_head_list, _ = parse_excel_column(row[12])
-          suction_depth_list, _ = parse_excel_column(row[13])
-          con_size_list, _ = parse_excel_column(row[14])
+          models_list, _ = parse_excel_column(row.iloc[5])
+          power_list, _ = parse_excel_column(row.iloc[6])
+          el_network_list, _ = parse_excel_column(row.iloc[7])
+          nom_capacity_list, _ = parse_excel_column(row.iloc[8])
+          max_capacity_list, _ = parse_excel_column(row.iloc[9])
+          max_capacity_min_list, _ = parse_excel_column(row.iloc[10])
+          now_head_list, _ = parse_excel_column(row.iloc[11])
+          max_head_list, _ = parse_excel_column(row.iloc[12])
+          suction_depth_list, _ = parse_excel_column(row.iloc[13])
+          con_size_list, _ = parse_excel_column(row.iloc[14])
 
           count = len(models_list)
 
@@ -156,7 +157,7 @@ def import_products_from_excel(file_path):
               )
 
       except Exception as e:
-          print(e)
+          print("Ошибка при импорте модели:", e)
 
 
 # @user_passes_test(lambda u: u.is_superuser)
