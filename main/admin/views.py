@@ -117,7 +117,6 @@ def import_products_from_excel(file_path):
               status='published'
           )
       except IntegrityError:
-          print(f"Duplicate slug detected: {slug}, generating a new one.")
           slug = get_unique_slug(Product, slug)
           new_product = Product.objects.create(
               name=name,
@@ -157,7 +156,7 @@ def import_products_from_excel(file_path):
               )
 
       except Exception as e:
-          print("Ошибка при импорте модели:", e)
+          print(e)
 
 
 # @user_passes_test(lambda u: u.is_superuser)
