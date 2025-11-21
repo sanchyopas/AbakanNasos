@@ -75,7 +75,6 @@
               <img src="{{ product.image.url }}" alt="">
             </div>
 
-            {% if images %}
             {% for image in images %}
             <div class="swiper-slide info__slide">
               <img src="{{ image.src.url }}" alt="">
@@ -179,4 +178,4 @@
 {% include "../../includes/_contact.html" %}
 
 
-{% endblock content %}
+{% endblock %}
