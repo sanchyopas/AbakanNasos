@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
+from django.urls import reverse
 
 
 def generic_list(request, model, title, add_url, edit_url, delete_url):
@@ -26,7 +27,8 @@ def generic_add(request, form_class, redirect_name, title, template_name=None):
         if form.is_valid():
             form.save()
             messages.success(request, "Успешно сохранено !")
-            return redirect(redirect_name)
+            url = reverse(redirect_name) + "?tab=list"
+            return redirect(url)
         else:
             return render(request, template_name, {"form": form, "title": title})
 
@@ -67,10 +69,24 @@ def generic_delete(request, model, pk):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-def generic_singleton_edit(request, form_class, model_class, title, template_name=None):
+def generic_singleton_edit(
+    request,
+    form_class,
+    model_class,
+    title,
+    edit_url,
+    add_url,
+    delete_url,
+    template_name=None,
+    model_list=None,
+    model_cat=None
+  ):
     """Универсальное редактирование Singleton модели"""
     if not template_name:
         template_name = "common-template/template-edit-add-page.html"
+
+    items = model_list.objects.all()
+    categories = model_cat.objects.all()
 
     # Получаем или создаем единственный экземпляр
     try:
@@ -96,13 +112,23 @@ def generic_singleton_edit(request, form_class, model_class, title, template_nam
             return render(request, template_name, {
                 "form": form,
                 "title": title,
-                "settings": instance
+                "settings": instance,
+                "items": items,
+                "edit_url": edit_url,
+                "add_url": add_url,
+                "delete_url": delete_url,
+                "categories": categories
             })
 
     form = form_class(instance=instance)
     context = {
         "form": form,
         "title": title,
-        "settings": instance
+        "settings": instance,
+        "items": items,
+        "edit_url": edit_url,
+        "add_url": add_url,
+        "delete_url": delete_url,
+        "categories": categories
     }
     return render(request, template_name, context)

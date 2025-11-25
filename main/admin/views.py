@@ -309,12 +309,6 @@ def admin_home_page(request):
   return generic_singleton_edit(request, HomeTemplateForm, HomeTemplate, "Настройки главной страницы", template_name=None)
 
 
-""" Настройки страницы каталога """
-@user_passes_test(lambda u: u.is_superuser)
-def admin_shop(request):
-  return generic_singleton_edit(request, ShopSettingsForm, ShopSettings, "Настройки страницы каталога", template_name=None)
-
-
 """ Настройки страницы о нас """
 def admin_about_page(request):
   return generic_singleton_edit(request, AboutPageForm, AboutPage, "Настройки страницы о нас", template_name=None)
@@ -342,6 +336,23 @@ def category_edit(request, pk):
 
 def category_delete(request, pk):
   return generic_delete(request, Category, pk)
+
+
+""" Настройки страницы каталога """
+@user_passes_test(lambda u: u.is_superuser)
+def admin_shop(request):
+  return generic_singleton_edit(
+  request,
+  ShopSettingsForm,
+  ShopSettings,
+  "Настройки страницы каталога",
+  "product_edit",
+  "product_add",
+  "product_delete",
+  template_name=None,
+  model_list=Product,
+  model_cat=Category
+  )
 
 """ Товары """
 def admin_product(request):
@@ -385,24 +396,8 @@ def product_edit(request, pk):
   return render(request, "common-template/template-edit-add-page.html", context)
 
 def product_add(request):
-  form = ProductForm()
+  return generic_add(request, ProductForm, "admin_shop", "Добавление Товара",  template_name=None)
 
-  if request.method == "POST":
-    form_new = ProductForm(request.POST, request.FILES)
-    if form_new.is_valid():
-      form_new.save()
-      return redirect('admin_product')
-    else:
-      return render(request, "common-template/template-edit-add-page.html", {"form": form_new})
-
-  context = {
-    "models": models,
-    "title": "Страница добавление",
-    "url": general_url_product,
-    "form": form
-  }
-
-  return render(request, 'common-template/template-edit-add-page.html', context)
 
 def product_delete(request,pk):
   return generic_delete(request, Product, pk)
