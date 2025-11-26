@@ -21,6 +21,11 @@ class Category(models.Model):
     ('hidden', 'Скрыто'),
   ]
 
+  STATUS_VIEW = [
+    ('published', 'Выводить'),
+    ('draft', 'Не выводить'),
+  ]
+
   name = models.CharField(max_length=150, db_index=True, unique=True, verbose_name="Название категории")
   slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name="URL")
   description = models.TextField(null=True, blank=True,  verbose_name="Описание категории")
@@ -30,8 +35,13 @@ class Category(models.Model):
   meta_title = models.CharField(max_length=250, null=True, blank=True, verbose_name="META заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="META описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="META keywords")
-  add_menu = models.BooleanField(default=False, blank=True, null=True, verbose_name="Выводить в меню ? ")
   updated_at = models.DateTimeField(auto_now=True)
+  add_slider = models.CharField(
+   max_length=20,
+   choices=STATUS_VIEW,
+   default='draft',
+   verbose_name="Выводить в слайдер ?"
+ )
   status = models.CharField(
     max_length=20,
     choices=STATUS_CHOICES,
@@ -108,8 +118,15 @@ class Models(models.Model):
       ('draft', 'Черновик'),
       ('hidden', 'Скрыто'),
   ]
-
+  meta_h1 = models.CharField(max_length=250, null=True, blank=True, verbose_name="Заголовок первого уровня")
+  meta_title = models.CharField(max_length=250, null=True, blank=True, verbose_name="Мета заголовок")
+  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
+  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
+  image = models.ImageField(upload_to="model-image/", blank=True, null=True, verbose_name="Изображение модели")
+  description = models.TextField(null=True, blank=True,  verbose_name="Описание")
+  text = models.TextField(null=True, blank=True,  verbose_name="Текст на странице")
   parent = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="models_parent", verbose_name="Продукт")
+  slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, verbose_name="URL")
   model = models.CharField(max_length=150, default="", db_index=True, verbose_name="Модель")
   power = models.CharField(max_length=150, blank=True, null=True, db_index=True, verbose_name="Мощность")
   el_network = models.CharField(max_length=150, blank=True, null=True,  db_index=True, verbose_name="Электрическая сеть")
@@ -126,6 +143,15 @@ class Models(models.Model):
       default='draft',
       verbose_name="Статус"
     )
+
+  def get_absolute_url(self):
+    product = self.parent
+    category = product.category.first()
+    return reverse("model_detail", kwargs={
+      "parent": category.slug,
+      "product": product.slug,
+      "model": self.slug
+    })
 
 class ProductImage(models.Model):
     parent = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="Привязка к продукту")

@@ -1475,6 +1475,7 @@
   background: -o-linear-gradient(top, rgba(51, 101, 133, 0.87), rgb(10, 119, 240) 100%);
   background: linear-gradient(180deg, rgba(51, 101, 133, 0.87), rgb(10, 119, 240) 100%);
   font-weight: 600;
+  text-align: center;
   color: rgb(255, 255, 255);
   overflow: hidden;
   opacity: 0;
@@ -1519,9 +1520,6 @@
 
 .hero .swiper-slide-active .hero__btn {
   opacity: 1;
-  -webkit-transform: translateY(-30px);
-      -ms-transform: translateY(-30px);
-          transform: translateY(-30px);
 }
 
 .hero__arrows {
@@ -3472,6 +3470,14 @@ body main {
       -ms-flex: 1 0 auto;
           flex: 1 0 auto;
   padding: 30px 0;
+}
+
+@media screen and (min-width: 435px) {
+  .hero .swiper-slide-active .hero__btn {
+    -webkit-transform: translateY(-30px);
+        -ms-transform: translateY(-30px);
+            transform: translateY(-30px);
+  }
 }
 
 @media (min-width: 576px) {
@@ -8395,8 +8401,8 @@ body main {
 
   .hero__arrow-next,
   .hero__arrow-prev {
-    width: 40px;
-    height: 40px;
+    width: 40px !important;
+    height: 40px !important;
     background: #ffffff;
     color: #003252;
   }
@@ -8431,7 +8437,7 @@ body main {
 
 @media (max-width: 768px) {
   .hero__arrows {
-    bottom: 20px;
+    bottom: 50%;
     left: 0;
     width: 100%;
     -webkit-box-pack: justify;

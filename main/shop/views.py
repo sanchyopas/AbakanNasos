@@ -96,6 +96,19 @@ def product(request, parent, slug):
 
     return render(request, "pages/catalog/product.html", context)
 
+def model_detail(request, parent, product, model):
+  model_obj = get_object_or_404(Models, slug=model)
+  product = Product.objects.get(slug=product)
+  category = Category.objects.get(slug=parent)
+
+  context = {
+    "category": category,
+    "product": product,
+    "model": model_obj
+  }
+
+  return render(request, "pages/catalog/model.html", context)
+
 
 @csrf_exempt
 def catalog_search(request):

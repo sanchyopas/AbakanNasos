@@ -429,6 +429,13 @@
             </div>
             {% endif %}
 
+            {% if form.add_slider %}
+            <div class="form__group">
+              <label for="{{ form.add_slider.id_for_label }}" class="form__controls-label">{{ form.add_slider.label }}:</label>
+              {{ form.add_slider }} {{ form.add_slider.errors }}
+            </div>
+            {% endif %}
+
           </div>
           {% endif %}
         </div>

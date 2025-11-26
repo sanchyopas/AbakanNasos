@@ -1,0 +1,99 @@
+{% extends "base.html" %} {% load static %} {% load thumbnail %}
+
+{% block title %}
+{% if model.meta_h1 %}{{ model.meta_h1 }}{% else %}{{ model.model }}{% endif %}
+{% endblock %}
+
+{% block description %}
+{% if model.meta_description %}{{ model.meta_description}}{% endif %}
+{% endblock %}
+
+{% block keywords %}
+{% if model.meta_keywords %}{{ model.meta_keywords}}{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="top-page">
+  <div class="container">
+    <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+      <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+         class="breadcrumbs__item">
+        Главная
+        <meta itemprop="position" content="1"/>
+      </a>
+      <a href="{% url 'category' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+         class="breadcrumbs__item">
+        Каталог
+        <meta itemprop="position" content="2"/>
+      </a>
+      <a href="{{ category.get_absolute_url }}" itemprop="itemListElement" itemscope=""
+         itemtype="http://schema.org/ListItem"
+         class="breadcrumbs__item">
+        {{ category.name }}
+        <meta itemprop="position" content="3"/>
+      </a>
+      <a href="{{ category.get_absolute_url }}" itemprop="itemListElement" itemscope=""
+         itemtype="http://schema.org/ListItem"
+         class="breadcrumbs__item">
+        {{ product.name }}
+        <meta itemprop="position" content="4"/>
+      </a>
+      <span itemprop="name" class="breadcrumbs__item">
+            {{ model.model }}
+            <meta itemprop="position" content="5"/>
+        </span>
+    </div>
+  </div>
+</div>
+
+<div class="info">
+  <div class="container">
+    <div class="info__row">
+      <div class="info__image" style="grid-template-columns: 1fr;">
+        {% if model.image %}
+        <div class="swiper info__slider">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide info__slide">
+              <img src="{{ model.image.url }}" alt="">
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <div class="info__text">
+        <h1 class="info__title">
+          {% if model.meta_h1 %}{{ model.meta_h1 }}{% else %}{{ model.name }}{% endif %}
+        </h1>
+        {% if model.description %}
+        <div class="text">
+          {{ model.description|safe }}
+        </div>
+        {% endif %}
+        <div class="info__btns">
+          <button type="button" class="info__btn btn btn--outline" data-popup="leave-request" data-name="{{ model.model }}">
+            Оставить заявку
+          </button>
+          <button type="button" class="info__btn btn btn--primary"  data-popup="callback">Связаться с нами</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if model.text %}
+<section class="py border-l">
+  <div class="container">
+    <div class="text">
+      {{ model.text|safe }}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% include "../../includes/_callback.html" %}
+
+{% include "../../includes/_contact.html" %}
+
+
+{% endblock %}

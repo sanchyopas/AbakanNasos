@@ -224,6 +224,17 @@ class ModelsForm(AutoStyledModelForm):
     model = Models
     fields = "__all__"
 
+    widgets = {
+      'description':CKEditor5Widget(
+        attrs={'class': 'django_ckeditor_5'},
+        config_name='extends'
+      ),
+      'text':CKEditor5Widget(
+        attrs={'class': 'django_ckeditor_5'},
+        config_name='extends'
+      )
+    }
+
 class ClientsForm(AutoStyledModelForm):
   class Meta:
     model = Clients

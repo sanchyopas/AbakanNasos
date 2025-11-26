@@ -16,12 +16,14 @@ def index(request):
 
   slides = SliderHero.objects.filter(status='published')
   category = Category.objects.filter(parent=None, status='published')
+  slider_category = Category.objects.filter(parent=None, add_slider='published', status='published')
 
   context = {
     "settings": settings,
     "slides": slides,
     "category": category,
     "about": about,
+    "slider_category": slider_category,
   }
 
   return render(request, 'pages/index.html', context)
