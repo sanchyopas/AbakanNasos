@@ -1,3 +1,3 @@
 PassengerEnabled On
-PassengerAppRoot /home/a/avroraweb/tompc.ru-tech/public_html/main/main
-PassengerPython /home/a/avroraweb/tompc.ru-tech/public_html/venv/bin/python
+PassengerAppRoot /home/a/avroraweb/tompc-tech/public_html/main/main
+PassengerPython /home/a/avroraweb/tompc-tech/public_html/venv/bin/python
