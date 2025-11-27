@@ -43,7 +43,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     # "debug_toolbar.middleware.DebugToolbarMiddleware",
     # "corsheaders.middleware.CorsMiddleware",
-    'allauth.account.middleware.AccountMiddleware',
+#     'allauth.account.middleware.AccountMiddleware',
 ]
 
 DATABASES = {
