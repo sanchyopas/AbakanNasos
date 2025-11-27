@@ -31,8 +31,10 @@ INSTALLED_APPS = [
     "order",
     "payment",
     "subdomain",
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     # 'tinymce',
     "blog",
     "news",
@@ -50,5 +52,5 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    'allauth.account.middleware.AccountMiddleware',
+#     'allauth.account.middleware.AccountMiddleware',
 ]

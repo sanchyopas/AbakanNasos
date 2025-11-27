@@ -7,7 +7,7 @@ charset-normalizer
 cryptography
 defusedxml
 distlib
-Django==3.2
+Django==4.2
 django-allauth==0.52.0
 django-ckeditor
 django-ckeditor-5
