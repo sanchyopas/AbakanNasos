@@ -1,7 +1,3 @@
-
-
-
-
 /* Проверка поддержки webp, добавление класса webp или no-webp для HTML */
 import events from "events";
 
@@ -25,7 +21,7 @@ export function isWebp() {
 export const bodyLock = (e) => {
 	let widthScrollBar = window.innerWidth - document.documentElement.clientWidth;
 
-	document.querySelector('.header').style.paddingRight = widthScrollBar + 'px';
+	// document.querySelector('.header').style.marginRight = widthScrollBar + 'px';
 	document.documentElement.style.marginRight = widthScrollBar + 'px';
 	document.body.classList.add('_lock');
 }
@@ -33,6 +29,6 @@ export const bodyLock = (e) => {
 // Удаление блокировки скролла
 export const bodyUnLock = (e) => {
 	document.documentElement.style.marginRight = '0px';
-	document.querySelector('.header').style.paddingRight = '0px';
+	// document.querySelector('.header').style.marginRight = '0px';
 	document.body.classList.remove('_lock');
 }

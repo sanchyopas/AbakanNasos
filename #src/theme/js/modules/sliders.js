@@ -2,7 +2,7 @@ import Swiper from "swiper";
 import {Navigation, Pagination, Scrollbar, Thumbs, EffectFade} from "swiper/modules";
 
 const heroSlider = new Swiper('.hero__slider', {
-  modules: [Navigation, Scrollbar, EffectFade],
+  modules: [Navigation, EffectFade],
   direction: 'horizontal',
   effect: 'fade',
   fade: {
@@ -15,10 +15,6 @@ const heroSlider = new Swiper('.hero__slider', {
   navigation: {
     nextEl: '.hero__arrow-next',
     prevEl: '.hero__arrow-prev',
-  },
-
-  scrollbar: {
-    el: '.swiper-scrollbar',
   },
 });
 

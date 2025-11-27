@@ -47,13 +47,11 @@ def category_detail(request, slug):
 def product(request, parent, slug):
     product = Product.objects.get(slug=slug)
     category = Category.objects.get(slug=parent)
-
     images = ProductImage.objects.filter(parent=product)
 
-    # МОДЕЛИ ТОЛЬКО ТЕКУЩЕГО ПРОДУКТА
+    # модели текущего продукта
     models_qs = Models.objects.filter(parent=product)
 
-    # Если моделей нет — выводим пустые таблицы
     if not models_qs.exists():
         return render(request, "pages/catalog/product.html", {
             "category": category,
@@ -64,25 +62,32 @@ def product(request, parent, slug):
             "models_list": [],
         })
 
+    # нужные поля
+    FIELDS_TO_SHOW = [
+        "model",
+        "power",
+        "el_network",
+        "nom_capacity",
+        "max_capacity",
+        "max_capacity_min",
+        "now_head",
+        "max_head",
+        "suction_depth",
+        "con_size",
+    ]
+
     columns = []
 
-    # Проходимся по полям модели
-    for field in Models._meta.fields:
-        name = field.name
-
-        # Пропускаем служебные поля
-        if name in ("id", "status", "parent"):
-            continue
-
+    for field_name in FIELDS_TO_SHOW:
+        field = Models._meta.get_field(field_name)
         verbose = field.verbose_name
 
-        # Проверяем, что хотя бы у одной модели этого продукта есть значение
-        has_value = models_qs.exclude(**{name: None}).exclude(**{name: ""}).exists()
+        has_value = models_qs.exclude(**{field_name: None}).exclude(**{field_name: ""}).exists()
 
         if has_value:
             columns.append({
-                "name": name,
-                "verbose": verbose
+                "name": field_name,
+                "verbose": verbose,
             })
 
     context = {
@@ -95,6 +100,7 @@ def product(request, parent, slug):
     }
 
     return render(request, "pages/catalog/product.html", context)
+
 
 def model_detail(request, parent, product, model):
   model_obj = get_object_or_404(Models, slug=model)

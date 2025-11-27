@@ -12,14 +12,16 @@
     <form action="." method="POST" class="form" enctype="multipart/form-data">
       <div class="page__head">
         <div class="page__head-tab">
-          <button type="button" data-tab="basic" class="page__head-btn _active">Основные</button>
-          <button type="button" data-tab="seo" class="page__head-btn">Поля SEO</button>
-          <button type="button" data-tab="gallery" class="page__head-btn">Фотографии</button>
+          <button type="button" data-name="basic" class="page__head-btn _active">Основные</button>
+          <button type="button" data-name="seo" class="page__head-btn">Поля SEO</button>
+          <button type="button" data-name="gallery" class="page__head-btn">Фотографии</button>
+          <button type="button" data-name="list" class="page__head-btn">Список</button>
           {% if models %}
-          <button type="button" data-tab="model" class="page__head-btn">Модели</button>
+          <button type="button" data-name="model" class="page__head-btn">Модели</button>
           {% endif %}
         </div>
         <div class="page__head-right">
+          {% if add_url %}<a href="{% url add_url %}" class="form__add-property">Создать</a>{% endif %}
           <button type="submit" class="form__btn">
             <img src="{% static 'admin/img/save.svg' %}" alt=""/>
             Сохранить
@@ -315,7 +317,7 @@
             {% endif %}
 
           </div>
-
+          {% if form.image or form.slug or form.category or form.parent or form.logo or form.logo_dark or form.logo_width or form.logo_height or form.icon_white or form.icon_dark or form.instance.image or form.latest or form.type_image or form.status %}
           <div class="page-content__col">
             {% if form.slug %}
             <div class="form__group">
@@ -363,6 +365,7 @@
               {{ form.logo_dark }} {{ form.logo_dark.errors }}
             </div>
             {% endif %}
+
             <div class="" style="display: flex; align-items: center; gap: 10px;">
               {% if form.logo_width %}
               <div class="form__group form__group-image">
@@ -426,7 +429,15 @@
             </div>
             {% endif %}
 
+            {% if form.add_slider %}
+            <div class="form__group">
+              <label for="{{ form.add_slider.id_for_label }}" class="form__controls-label">{{ form.add_slider.label }}:</label>
+              {{ form.add_slider }} {{ form.add_slider.errors }}
+            </div>
+            {% endif %}
+
           </div>
+          {% endif %}
         </div>
       </div>
       <div class="page-content" id="seo">
@@ -478,32 +489,53 @@
         </div>
         <button type="button" id="add-property" class="form__add-property">Добавить характеристику</button>
       </div>
-      <div class="page-content" id="gallery">
-        <a href="{% url 'gallery_add' %}" class="form__add-property">Создать</button>
-          <div class="page-content__row">
-            <div class="page-content__onecol">
-              <div class="grid-items">
-                {% for item in items %}
-                <div class="grid-item">
-                  {% if item.image %}
-                  <div class="grid-item__image">
-                    {% thumbnail item.image "250x250" format="WEBP" crop="center" as im %}
-                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
-                    {% endthumbnail %}
-                  </div>
-                  {% endif %}
-                  <div class="grid-item__content">
-                    <p class="grid-item__title">
-                      {% if item.title %}{{ item.title }} {% endif %}
-                      {{ item.name }}
-                    </p>
-                    {% include 'common/_edit-block.html' with edit_url=edit_url delete_url=delete_url %}
-                  </div>
+      <div class="page-content" id="list">
+          <div class="page-content__onecol">
+            <div class="grid-items">
+              {% for item in items %}
+              <div class="grid-item">
+                {% if item.image %}
+                <div class="grid-item__image">
+                  {% thumbnail item.image "250x250" format="WEBP" crop="center" as im %}
+                  <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
+                  {% endthumbnail %}
                 </div>
-                {% endfor %}
+                {% endif %}
+                <div class="grid-item__content">
+                  <p class="grid-item__title">
+                    {% if item.title %}{{ item.title }} {% endif %}
+                    {{ item.name }}
+                  </p>
+                  {% include 'common/_edit-block.html' with edit_url=edit_url delete_url=delete_url %}
+                </div>
               </div>
+              {% endfor %}
             </div>
           </div>
+      </div>
+      <div class="page-content" id="gallery">
+        <div class="page-content__onecol">
+          <div class="grid-items">
+            {% for item in items %}
+            <div class="grid-item">
+              {% if item.image %}
+              <div class="grid-item__image">
+                {% thumbnail item.image "250x250" format="WEBP" crop="center" as im %}
+                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
+                {% endthumbnail %}
+              </div>
+              {% endif %}
+              <div class="grid-item__content">
+                <p class="grid-item__title">
+                  {% if item.title %}{{ item.title }} {% endif %}
+                  {{ item.name }}
+                </p>
+                {% include 'common/_edit-block.html' with edit_url=edit_url delete_url=delete_url %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
       </div>
     </form>
 

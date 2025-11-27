@@ -63,6 +63,7 @@
     border-radius: 30px;
     background: linear-gradient(180deg, rgba(51, 101, 133, 0.87), rgba(10, 119, 240, 1) 100%);
     font-weight: 600;
+    text-align: center;
     color: rgba(255, 255, 255, 1);
     overflow: hidden;
     opacity: 0;
@@ -104,7 +105,10 @@
 
     .hero__btn {
       opacity: 1;
-      transform: translateY(-30px);
+
+      @media screen and (min-width: 435px) {
+        transform: translateY(-30px);
+      }
     }
   }
 
@@ -117,7 +121,7 @@
     gap: 10px;
 
     @media (max-width: 768px) {
-      bottom: 20px;
+      bottom: 50%;
       left: 0;
       width: 100%;
       justify-content: space-between;
@@ -145,8 +149,8 @@
     }
 
     @media screen and (max-width: 768px) {
-      width: 40px;
-      height: 40px;
+      width: 40px !important;
+      height: 40px !important;
       background: #ffffff;
       color: #003252;
     }

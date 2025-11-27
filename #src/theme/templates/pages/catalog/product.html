@@ -122,7 +122,13 @@
        {% for model in models %}
        <tr>
          {% if model.model %}
-         <td data-label="{{ model.model }}">{{ model.model }}</td>
+         <td data-label="{{ model.model }}">
+           {% if model.slug %}
+           <a href="{{ model.get_absolute_url }}">{{ model.model }}</a>
+           {% else %}
+            {{ model.model }}
+           {% endif %}
+         </td>
          {% endif %}
          {% if model.power %}
          <td data-label="{{ model.power }}">{{ model.power }}</td>

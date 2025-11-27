@@ -95,7 +95,9 @@ def import_products_from_excel(file_path):
       slug = get_unique_slug(Product, slugify(name))
       category = row.iloc[0]
       category_slug = slugify(category)
+      print(category_slug.split("-")[0])
       description = row.iloc[2]
+      model_slug = slugify(name)
 
       try:
         category = Category.objects.get(slug=category_slug)
@@ -107,7 +109,7 @@ def import_products_from_excel(file_path):
             status='published'
           )
 
-#       image = f"goods/{row[6]}"
+      image = f"goods/{row[6]}"
 
       try:
           new_product = Product.objects.create(
@@ -161,18 +163,11 @@ def import_products_from_excel(file_path):
 
 
 # @user_passes_test(lambda u: u.is_superuser)
-# def sidebar_show(request):
-
-#     request.session['sidebar'] = 'True'
-
-#     return redirect('admin')
-
-# @user_passes_test(lambda u: u.is_superuser)
 import urllib.parse
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin(request):
-  import_products_from_excel(path_to_excel)
+#   import_products_from_excel(path_to_excel)
 
   # unzip_archive()
   """Данная предстовление отобразает главную страницу админ панели"""
