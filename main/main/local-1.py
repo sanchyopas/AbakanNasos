@@ -39,7 +39,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
     # "debug_toolbar.middleware.DebugToolbarMiddleware",
     # "corsheaders.middleware.CorsMiddleware",
 ]
