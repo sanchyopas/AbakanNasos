@@ -1,0 +1,177 @@
+[
+{
+  "model": "home.basesettings",
+  "pk": 1,
+  "fields": {
+    "logo": "base-settings/logo_pumps_with_text-bigv2.png",
+    "logo_dark": "base-settings/logo_pumps_with_text-bigv2_dKbb2k9.png",
+    "logo_width": "146",
+    "logo_height": "46",
+    "phone": "+7 (996) 637-76-82",
+    "time_work": null,
+    "email": "mail@tompc.ru",
+    "address": null,
+    "meta_h1": null,
+    "meta_title": null,
+    "meta_description": "",
+    "meta_keywords": "",
+    "favicon": "base-settings/logo_xDRNVxp.png",
+    "status": "published"
+  }
+},
+{
+  "model": "home.hometemplate",
+  "pk": 1,
+  "fields": {
+    "banner": "",
+    "meta_h1": null,
+    "meta_title": "Насосное оборудование — Насосное оборудование в Томске",
+    "meta_description": "Насосное оборудование — Насосное оборудование в Томске от компании АбаканНасос",
+    "meta_keywords": "насосы"
+  }
+},
+{
+  "model": "home.aboutpage",
+  "pk": 1,
+  "fields": {
+    "image": "about-page/about.jpg",
+    "title": "О компании ENSI",
+    "description": "<p><span style=\"color:rgb(0,0,0);\">Компания ENSI — надежный поставщик и партнер в области насосного оборудования. Мы предлагаем широкий ассортимент решений для различных отраслей: от коммунального хозяйства и промышленности до частного строительства и аграрного сектора.</span></p><p><span style=\"color:rgb(0,0,0);\">Наши насосы обеспечивают бесперебойную подачу воды, эффективную перекачку жидкостей и надежную работу в самых разных условиях эксплуатации.</span></p><p><span style=\"color:rgb(0,0,0);\">Наши преимущества:</span></p><ul><li><p style=\"margin-left:0px;\">Широкий ассортимент оборудования.</p></li><li><p style=\"margin-left:0px;\">Подбор насосов под любые задачи.</p></li><li><p style=\"margin-left:0px;\">Сервисное сопровождение и гарантия качества.</p></li><li><p style=\"margin-left:0px;\">Партнерство с ведущими мировыми производителями.</p></li></ul><p style=\"margin-left:0px;\"><span style=\"color:rgb(0,0,0);\">Компания ENSI — это качество, надежность и современные технологии в каждой капле воды.</span></p>",
+    "text": "<figure class=\"image image-style-align-left image_resized\" style=\"width:39.48%;\"><img style=\"aspect-ratio:1962/1443;\" src=\"/media/about_8UTIHxo.jpg\" width=\"1962\" height=\"1443\"></figure><p><span style=\"color:rgb(0,0,0);\">Еще какой то текст на странице уже о нас прям Компания ENSI — надежный поставщик и партнер в области насосного оборудования. Мы предлагаем широкий ассортимент решений для различных отраслей: от коммунального хозяйства и промышленности до частного строительства и аграрного сектора.</span></p><p><span style=\"color:rgb(0,0,0);\">Наши насосы обеспечивают бесперебойную подачу воды, эффективную перекачку жидкостей и надежную работу в самых разных условиях эксплуатации.</span></p><p><span style=\"color:rgb(0,0,0);\">Наши преимущества:</span></p><ul><li><p style=\"margin-left:0px;\">Широкий ассортимент оборудования.</p></li><li><p style=\"margin-left:0px;\">Подбор насосов под любые задачи.</p></li><li><p style=\"margin-left:0px;\">Сервисное сопровождение и гарантия качества.</p></li><li><p style=\"margin-left:0px;\">Партнерство с ведущими мировыми производителями.</p></li></ul><p style=\"margin-left:0px;\"><span style=\"color:rgb(0,0,0);\">Компания ENSI — это качество, надежность и современные технологии в каждой капле воды.</span></p>",
+    "meta_h1": "Страница о нас и о нашей компании",
+    "meta_title": "Мета заголовок | АбаканНасос",
+    "meta_description": "Мета описание | АбаканНасос",
+    "meta_keywords": "Мета keywords | АбаканНасос"
+  }
+},
+{
+  "model": "home.callbackblock",
+  "pk": 2,
+  "fields": {
+    "image": "home-page/pattern_KU5akRA.png",
+    "title": "Оставьте заявку и вас проконсультируют наши специалисты",
+    "description": "Наши менеджеры ответят на любой интересующий вас вопрос по поводу нашей продукции, подберем насос подходящий под вашу задачу!"
+  }
+},
+{
+  "model": "home.clients",
+  "pk": 1,
+  "fields": {
+    "image": "home-page/gazprom_25OAJQ9.png",
+    "title": "Газпром",
+    "status": "published"
+  }
+},
+{
+  "model": "home.clients",
+  "pk": 2,
+  "fields": {
+    "image": "home-page/logo.png",
+    "title": "Ensi",
+    "status": "published"
+  }
+},
+{
+  "model": "home.contactpage",
+  "pk": 1,
+  "fields": {
+    "description": "<p>Текст на странице контакты</p>",
+    "meta_h1": "онтакты заголовок Мета заголовок h1",
+    "meta_title": "Контакты заголовок Мета заголовок",
+    "meta_description": "Мета заголовок Мета описание",
+    "meta_keywords": "Мета keywords Контакты заголовок"
+  }
+},
+{
+  "model": "home.socials",
+  "pk": 1,
+  "fields": {
+    "name": "Вконтакте",
+    "icon_white": "icons/white-vk.png",
+    "icon_dark": "icons/vk.svg",
+    "link": "#",
+    "status": "published"
+  }
+},
+{
+  "model": "home.socials",
+  "pk": 2,
+  "fields": {
+    "name": "WhatsApp",
+    "icon_white": "icons/white-wh.png",
+    "icon_dark": "icons/wh.svg",
+    "link": "#",
+    "status": "published"
+  }
+},
+{
+  "model": "home.socials",
+  "pk": 3,
+  "fields": {
+    "name": "Telegram",
+    "icon_white": "icons/white-tg.png",
+    "icon_dark": "icons/tg.svg",
+    "link": "#",
+    "status": "published"
+  }
+},
+{
+  "model": "home.sliderhero",
+  "pk": 1,
+  "fields": {
+    "title": "Распродажа вертикальных многоступенчатых насосов CDL",
+    "description": "Сейчас насосы Ensi QB доступны по специальной цене, поэтому это отличная возможность приобрести надежное оборудование с выгодой. Насосы серии QB от бренда Ensi — это надежное решение для тех, кто ценит качество и удобство в использовании.",
+    "image": "sliders/hero__image.png",
+    "link": "#",
+    "status": "published"
+  }
+},
+{
+  "model": "home.gallerypage",
+  "pk": 1,
+  "fields": {
+    "title": "Галерея",
+    "description": "<p>Тут опять какой то текст у нас будет</p>",
+    "meta_h1": "Заголвоок первого уровная Галерея",
+    "meta_title": "Галерея Мета заголовок:",
+    "meta_description": "Галерея Мета описание:",
+    "meta_keywords": "Галерея Мета keywords:"
+  }
+},
+{
+  "model": "home.galleryitem",
+  "pk": 1,
+  "fields": {
+    "title": "Первая картинка",
+    "image": "gallery/about.webp",
+    "status": "published"
+  }
+},
+{
+  "model": "home.galleryitem",
+  "pk": 2,
+  "fields": {
+    "title": "Вторая картинка",
+    "image": "gallery/about_aTqN9I3.webp",
+    "status": "published"
+  }
+},
+{
+  "model": "home.galleryitem",
+  "pk": 3,
+  "fields": {
+    "title": "Третья картинка",
+    "image": "gallery/about_1CxJCqO.webp",
+    "status": "published"
+  }
+},
+{
+  "model": "home.galleryitem",
+  "pk": 4,
+  "fields": {
+    "title": "Четвертая картинка",
+    "image": "gallery/about_J9uZnOA.webp",
+    "status": "published"
+  }
+}
+]

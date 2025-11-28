@@ -3,7 +3,6 @@ from django.shortcuts import redirect, render
 from django.contrib import auth, messages 
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from cart.models import Cart
 from users.forms import ProfileForm, UserLoginForm, UserRegistrationForm
 
 def login(request):
@@ -18,9 +17,9 @@ def login(request):
       if user:
         auth.login(request, user)
         messages.success(request, f"{username}, Вы вошли в аккаунт")
-        
-        if session_key:
-          Cart.objects.filter(session_key=session_key).update(user=user)
+#
+#         if session_key:
+#           Cart.objects.filter(session_key=session_key).update(user=user)
         
         """
         Данное условие проверяет если ли ключ next
@@ -50,8 +49,8 @@ def register(request):
       session_key = request.session.session_key
       user = form.instance
       auth.login(request, user)
-      if session_key:
-        Cart.objects.filter(session_key=session_key).update(user=user)
+#       if session_key:
+#         Cart.objects.filter(session_key=session_key).update(user=user)
       messages.success(request, f"{user.username}, Вы успешно зарегистрировались и вошли в аккаунт")
       return HttpResponseRedirect(reverse("home"))
   else:

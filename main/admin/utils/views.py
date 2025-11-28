@@ -74,19 +74,12 @@ def generic_singleton_edit(
     form_class,
     model_class,
     title,
-    edit_url,
-    add_url,
-    delete_url,
     template_name=None,
-    model_list=None,
-    model_cat=None
   ):
+    print(template_name)
     """Универсальное редактирование Singleton модели"""
     if not template_name:
         template_name = "common-template/template-edit-add-page.html"
-
-    items = model_list.objects.all()
-    categories = model_cat.objects.all()
 
     # Получаем или создаем единственный экземпляр
     try:
@@ -113,11 +106,6 @@ def generic_singleton_edit(
                 "form": form,
                 "title": title,
                 "settings": instance,
-                "items": items,
-                "edit_url": edit_url,
-                "add_url": add_url,
-                "delete_url": delete_url,
-                "categories": categories
             })
 
     form = form_class(instance=instance)
@@ -125,10 +113,5 @@ def generic_singleton_edit(
         "form": form,
         "title": title,
         "settings": instance,
-        "items": items,
-        "edit_url": edit_url,
-        "add_url": add_url,
-        "delete_url": delete_url,
-        "categories": categories
     }
     return render(request, template_name, context)

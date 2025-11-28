@@ -2,7 +2,6 @@ from home.models import *
 from shop.models import Category
 from blog.models import BlogCategory
 from service.models import Service
-from reviews.models import Reviews
 from branch.models import Branch
 
 # проверенные функции
@@ -32,10 +31,6 @@ def category_blog(request):
 
 def services(request):
     return {'services': Service.objects.filter(footer_view=True).order_by('-id')[:4]}
-
-
-def reviews(request):
-    return {'reviews': Reviews.objects.filter(status=True)}
 
 
 def static_theme_path(request):

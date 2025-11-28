@@ -1,8 +1,5 @@
 from django.urls import path
-from reviews.views import *
 from . import views
-
-from reviews import admin
 
 # from .views_new.product_views import admin_product, product_edit, product_add,product_delete
 

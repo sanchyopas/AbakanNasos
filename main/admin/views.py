@@ -9,7 +9,6 @@ from admin.forms import *
 from home.models import *
 from blog.models import *
 from main.settings import BASE_DIR
-from subdomain.models import *
 from service.models import *
 
 
@@ -256,7 +255,7 @@ def socials(request):
     return generic_list(request, Socials, "Соц.сети", "socials_add", "socials_edit", "socials_delete")
 
 def socials_add(request):
-    return generic_add(request,SocialsForm, "socials", "Добавление соц.сети",  template_name=None)
+    return generic_add(request, SocialsForm, "socials", "Добавление соц.сети",  template_name=None)
 
 def socials_edit(request, pk):
   return generic_edit(request, pk, Socials, SocialsForm, "socials", "Редактирование соц.сети",  template_name=None)
@@ -316,7 +315,49 @@ def admin_contact_page(request):
 
 """ Настройки страницы блога """
 def blog_settings(request):
-  return generic_singleton_edit(request, BlogSettingsForm, BlogSettings, "Настройки страницы блога", template_name=None)
+    try:
+      instance = BlogSettings.objects.get()
+      items = Post.objects.all()
+    except BlogSettings.DoesNotExist:
+      instance = BlogSettings()
+      items = Post()
+      instance.save()
+    except Exception as e:
+      messages.error(request, f"Ошибка: {e}")
+      return redirect(request.META.get('HTTP_REFERER'))
+
+    if request.method == "POST":
+      form = BlogSettingsForm(request.POST, request.FILES, instance=instance)
+
+      if form.is_valid():
+        try:
+          saved_instance = form.save()
+          messages.success(request, "Успешно сохранено!")
+          return redirect(request.META.get('HTTP_REFERER'))
+        except Exception as e:
+          messages.error(request, f"Ошибка сохранения: {e}")
+      else:
+        return render(request, "common-template/generic_page_editor.html", {
+          "form": form,
+          "title": "Настройки блога",
+          "settings": instance,
+          "items": items,
+          "edit_url": "post_edit",
+          "delete_url": "post_delete",
+        })
+
+    form = BlogSettingsForm(instance=instance)
+
+    context = {
+      "form": form,
+      "title": "Настройки блога",
+      "settings": instance,
+      "items": items,
+      "edit_url": "post_edit",
+      "delete_url": "post_delete"
+    }
+
+    return render(request,"common-template/generic_page_editor.html", context)
 
 
 """ Категории товаров """

@@ -1,7 +1,6 @@
 from django import forms
 from home.models import *
 from blog.models import *
-from subdomain.models import *
 from service.models import *
 from shop.models import *
 from branch.models import *
@@ -92,44 +91,7 @@ class ServiceForm(forms.ModelForm):
          config_name='extends'
       )
     }
-    
-class SubdomainForm(forms.ModelForm):
-  class Meta:
-    model = Subdomain
-    fields = "__all__"
-    widgets = {
-        'name': forms.TextInput(attrs={
-          'class': INPUT_CLASS
-        }),
-        'geotag': forms.TextInput(attrs={
-            'class': INPUT_CLASS,
-        }),
-        'subdomain': forms.TextInput(attrs={
-            'class': INPUT_CLASS,
-        }),
-    }
 
-class SubdomainContactForm(forms.ModelForm):
-  class Meta:
-    model = SubdomainContact
-    fields = "__all__"
-    widgets = {
-        'phone': forms.TextInput(attrs={
-          'class': INPUT_CLASS
-        }),
-        'phone_two': forms.TextInput(attrs={
-            'class': INPUT_CLASS,
-        }),
-        'time': forms.DateInput(attrs={
-            'class': INPUT_CLASS,
-        }),
-        'address': forms.TextInput(attrs={
-            'class': INPUT_CLASS,
-        }),
-        'subdomain': forms.Select(attrs={
-            'class': "form__controls-select",
-        }),
-    }
 
 class AutoStyledModelForm(forms.ModelForm):
     DEFAULT_INPUT_CLASS = "form__controls"
