@@ -3,7 +3,7 @@
 {% load thumbnail %}
 {% load static %}
 
-{% block title %}{{ settings.meta_title }}{% endblock %}
+{% block title %}{% if settings.meta_title %}{{ settings.meta_title }}{% else %}Каталог{% endif %}{% endblock %}
 {% block description %}{{ settings.meta_description }}{% endblock %}
 {% block keywords %}{{ settings.meta_keywords }}{% endblock %}
 

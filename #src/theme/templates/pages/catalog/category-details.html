@@ -1,6 +1,10 @@
 {% extends "base.html" %} {% load shop_tags %} {% load thumbnail %}{% load static %}
 {% block title %}
+{% if category.meta_title %}
 {{ category.meta_title }}
+{% else %}
+{{ category.name }}
+{% endif %}
 {% endblock %}
 {% block description %}
 {{ category.meta_description }}
