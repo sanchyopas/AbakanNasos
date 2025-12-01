@@ -130,12 +130,6 @@ def import_products_from_excel(file_path):
           )
       new_product.category.add(category)
 
-      print('------------------------')
-      print(f'{row[5]} - модель')
-      print(f'{row[6]} - Мощность')
-
-      print('------------------------')
-
       try:
           models_list, _ = parse_excel_column(row.iloc[5])
           power_list, _ = parse_excel_column(row.iloc[6])
