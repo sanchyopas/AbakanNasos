@@ -14,7 +14,7 @@
         <i class="fas fa-signal"></i>
         <span>Статистика</span>
       </a>
-      <a href="" class="menu-sidebar__link-general">
+      <a class="menu-sidebar__link-general">
         <i class="fas fa-users-cog"></i>
         <span>Пользователи</span>
       </a>
@@ -22,72 +22,33 @@
     <div class="menu-sidebar__item">
       <p class="menu-sidebar__item-title">Каталог</p>
       <a href="{% url 'admin_shop' %}" class="menu-sidebar__link-general">
-<!--        <i class="fas fa-shopping-basket"></i>-->
+        <i class="fa-solid fa-gear"></i>
         <span>Настройки каталога</span>
       </a>
-      <div class="menu-sidebar__dropdown" id="products">
-        <div class="menu-sidebar__dropdown-title">
-          <div class="menu-sidebar__dropdow-inner">
-            <i class="fas fa-sliders-h"></i>
-            <span>Товары</span>
-          </div>
-          <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="menu-sidebar__dropdown-content">
-          <ul>
-            <li><a href="{% url 'admin_product' %}">Список товаров</a></li>
-            <li><a href="{% url 'product_add' %}">Добавить товар</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="menu-sidebar__dropdown" id="products">
-        <div class="menu-sidebar__dropdown-title">
-          <div class="menu-sidebar__dropdow-inner">
-            <i class="fas fa-sliders-h"></i>
-            <span>Модели</span>
-          </div>
-          <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="menu-sidebar__dropdown-content">
-          <ul>
-            <li><a href="{% url 'admin_model' %}">Список моделей</a></li>
-            <li><a href="{% url 'model_add' %}">Добавить модель</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="menu-sidebar__dropdown" id="category">
-        <div class="menu-sidebar__dropdown-title">
-          <div class="menu-sidebar__dropdow-inner">
-            <i class="fas fa-sliders-h"></i>
-            <span>Категории</span>
-          </div>
-          <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="menu-sidebar__dropdown-content">
-          <ul>
-            <li><a href="{% url 'admin_category' %}">Категории</a></li>
-            <li><a href="{% url 'category_add' %}">Добавить категорию</a></li>
-          </ul>
-        </div>
-      </div>
+      <a href="{% url 'admin_category' %}" class="menu-sidebar__link-general">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Категории</span>
+      </a>
+      <a href="{% url 'admin_product' %}" class="menu-sidebar__link-general">
+        <i class="fa-solid fa-shop"></i>
+        <span>Товары</span>
+      </a>
+      <a href="{% url 'admin_model' %}" class="menu-sidebar__link-general">
+        <i class="fa-brands fa-hashnode"></i>
+        <span>Модели</span>
+      </a>
       <a href="{% url 'upload_goods' %}" class="menu-sidebar__link-general">
-        <i class="fas fa-sliders-h"></i>
+        <i class="fa-solid fa-file-excel"></i>
         <span>Загрузка csv/Excel</span>
       </a>
     </div>
 
     <div class="menu-sidebar__item">
       <p class="menu-sidebar__item-title">Остальные страницы</p>
-      <div class="menu-sidebar__dropdown" id="attr">
-        <div class="menu-sidebar__dropdown-title">
-          <div class="menu-sidebar__dropdow-inner">
-            <i class="fas fa-address-card"></i>
-            <span>Контакты</span>
-          </div>
-          <i class="fas fa-chevron-down"></i>
-        </div>
-      </div>
-
+      <a href="{% url 'blog_settings' %}" class="menu-sidebar__link-general">
+        <i class="fa-solid fa-newspaper"></i>
+        <span>Настройки блога</span>
+      </a>
       <div class="menu-sidebar__dropdown" id="attr">
         <div class="menu-sidebar__dropdown-title">
           <div class="menu-sidebar__dropdow-inner">
@@ -98,9 +59,9 @@
         </div>
         <div class="menu-sidebar__dropdown-content">
           <ul>
-            <li><a href="{% url 'blog_settings' %}">Настройки блога</a></li>
-            <li><a href="{% url 'category_blog' %}">Категории блога</a></li>
-            <li><a href="{% url 'admin_post' %}">Статьи блога</a></li>
+            <li><a >Настройки блога</a></li>
+            <li><a >Категории блога</a></li>
+            <li><a >Статьи блога</a></li>
           </ul>
         </div>
       </div>
@@ -125,15 +86,15 @@
         <span>Главная</span>
       </a>
       <a href="{% url 'admin_about_page' %}" class="menu-sidebar__link-general">
-        <i class="fas fa-home"></i>
+        <i class="fa-solid fa-address-card"></i>
         <span>О нас</span>
       </a>
       <a href="{% url 'admin_contact_page' %}" class="menu-sidebar__link-general">
-        <i class="fas fa-home"></i>
+        <i class="fa-solid fa-address-book"></i>
         <span>Контакты</span>
       </a>
       <a href="{% url 'gallery_settings' %}" class="menu-sidebar__link-general">
-        <i class="fas fa-home"></i>
+        <i class="fa-solid fa-image"></i>
         <span>Галерея</span>
       </a>
     </div>
@@ -148,15 +109,15 @@
         <span>Соц. сети</span>
       </a>
       <a href="{% url 'admin_branch' %}" class="menu-sidebar__link-general">
-        <i class="fa-solid fa-square-share-nodes"></i>
+        <i class="fa-solid fa-map-location-dot"></i>
         <span>Филиалы</span>
       </a>
       <a href="{% url 'admin_callback_block' %}" class="menu-sidebar__link-general">
-        <i class="fa-solid fa-square-share-nodes"></i>
+        <i class="fa-solid fa-right-left"></i>
         <span>Блок обратной связи</span>
       </a>
       <a href="{% url 'admin_clients' %}" class="menu-sidebar__link-general">
-        <i class="fa-solid fa-square-share-nodes"></i>
+        <i class="fa-solid fa-clipboard-user"></i>
         <span>Наши клиенты</span>
       </a>
     </div>
