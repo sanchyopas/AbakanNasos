@@ -167,7 +167,7 @@ import urllib.parse
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin(request):
-  import_products_from_excel(path_to_excel)
+#   import_products_from_excel(path_to_excel)
 
   # unzip_archive()
   """Данная предстовление отобразает главную страницу админ панели"""
@@ -383,12 +383,7 @@ def admin_shop(request):
   ShopSettingsForm,
   ShopSettings,
   "Настройки страницы каталога",
-  "product_edit",
-  "product_add",
-  "product_delete",
   template_name=None,
-  model_list=Product,
-  model_cat=Category
   )
 
 """ Товары """
