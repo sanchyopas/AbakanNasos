@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     # "coupons",
     "users",
     "service",
-    'django.contrib.sites',
+#     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

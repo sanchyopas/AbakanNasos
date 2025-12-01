@@ -130,7 +130,6 @@ def import_products_from_excel(file_path):
 
       try:
           models_list, _ = parse_excel_column(row.iloc[5])
-          print(models_list)
           power_list, _ = parse_excel_column(row.iloc[6])
           el_network_list, _ = parse_excel_column(row.iloc[7])
           nom_capacity_list, _ = parse_excel_column(row.iloc[8])
