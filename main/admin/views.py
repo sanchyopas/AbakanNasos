@@ -98,7 +98,6 @@ def import_products_from_excel(file_path):
       category_slug = slugify(category)
       description = row.iloc[2]
       model_slug = slugify(name)
-      print(f'{name} - {slug} - {category}')
 
       try:
         category = Category.objects.get(slug=category_slug)
