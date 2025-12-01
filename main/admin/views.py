@@ -93,6 +93,8 @@ def import_products_from_excel(file_path):
       name = row.iloc[1]
       if pd.isna(name) or not str(name).strip():
         continue
+
+
       slug = get_unique_slug(Product, slugify(name))
       category = row.iloc[0]
       category_slug = slugify(category)
@@ -127,6 +129,12 @@ def import_products_from_excel(file_path):
               status='published'
           )
       new_product.category.add(category)
+
+      print('------------------------')
+      print(f'{row[5]} - модель')
+      print(f'{row[6]} - Мощность')
+
+      print('------------------------')
 
       try:
           models_list, _ = parse_excel_column(row.iloc[5])
@@ -167,7 +175,7 @@ import urllib.parse
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin(request):
-#   import_products_from_excel(path_to_excel)
+  import_products_from_excel(path_to_excel)
 
   # unzip_archive()
   """Данная предстовление отобразает главную страницу админ панели"""
