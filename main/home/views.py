@@ -9,10 +9,11 @@ from home.callback_send import email_callback
 def index(request):
   try: 
     settings = HomeTemplate.objects.get()
-    about = AboutPage.objects.get()
+
   except:
     settings = HomeTemplate()
-    about = AboutPage()
+
+  about = AboutPage.objects.first()
 
   slides = SliderHero.objects.filter(status='published')
   category = Category.objects.filter(parent=None, status='published')
