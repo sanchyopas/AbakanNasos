@@ -330,9 +330,11 @@ def blog_settings(request):
       return redirect(request.META.get('HTTP_REFERER'))
 
     if request.method == "POST":
+      print(request.method)
       form = BlogSettingsForm(request.POST, request.FILES, instance=instance)
 
       if form.is_valid():
+        print('this')
         try:
           saved_instance = form.save()
           messages.success(request, "Успешно сохранено!")
@@ -356,6 +358,7 @@ def blog_settings(request):
       "title": "Настройки блога",
       "settings": instance,
       "items": items,
+      "add_url": "post_add",
       "edit_url": "post_edit",
       "delete_url": "post_delete"
     }
