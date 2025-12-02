@@ -33,7 +33,7 @@ class Post(models.Model):
       ('hidden', 'Скрыто'),
   ]
 
-  name = models.CharField(max_length=250, db_index=True, verbose_name="Название статьи")
+  name = models.CharField(max_length=250, db_index=True, default='', verbose_name="Название статьи")
   slug = models.SlugField(max_length=200, unique=True, verbose_name="URL")
   description = models.TextField(null=True, blank=True, verbose_name="Содержимое статьи")
   category = models.ForeignKey("BlogCategory", blank=True, null=True, on_delete=models.CASCADE, verbose_name='Категория')
