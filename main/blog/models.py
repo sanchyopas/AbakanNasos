@@ -61,8 +61,6 @@ class Post(models.Model):
         'category_slug': self.category.slug,
         'slug': self.slug
       })
-    return reverse('post', kwargs={
-      'category_slug': 'uncategorized',
-      'slug': self.slug
-    })
+
+    return reverse('post_without_category', kwargs={'slug': self.slug})
   

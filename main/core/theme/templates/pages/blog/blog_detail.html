@@ -20,16 +20,18 @@
         Новости
         <meta itemprop="position" content="2"/>
       </a>
+      {% if post.category.name %}
       <a href="{{ post.category.get_absolute_url }}" itemprop="itemListElement" itemscope=""
          itemtype="http://schema.org/ListItem"
          class="breadcrumbs__item">
         {{ post.category.name }}
         <meta itemprop="position" content="3"/>
       </a>
+      {% endif %}
       <span itemprop="itemListElement" itemscope=""
             itemtype="http://schema.org/ListItem" class="breadcrumbs__item">
             {{ post.name }}
-            <meta itemprop="position" content="4"/>
+            <meta itemprop="position" content="{% if post.category.name %}4{% else %}3{% endif %}"/>
         </span>
     </div>
   </div>

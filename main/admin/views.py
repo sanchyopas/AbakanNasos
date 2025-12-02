@@ -317,13 +317,15 @@ def admin_contact_page(request):
 
 
 """ Настройки страницы блога """
-def blog_settings(request):
+def blog_settings(request, **extra_context):
     try:
       instance = BlogSettings.objects.get()
       items = Post.objects.all()
+      category = BlogCategory.objects.all()
     except BlogSettings.DoesNotExist:
       instance = BlogSettings()
       items = Post()
+      category = BlogCategory()
       instance.save()
     except Exception as e:
       messages.error(request, f"Ошибка: {e}")
@@ -347,6 +349,7 @@ def blog_settings(request):
           "title": "Настройки блога",
           "settings": instance,
           "items": items,
+          "category": category,
           "edit_url": "post_edit",
           "delete_url": "post_delete",
         })

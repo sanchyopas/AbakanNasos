@@ -30,7 +30,7 @@ def category_post(request, category_slug):
   }
   return render(request, "pages/blog/blog_category.html", context)
 
-def post(request, category_slug, slug):
+def post(request, slug, category_slug=None,):
     if category_slug:
       post = get_object_or_404(Post, slug=slug, category__slug=category_slug)
     else:
