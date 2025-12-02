@@ -6,11 +6,10 @@ class BlogSettings(models.Model):
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
-  image = models.ImageField(upload_to="blog", blank=True, null=True, verbose_name="Изображение баннера")
   description = models.TextField(null=True, blank=True, verbose_name="Текст на странице")
 
 class BlogCategory(models.Model):
-  name = models.CharField(max_length=250, null=True, blank=True, db_index=True, verbose_name="Название статьи")
+  name = models.CharField(max_length=250, db_index=True, verbose_name="Название статьи")
   slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name="URL")
   description = models.TextField(null=True, blank=True, verbose_name="Текст на странице")
   date_creation = models.DateField(auto_now_add=True)
@@ -34,10 +33,10 @@ class Post(models.Model):
       ('hidden', 'Скрыто'),
   ]
 
-  name = models.CharField(max_length=250, null=True, blank=True, db_index=True, verbose_name="Название статьи")
-  slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name="URL")
+  name = models.CharField(max_length=250, db_index=True, verbose_name="Название статьи")
+  slug = models.SlugField(max_length=200, unique=True, verbose_name="URL")
   description = models.TextField(null=True, blank=True, verbose_name="Содержимое статьи")
-  category = models.ForeignKey("BlogCategory", on_delete=models.CASCADE, verbose_name='Категория')
+  category = models.ForeignKey("BlogCategory", blank=True, null=True, on_delete=models.CASCADE, verbose_name='Категория')
   date_creation = models.DateField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
   image = models.ImageField(upload_to="blog", verbose_name="Изображение статьи")
@@ -57,8 +56,13 @@ class Post(models.Model):
     return self.name
   
   def get_absolute_url(self):
+    if self.category:
+      return reverse('post', kwargs={
+        'category_slug': self.category.slug,
+        'slug': self.slug
+      })
     return reverse('post', kwargs={
-      'category_slug': self.category.slug,
+      'category_slug': 'uncategorized',
       'slug': self.slug
     })
   

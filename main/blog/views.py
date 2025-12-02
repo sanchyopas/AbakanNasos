@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from blog.models import BlogSettings, Post, BlogCategory
 
@@ -31,9 +31,13 @@ def category_post(request, category_slug):
   return render(request, "pages/blog/blog_category.html", context)
 
 def post(request, category_slug, slug):
-    post = Post.objects.get(slug=slug, category__slug=category_slug)
+    if category_slug:
+      post = get_object_or_404(Post, slug=slug, category__slug=category_slug)
+    else:
+      post = get_object_or_404(Post, slug=slug, category__isnull=True)
+
     viewed_articles = request.session.get('viewed_articles', [])
-    
+
     # Проверяем, просматривал ли пользователь эту статью ранее.
     if slug not in viewed_articles:
       # Увеличиваем счетчик просмотров, если статья просматривается впервые.
