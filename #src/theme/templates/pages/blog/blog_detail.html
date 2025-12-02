@@ -12,26 +12,27 @@
     <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
       <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
          class="breadcrumbs__item">
-        Главная
-        <meta itemprop="position" content="1"/>
+        <span itemprop="name">Главная</span>
+        <meta itemprop="position" content="1">
       </a>
       <a href="{% url 'blog' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
          class="breadcrumbs__item">
-        Статьи
-        <meta itemprop="position" content="2"/>
+        <span itemprop="name">Статьи</span>
+        <meta itemprop="position" content="2">
       </a>
       {% if post.category.name %}
       <a href="{{ post.category.get_absolute_url }}" itemprop="itemListElement" itemscope=""
          itemtype="http://schema.org/ListItem"
          class="breadcrumbs__item">
-        {{ post.category.name }}
-        <meta itemprop="position" content="3"/>
+        <span itemprop="name">{{ post.category.name }}</span>
+        <meta itemprop="position" content="3">
       </a>
       {% endif %}
       <span itemprop="itemListElement" itemscope=""
             itemtype="http://schema.org/ListItem" class="breadcrumbs__item">
-            {{ post.name }}
-            <meta itemprop="position" content="{% if post.category.name %}4{% else %}3{% endif %}"/>
+            <span itemprop="name">{{ post.name }}</span>
+            <meta itemprop="position" content="{% if post.category.name %}4{% else %}3{% endif %}">
+            {% if absolute_url %}<meta itemprop="item" content="{{ absolute_url }}">{% endif %}
         </span>
     </div>
   </div>

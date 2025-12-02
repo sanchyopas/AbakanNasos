@@ -53,6 +53,7 @@ def post(request, slug, category_slug=None,):
 
     context = {
         "post": post,
+        "absolute_url": request.build_absolute_uri(post.get_absolute_url())
     }
 
     return render(request, "pages/blog/blog_detail.html", context)
