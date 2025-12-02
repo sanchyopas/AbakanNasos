@@ -273,10 +273,10 @@ def sliders(request):
     return generic_list(request, SliderHero, "Слайдер", "sliders_add", "sliders_edit", "sliders_delete")
 
 def sliders_add(request):
-    return generic_add(request, SliderHeroForm, "slider", "Добавление слайда",  template_name=None)
+    return generic_add(request, SliderHeroForm, "sliders", "Добавление слайда",  template_name=None)
 
 def sliders_edit(request, pk):
-  return generic_edit(  request,  pk, SliderHero,  SliderHeroForm, "slider", "Редактирование слайда", template_name=None)
+  return generic_edit(  request,  pk, SliderHero,  SliderHeroForm, "sliders", "Редактирование слайда", template_name=None)
 
 def sliders_delete(request, pk):
     return generic_delete(request, SliderHero, pk)
