@@ -56,6 +56,7 @@
     <div class="container">
     <div class="about__row">
       <div class="about__info">
+        {{ request.path  }}
         {% if request.path == "/" %}
         <h2 class="about__title title">{{ about.title }}</h2>
         {% else %}
