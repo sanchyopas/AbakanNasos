@@ -56,17 +56,8 @@
     <div class="container">
     <div class="about__row">
       <div class="about__info">
-        {% if request.path == "/" or request.path == "" %}
+
         <h2 class="about__title title">{{ about.title }}</h2>
-        {% else %}
-        <h1 class="about__title title">
-          {% if about.meta_h1 %}
-          {{ about.meta_h1 }}
-          {% else %}
-          {{ about.title }}
-          {% endif %}
-        </h1>
-        {% endif %}
 
         <div class="about__text text">
           {{ about.description|safe }}
