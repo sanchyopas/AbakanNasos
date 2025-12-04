@@ -10,7 +10,6 @@ class ShopSettings(SingletonModel):
   meta_description = models.TextField(null=True, blank=True, verbose_name="META описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="META keywords")
   description = models.TextField(null=True, blank=True,  verbose_name="Текст на странице")
-  pattern_seo = models.CharField(max_length=250, null=True, blank=True, verbose_name="Паттерн автозаполнения META-title у товаров")
 
 
 # Категория

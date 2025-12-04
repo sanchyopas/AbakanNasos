@@ -175,6 +175,7 @@ def admin(request):
   """Данная предстовление отобразает главную страницу админ панели"""
   return render(request, "page/index.html")
 
+@user_passes_test(lambda u: u.is_superuser)
 def robots(request):
   try:
     robots = RobotsTxt.objects.get()
@@ -206,6 +207,7 @@ folder = 'upload/'
 
 from PIL import Image
 
+@user_passes_test(lambda u: u.is_superuser)
 def upload_goods(request):
     form = UploadFileForm()
     if request.method == 'POST':
@@ -243,80 +245,99 @@ def upload_goods(request):
         form = UploadFileForm()
     return render(request, 'upload/upload.html', {'form': form})
 
+@user_passes_test(lambda u: u.is_superuser)
 def upload_succes(request):
   return render(request, "upload/upload-succes.html")
 
 # Новые views
 
 """ Общие настройки сайта """
+@user_passes_test(lambda u: u.is_superuser)
 def admin_settings(request):
   return generic_singleton_edit(request, GlobalSettingsForm, BaseSettings, "Общие настройки", template_name=None)
 
 
 """ Социальные сети """
+@user_passes_test(lambda u: u.is_superuser)
 def socials(request):
     return generic_list(request, Socials, "Соц.сети", "socials_add", "socials_edit", "socials_delete")
 
+@user_passes_test(lambda u: u.is_superuser)
 def socials_add(request):
     return generic_add(request, SocialsForm, "socials", "Добавление соц.сети",  template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def socials_edit(request, pk):
   return generic_edit(request, pk, Socials, SocialsForm, "socials", "Редактирование соц.сети",  template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def socials_delete(request, pk):
     return generic_delete(request, Socials, pk)
 
 
 """ Слайдеры """
 
+@user_passes_test(lambda u: u.is_superuser)
 def sliders(request):
     return generic_list(request, SliderHero, "Слайдер", "sliders_add", "sliders_edit", "sliders_delete")
 
+@user_passes_test(lambda u: u.is_superuser)
 def sliders_add(request):
     return generic_add(request, SliderHeroForm, "sliders", "Добавление слайда",  template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def sliders_edit(request, pk):
   return generic_edit(  request,  pk, SliderHero,  SliderHeroForm, "sliders", "Редактирование слайда", template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def sliders_delete(request, pk):
     return generic_delete(request, SliderHero, pk)
 
 
 """ Филиалы """
+@user_passes_test(lambda u: u.is_superuser)
 def admin_branch(request):
   return generic_list(request, Branch, "Филиалы", "branch_add", "branch_edit", "branch_delete")
 
+@user_passes_test(lambda u: u.is_superuser)
 def branch_add(request):
   return generic_add(request, BranchForm, "admin_branch", "Добавление Филиала",  template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def branch_edit(request, pk):
   return generic_edit(  request,  pk, Branch,  BranchForm, "admin_branch", "Редактирование Филиала", template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def branch_delete(request, pk):
   return generic_delete(request, Branch, pk)
 
 
 """ Блок callback на главной странице """
+@user_passes_test(lambda u: u.is_superuser)
 def admin_callback_block(request):
   return generic_singleton_edit(request, CallBackBlockForm, CallBackBlock, "Настройки блока", template_name=None)
 
 
 """ Настройки главной страницы """
+@user_passes_test(lambda u: u.is_superuser)
 def admin_home_page(request):
   return generic_singleton_edit(request, HomeTemplateForm, HomeTemplate, "Настройки главной страницы", template_name=None)
 
 
 """ Настройки страницы о нас """
+@user_passes_test(lambda u: u.is_superuser)
 def admin_about_page(request):
   return generic_singleton_edit(request, AboutPageForm, AboutPage, "Настройки страницы о нас", template_name=None)
 
 
 """ Настройки страницы о нас """
+@user_passes_test(lambda u: u.is_superuser)
 def admin_contact_page(request):
   return generic_singleton_edit(request, ContactPageForm, ContactPage, "Настройки страницы контакты", template_name=None)
 
 
 """ Настройки страницы блога """
+@user_passes_test(lambda u: u.is_superuser)
 def blog_settings(request, **extra_context):
     try:
       instance = BlogSettings.objects.get()
@@ -370,15 +391,19 @@ def blog_settings(request, **extra_context):
 
 
 """ Категории товаров """
+@user_passes_test(lambda u: u.is_superuser)
 def admin_category(request):
   return generic_list(request, Category, "Категории", "category_add", "category_edit", "category_delete")
 
+@user_passes_test(lambda u: u.is_superuser)
 def category_add(request):
   return generic_add(request, CategoryForm, "admin_category", "Добавление категории",  template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def category_edit(request, pk):
   return generic_edit(  request,  pk, Category,  CategoryForm, "admin_category", "Редактирование категории", template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def category_delete(request, pk):
   return generic_delete(request, Category, pk)
 
@@ -391,13 +416,15 @@ def admin_shop(request):
   ShopSettingsForm,
   ShopSettings,
   "Настройки страницы каталога",
-  template_name=None,
+  template_name="common-template/singleton_page_edit.html",
   )
 
 """ Товары """
+@user_passes_test(lambda u: u.is_superuser)
 def admin_product(request):
   return generic_list(request, Product, "Товары", "product_add", "product_edit", "product_delete")
 
+@user_passes_test(lambda u: u.is_superuser)
 def product_edit(request, pk):
   """
     View, которая получает данные из формы редактирования товара
@@ -435,85 +462,107 @@ def product_edit(request, pk):
 
   return render(request, "common-template/template-edit-add-page.html", context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def product_add(request):
   return generic_add(request, ProductForm, "admin_shop", "Добавление Товара",  template_name=None)
 
-
+@user_passes_test(lambda u: u.is_superuser)
 def product_delete(request,pk):
   return generic_delete(request, Product, pk)
 
 
 """ Модели товаров """
+@user_passes_test(lambda u: u.is_superuser)
 def admin_model(request):
   return generic_list(request, Models, "Модели", "model_add", "model_edit", "model_delete")
 
+@user_passes_test(lambda u: u.is_superuser)
 def model_add(request):
   return generic_add(request, ModelsForm, "admin_model", "Добавление модели",  template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def model_edit(request, pk):
   return generic_edit(  request,  pk, Models,  ModelsForm, "admin_model", "Редактирование модели", template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def model_delete(request, pk):
   return generic_delete(request, Models, pk)
 
 
 """ Наши клиенты блок """
+@user_passes_test(lambda u: u.is_superuser)
 def admin_clients(request):
   return generic_list(request, Clients, "Наши клиенты", "clients_add", "clients_edit", "clients_delete")
 
+@user_passes_test(lambda u: u.is_superuser)
 def clients_add(request):
   return generic_add(request, ClientsForm, "admin_clients", "Добавление блока",  template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def clients_edit(request, pk):
   return generic_edit(  request,  pk, Clients,  ClientsForm, "admin_clients", "Редактирование блока", template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def clients_delete(request, pk):
   return generic_delete(request, Clients, pk)
 
 
 """ Настройки блога """
+@user_passes_test(lambda u: u.is_superuser)
 def admin_post(request):
   return generic_list(request, Post, "Статьи", "post_add", "post_edit", "post_delete")
 
+@user_passes_test(lambda u: u.is_superuser)
 def post_add(request):
   return generic_add(request, PostForm, "admin_post", "Добавление статьи",  template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def post_edit(request, pk):
   return generic_edit(  request,  pk, Post,  PostForm, "admin_post", "Редактирование статьи", template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def post_delete(request, pk):
   return generic_delete(request, Post, pk)
 
 
 """ Настройки категорий блога """
+@user_passes_test(lambda u: u.is_superuser)
 def category_blog(request):
   return generic_list(request, BlogCategory, "Категории статей", "category_blog_add", "category_blog_edit", "category_blog_delete")
 
+@user_passes_test(lambda u: u.is_superuser)
 def category_blog_add(request):
   return generic_add(request, BlogCategoryForm, "category_blog", "Добавление категории статей",  template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def category_blog_edit(request, pk):
   return generic_edit(request,  pk, BlogCategory,  BlogCategoryForm, "category_blog", "Редактирование категории статей", template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def category_blog_delete(request, pk):
   return generic_delete(request, BlogCategory, pk)
 
 
 """ Настройки Галереи """
+@user_passes_test(lambda u: u.is_superuser)
 def gallery_settings(request):
   return generic_singleton_edit(request, GalleryPageForm, GalleryPage, "Настройки страницы галерея", template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def gallery_add(request):
   return generic_add(request, GalleryItemForm, "gallery_settings", "Добавление фотографии",  template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def gallery_edit(request, pk):
   return generic_edit(request,  pk, GalleryItem,  GalleryItemForm, "gallery_settings", "Редактирование фотографии", template_name=None)
 
+@user_passes_test(lambda u: u.is_superuser)
 def gallery_delete(request, pk):
   return generic_delete(request, GalleryItem, pk)
 
 
 """ Настройки услуг """
+@user_passes_test(lambda u: u.is_superuser)
 def admin_services(request):
   try:
      serv_page = ServicePage.objects.get()
@@ -546,6 +595,7 @@ def admin_services(request):
 
   return render(request, "serv/serv_settings.html", context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def services_add(request):
   form = ServiceForm()
 
@@ -564,6 +614,7 @@ def services_add(request):
 
   return render(request, "serv/serv_add.html", context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def services_edit(request, pk):
   services = Service.objects.get(id=pk)
   form = ServiceForm(instance=services)
@@ -582,6 +633,7 @@ def services_edit(request, pk):
 
   return render(request, "serv/serv_edit.html", context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def services_delete(request, pk):
   service = Service.objects.get(id=pk)
   service.delete()

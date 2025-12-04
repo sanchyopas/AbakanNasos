@@ -1330,7 +1330,7 @@ div._show {
 }
 
 .ck-editor {
-  max-width: 1200px;
+  width: 100% !important;
 }
 
 .notice {

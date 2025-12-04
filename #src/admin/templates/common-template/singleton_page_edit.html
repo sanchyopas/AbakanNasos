@@ -3,22 +3,16 @@
   <div class="page__inner">
     <div class="page__top">
       <h1 class="page__title">{{ title }}</h1>
-      <ul class="admin-breadcrumbs">
-        <li><a href="{% url 'admin' %}">Панель управления</a></li>
-        <li><a href="{{ url }}">Товары</a></li>
-        <li>Настройки товара</li>
-      </ul>
     </div>
     <form action="." method="POST" class="form" enctype="multipart/form-data">
       <div class="page__head">
         <div class="page__head-tab">
           <button type="button" data-name="basic" class="page__head-btn _active">Основные</button>
           <button type="button" data-name="seo" class="page__head-btn">Поля SEO</button>
-          <button type="button" data-name="gallery" class="page__head-btn">Фотографии</button>
-          <button type="button" data-name="list" class="page__head-btn">Список</button>
-          {% if models %}
+          <button type="button" data-name="category" class="page__head-btn">Категории</button>
+          <button type="button" data-name="product" class="page__head-btn">Товары</button>
           <button type="button" data-name="model" class="page__head-btn">Модели</button>
-          {% endif %}
+
         </div>
         <div class="page__head-right">
           {% if add_url %}<a href="{% url add_url %}" class="form__add-property">Создать</a>{% endif %}
