@@ -3058,8 +3058,7 @@ body._lock::after {
 }
 
 .services__image {
-  width: 150px;
-  height: 120px;
+  max-width: 100%;
   position: absolute;
   bottom: 0;
   left: 0;
