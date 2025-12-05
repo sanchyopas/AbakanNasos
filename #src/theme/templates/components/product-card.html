@@ -2,9 +2,10 @@
 <a href="{{ category.get_absolute_url }}" class="services__item">
   <p class="services__title">{{ category.name }}</p>
   {% if category.image %}
-  {% thumbnail category.image "214x184" format="WEBP" crop="right" as im %}
+  <img src="{{ category.image.url }}"  class="services__image">
+  {% comment %}{% thumbnail category.image "214x184" format="WEBP" crop="center" as im %}
   <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ category.name }}"
        title="{{ category.name }}" class="services__image">
-  {% endthumbnail %}
+  {% endthumbnail %}{% endcomment %}
   {% endif %}
 </a>

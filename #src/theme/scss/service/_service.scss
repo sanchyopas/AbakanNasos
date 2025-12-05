@@ -47,13 +47,14 @@
   }
 
   &__image {
-    width: 150px;
-    height: 120px;
+    max-width: 100%;
+    //width: 150px;
+    //height: 120px;
     position: absolute;
     bottom: 0;
     left: 0;
     //transform: rotate(21deg);
-    z-index: 1;
+    z-index: -1;
     object-fit: cover;
   }
 
