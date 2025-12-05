@@ -3060,7 +3060,7 @@ body._lock::after {
 .services__image {
   max-width: 100%;
   position: absolute;
-  bottom: -10px;
+  bottom: 0;
   left: 0;
   z-index: 1;
   -o-object-fit: cover;
