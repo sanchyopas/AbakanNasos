@@ -3061,11 +3061,8 @@ body._lock::after {
   width: 150px;
   height: 120px;
   position: absolute;
-  bottom: -20px;
-  right: -10px;
-  -webkit-transform: rotate(21deg);
-      -ms-transform: rotate(21deg);
-          transform: rotate(21deg);
+  bottom: 0;
+  left: 0;
   z-index: 1;
   -o-object-fit: cover;
      object-fit: cover;
