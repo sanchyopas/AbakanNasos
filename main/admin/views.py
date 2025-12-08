@@ -80,7 +80,7 @@ def get_value(values, index, total_count):
     return ""
 
 
-
+images_folder = f"{BASE_DIR}/upload/image"
 def import_products_from_excel(file_path):
     Product.objects.all().delete()
     Category.objects.all().delete()
@@ -90,16 +90,42 @@ def import_products_from_excel(file_path):
     df = pd.read_excel(file_path, engine='openpyxl', skiprows = 1)
 
     for _, row in df.iterrows():
-      name = row.iloc[1]
-      if pd.isna(name) or not str(name).strip():
-        continue
-
-
-      slug = get_unique_slug(Product, slugify(name))
       category = row.iloc[0]
       category_slug = slugify(category)
       description = row.iloc[2]
-      model_slug = slugify(name)
+      original_name = row.iloc[3]
+
+      if not original_name:
+        continue
+
+      try:
+        # Убираем пробелы по краям
+        original_name = original_name.strip()
+
+        # Разделяем имя и расширение
+        image_name, ext = os.path.splitext(original_name)
+        ext = ext.strip().lower()
+
+        # Генерируем slug
+        slug_name = slugify(image_name)
+
+        # Новое имя файла
+        new_filename = f"{slug_name}{ext}"
+
+        # Полные пути
+        old_path = os.path.join(images_folder, original_name)
+        new_path = os.path.join(images_folder, new_filename)
+
+        # Если оригинальный файл существует — переименовываем
+        if os.path.exists(old_path):
+            os.rename(old_path, new_path)
+        else:
+          pass
+  #           print(f"ФАЙЛ НЕ НАЙДЕН: {original_name}")
+
+        image = f"goods/{new_filename}"
+      except:
+        pass
 
       try:
         category = Category.objects.get(slug=category_slug)
@@ -108,10 +134,17 @@ def import_products_from_excel(file_path):
           category = Category.objects.create(
             name=category,
             slug=category_slug,
+            image=image,
             status='published'
           )
 
-      image = f"goods/{row[6]}"
+      name = row.iloc[1]
+
+      if pd.isna(name) or not str(name).strip():
+        continue
+
+      slug = get_unique_slug(Product, slugify(name))
+
 
       try:
           new_product = Product.objects.create(
@@ -169,7 +202,7 @@ import urllib.parse
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin(request):
-#   import_products_from_excel(path_to_excel)
+  import_products_from_excel(path_to_excel)
 
   # unzip_archive()
   """Данная предстовление отобразает главную страницу админ панели"""
