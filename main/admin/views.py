@@ -10,6 +10,8 @@ from home.models import *
 from blog.models import *
 from main.settings import BASE_DIR
 from service.models import *
+from shop.models import *
+from .utils.views import *
 
 
 from django.core.paginator import Paginator
@@ -25,14 +27,13 @@ from pytils.translit import slugify
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
-# Проверенные импорты
-from shop.models import *
-from .utils.views import *
+
 
 general_url_product = "/admin/product/"
 
 path = f"{BASE_DIR}/upload/upload.zip"
 path_to_excel = f"{BASE_DIR}/upload/upload.xlsx"
+images_folder = f"{BASE_DIR}/upload/image"
 folder = 'upload/'
 
 def unzip_archive():
@@ -80,7 +81,40 @@ def get_value(values, index, total_count):
     return ""
 
 
-images_folder = f"{BASE_DIR}/upload/image"
+def rename_image(filename):
+  original_name = filename
+
+  try:
+    # Убираем пробелы по краям
+    original_name = original_name.strip()
+
+    # Разделяем имя и расширение
+    image_name, ext = os.path.splitext(original_name)
+    ext = ext.strip().lower()
+
+    # Генерируем slug
+    slug_name = slugify(image_name)
+
+    # Новое имя файла
+    new_filename = f"{slug_name}{ext}"
+
+    # Полные пути
+    old_path = os.path.join(images_folder, original_name)
+    new_path = os.path.join(images_folder, new_filename)
+
+    # Если оригинальный файл существует — переименовываем
+    if os.path.exists(old_path):
+        os.rename(old_path, new_path)
+    else:
+      pass
+#        print(f"ФАЙЛ НЕ НАЙДЕН: {original_name}")
+
+
+    return f"goods/{new_filename}"
+
+  except:
+    pass
+
 def import_products_from_excel(file_path):
     Product.objects.all().delete()
     Category.objects.all().delete()
@@ -93,39 +127,7 @@ def import_products_from_excel(file_path):
       category = row.iloc[0]
       category_slug = slugify(category)
       description = row.iloc[2]
-      original_name = row.iloc[3]
-
-      if not original_name:
-        continue
-
-      try:
-        # Убираем пробелы по краям
-        original_name = original_name.strip()
-
-        # Разделяем имя и расширение
-        image_name, ext = os.path.splitext(original_name)
-        ext = ext.strip().lower()
-
-        # Генерируем slug
-        slug_name = slugify(image_name)
-
-        # Новое имя файла
-        new_filename = f"{slug_name}{ext}"
-
-        # Полные пути
-        old_path = os.path.join(images_folder, original_name)
-        new_path = os.path.join(images_folder, new_filename)
-
-        # Если оригинальный файл существует — переименовываем
-        if os.path.exists(old_path):
-            os.rename(old_path, new_path)
-        else:
-          pass
-  #           print(f"ФАЙЛ НЕ НАЙДЕН: {original_name}")
-
-        image = f"goods/{new_filename}"
-      except:
-        pass
+      image = rename_image(row.iloc[3])
 
       try:
         category = Category.objects.get(slug=category_slug)
@@ -144,12 +146,15 @@ def import_products_from_excel(file_path):
         continue
 
       slug = get_unique_slug(Product, slugify(name))
-
+      model_slug = get_unique_slug(Models, slugify(name))
+      product_image = rename_image(row.iloc[4])
+      print(product_image)
 
       try:
           new_product = Product.objects.create(
               name=name,
               slug=slug,
+              image=product_image,
               description=description,
               status='published'
           )
@@ -159,27 +164,31 @@ def import_products_from_excel(file_path):
           new_product = Product.objects.create(
               name=name,
               slug=slug,
+              image=product_image,
               status='published'
           )
       new_product.category.add(category)
 
       try:
-          models_list, _ = parse_excel_column(row.iloc[5])
-          power_list, _ = parse_excel_column(row.iloc[6])
-          el_network_list, _ = parse_excel_column(row.iloc[7])
-          nom_capacity_list, _ = parse_excel_column(row.iloc[8])
-          max_capacity_list, _ = parse_excel_column(row.iloc[9])
-          max_capacity_min_list, _ = parse_excel_column(row.iloc[10])
-          now_head_list, _ = parse_excel_column(row.iloc[11])
-          max_head_list, _ = parse_excel_column(row.iloc[12])
-          suction_depth_list, _ = parse_excel_column(row.iloc[13])
-          con_size_list, _ = parse_excel_column(row.iloc[14])
+          models_image, _ = parse_excel_column(row.iloc[5])
+          models_list, _ = parse_excel_column(row.iloc[6])
+          power_list, _ = parse_excel_column(row.iloc[7])
+          el_network_list, _ = parse_excel_column(row.iloc[8])
+          nom_capacity_list, _ = parse_excel_column(row.iloc[9])
+          max_capacity_list, _ = parse_excel_column(row.iloc[10])
+          max_capacity_min_list, _ = parse_excel_column(row.iloc[11])
+          now_head_list, _ = parse_excel_column(row.iloc[12])
+          max_head_list, _ = parse_excel_column(row.iloc[13])
+          suction_depth_list, _ = parse_excel_column(row.iloc[14])
+          con_size_list, _ = parse_excel_column(row.iloc[15])
 
           count = len(models_list)
 
           for i in range(count):
               Models.objects.create(
                   parent=new_product,
+                  image=get_value(models_image, i, count),
+                  slug=model_slug,
                   model=get_value(models_list, i, count),
                   power=get_value(power_list, i, count),
                   el_network=get_value(el_network_list, i, count),
@@ -470,18 +479,31 @@ def product_edit(request, pk):
   form_new = ProductForm(request.POST, request.FILES, instance=product)
 
   if request.method == 'POST':
-      if form_new.is_valid():
-          form_new.save()
-          product = Product.objects.get(id=pk)
-          images = request.FILES.getlist('src')
+    if form_new.is_valid():
+      form_new.save()
+      product = Product.objects.get(id=pk)
+      images = request.FILES.getlist('src')
 
-          for image in images:
-              img = ProductImage(parent=product, src=image)
-              img.save()
+      for image in images:
+        img = ProductImage(parent=product, src=image)
+        img.save()
 
-          return redirect(request.META.get('HTTP_REFERER'))
-      else:
-          return render(request, 'common-template/template-edit-add-page.html', {'form': form_new})
+      messages.success(request, "Успешно сохранено !")
+      return redirect(request.META.get('HTTP_REFERER'))
+    else:
+      error_list = []
+
+      for field_name, errors in form.errors.items():
+        if field_name == "__all__":
+          for error in errors:
+            error_list.append(error)
+          continue
+        field_label = form[field_name].label
+
+        for error in errors:
+          error_list.append(f"{field_label}: {error}")
+      messages.error(request, " | ".join(error_list))
+      return render(request, 'common-template/product-edit-add-page.html', {'form': form_new})
 
   context = {
     "form": form,
@@ -490,14 +512,11 @@ def product_edit(request, pk):
     "images": images,
   }
 
-  if models:
-    context["models"] = models
-
-  return render(request, "common-template/template-edit-add-page.html", context)
+  return render(request, "common-template/product-edit-add-page.html", context)
 
 @user_passes_test(lambda u: u.is_superuser)
 def product_add(request):
-  return generic_add(request, ProductForm, "admin_shop", "Добавление Товара",  template_name=None)
+  return generic_add(request, ProductForm, "admin_shop", "Добавление Товара",  template_name="common-template/product-edit-add-page.html")
 
 @user_passes_test(lambda u: u.is_superuser)
 def product_delete(request,pk):

@@ -2033,6 +2033,13 @@ p {
   gap: 10px;
 }
 
+.info__list {
+  display: -ms-grid;
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
 .table__inner {
   width: 100%;
   padding-bottom: 30px;

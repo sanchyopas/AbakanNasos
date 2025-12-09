@@ -133,6 +133,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 CKEDITOR_5_CONFIGS = {
     'default': {
         'language': 'ru',
+        'width': '100%',
         'toolbar': [
             'heading', '|',
             'bold', 'italic', 'underline', 'strikethrough', '|',

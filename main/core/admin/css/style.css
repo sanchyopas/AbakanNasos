@@ -97,6 +97,96 @@ ol {
   cursor: pointer;
 }
 
+/* Адаптивные стили для CKEditor 5 */
+
+/* Контейнер редактора */
+
+.ck-editor {
+  max-width: 100%;
+  width: 100% !important;
+}
+
+/* Сам редактор */
+
+.ck-editor__editable {
+  min-height: 300px;
+  max-height: 600px;
+  overflow-y: auto;
+  resize: vertical;
+}
+
+/* Панель инструментов */
+
+.ck-toolbar {
+  -ms-flex-wrap: wrap !important;
+      flex-wrap: wrap !important;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px 4px 0 0;
+}
+
+.ck-toolbar__items {
+  -ms-flex-wrap: wrap !important;
+      flex-wrap: wrap !important;
+}
+
+/* Кнопки на мобильных */
+
+/* Контент внутри редактора */
+
+.ck-content {
+  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+
+/* Изображения внутри редактора */
+
+.ck-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Таблицы внутри редактора */
+
+.ck-content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ck-content table td,
+.ck-content table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+/* Блоки кода */
+
+.ck-content pre {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 10px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Цитаты */
+
+.ck-content blockquote {
+  border-left: 4px solid #007bff;
+  margin-left: 0;
+  padding-left: 20px;
+  font-style: italic;
+  color: #6c757d;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -581,7 +671,6 @@ ol {
   gap: 20px;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  margin: 30px 0px;
 }
 
 .page__title {
@@ -765,6 +854,10 @@ ol {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 20px;
+}
+
+.form__required {
+  color: red;
 }
 
 .form__controls-select {
@@ -1336,7 +1429,10 @@ div._show {
 .notice {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  right: 50%;
+  -webkit-transform: translateX(50%);
+      -ms-transform: translateX(50%);
+          transform: translateX(50%);
   z-index: 999;
   border-radius: 10px;
   cursor: pointer;
@@ -1344,6 +1440,11 @@ div._show {
 
 .notice--success {
   background-color: green;
+  color: #fff;
+}
+
+.notice--error {
+  background-color: red;
   color: #fff;
 }
 
@@ -1362,6 +1463,27 @@ div._show {
   color: #fff;
   font-size: 20px;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .ck-toolbar__items > * {
+    margin: 2px !important;
+  }
+
+  .ck-toolbar__group {
+    margin-bottom: 5px !important;
+  }
+
+  .ck-editor__editable {
+    min-height: 200px;
+    font-size: 14px;
+  }
+
+  /* Скрываем редко используемые кнопки на мобильных */
+
+  .ck-toolbar__items .ck-button:nth-child(n+8) {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -1388,6 +1510,23 @@ div._show {
     content: attr(data-label);
     font-weight: bold;
     padding-right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ck-toolbar {
+    padding: 5px !important;
+  }
+
+  .ck-editor__editable {
+    min-height: 150px;
+    padding: 10px !important;
+  }
+
+  /* Еще более компактная панель на очень маленьких экранах */
+
+  .ck-toolbar__items .ck-button:nth-child(n+6) {
+    display: none;
   }
 }
 

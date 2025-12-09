@@ -63,8 +63,21 @@
       </div>
       <div class="info__text">
         <h1 class="info__title">
-          {% if model.meta_h1 %}{{ model.meta_h1 }}{% else %}{{ model.name }}{% endif %}
+          {% if model.meta_h1 %}{{ model.meta_h1 }}{% else %}{{ model.model }}{% endif %}
         </h1>
+        <ul class="info__list">
+          {% if model.power %}
+          <li><b>Мощность: </b>{{ model.power }}</li>
+          {% endif %}
+          {% if model.el_network %}<li><b>Электрическая: </b>{{ model.el_network }}</li>{% endif %}
+          {% if model.nom_capacity %}<li><b>Ном. Производительность(м3/час): </b>{{ model.nom_capacity }}</li>{% endif %}
+          {% if model.max_capacity %}<li><b>Макс. Производительность(м3/час): </b>{{ model.max_capacity }}</li>{% endif %}
+          {% if model.max_capacity_min %}<li><b>Макс. производительность (л/мин): </b>{{ model.max_capacity_min }}</li>{% endif %}
+          {% if model.now_headr %}<li><b>Номинальный напор(м): </b>{{ model.now_head }}</li>{% endif %}
+          {% if model.max_head %}<li><b>Максимальный напор (м): </b>{{ model.max_head }}</li>{% endif %}
+          {% if model.suction_depth %}<li><b>Максимальная глуб. всасывания(м): </b>{{ model.suction_depth }}</li>{% endif %}
+          {% if model.con_size %}<li><b>Присоединительный размер (дюйм): </b>{{ model.con_size }}</li>{% endif %}
+        </ul>
         {% if model.description %}
         <div class="text">
           {{ model.description|safe }}

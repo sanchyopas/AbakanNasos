@@ -18,25 +18,11 @@
       {% include 'components/admin-sidebar.html' %}
 
       <div class="content__inner">
-        {% include 'components/admin_header.html' %} {% block body %} {% endblock %}
+        {% include 'components/admin_header.html' %}
+        {% block body %} {% endblock %}
       </div>
       {% include 'notice/notice-success.html' %}
     </div>
-<!--    <script>-->
-<!--      CKEDITOR.replace("id_description");-->
-<!--      CKEDITOR.replace("id_description_two");-->
-<!--    </script>-->
-<!--    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>-->
-<!--    <script>-->
-<!--      ClassicEditor-->
-<!--        .create(document.querySelector('#editor'), {-->
-<!--          toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'imageUpload'],-->
-<!--          language: 'ru'-->
-<!--        })-->
-<!--        .catch(error => {-->
-<!--          console.error(error);-->
-<!--        });-->
-<!--    </script>-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script async src="{% static 'admin/js/app.min.js' %}"></script>
   </body>

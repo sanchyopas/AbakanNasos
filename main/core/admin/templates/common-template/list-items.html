@@ -13,10 +13,10 @@
       <div class="page__head-right">
         <div class="page__head-btns">
           <a href="{% url add_url %}" class="action-button">Создать</a>
-          <button type="submit" class="form__btn">
+          <!--<button type="submit" class="form__btn">
             <img src="{% static 'admin/img/save.svg' %}" alt=""/>
             Сохранить
-          </button>
+          </button>-->
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
           <div class="grid-item">
             {% if item.image %}
             <div class="grid-item__image">
-              {% thumbnail item.image "250x250" format="WEBP" crop="center" as im %}
+              {% thumbnail item.image "50x50" format="WEBP" crop="center" as im %}
               <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
               {% endthumbnail %}
             </div>
