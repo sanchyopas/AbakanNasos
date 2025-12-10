@@ -124,9 +124,10 @@ def import_products_from_excel(file_path):
     df = pd.read_excel(file_path, engine='openpyxl', skiprows=1)
 
     for _, row in df.iterrows():
-        category = None if pd.isna(row.iloc[0]) else str(row.iloc[0]).strip()
-        if not category:
-            continue
+        category = row.iloc[0]
+#         category = None if pd.isna(row.iloc[0]) else str(row.iloc[0]).strip()
+#         if not category:
+#             continue
 
         category_slug = slugify(category)
         description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
@@ -230,7 +231,7 @@ import urllib.parse
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin(request):
-#   import_products_from_excel(path_to_excel)
+  import_products_from_excel(path_to_excel)
 
   # unzip_archive()
   """Данная предстовление отобразает главную страницу админ панели"""
