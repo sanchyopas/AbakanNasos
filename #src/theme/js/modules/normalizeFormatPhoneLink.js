@@ -1,8 +1,10 @@
 // Создание правильной ссылка номера телефона
-const regNum = document.querySelectorAll("a[href^=\"tel:\"]");
+// const regNum = document.querySelectorAll("a[href^=\"tel:\"]");
+const regNum = document.querySelectorAll("[data-phone]");
+
 if (regNum) {
   regNum.forEach(num => {
-    let number = formatPhoneNumber(num.href);
+    let number = formatPhoneNumber(num.dataset.phone);
     num.href = `tel:${number}`;
   });
 }

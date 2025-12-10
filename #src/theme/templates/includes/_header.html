@@ -20,13 +20,13 @@
           {% endif %}
 
           {% if branch.phone_one %}
-          <a href="tel:{{ branch.phone_one }}" class="header__phone phone">
+          <a href="#" data-phone="{{ branch.phone_one }}" class="header__phone phone">
             {{ branch.phone_one }}
           </a>
           {% endif %}
 
           {% if branch.phone_two %}
-          <a href="tel:{{ branch.phone_two }}" class="header__phone phone">
+          <a href="#" data-phone="{{ branch.phone_two }}" class="header__phone phone">
             {{ branch.phone_two }}
           </a>
           {% endif %}
