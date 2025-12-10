@@ -5,6 +5,7 @@ functions.isWebp();
 import "./modules/sliders.js";
 import "./modules/menu/mobileMenu.js";
 import "./modules/popup/popup.js";
+import "./modules/normalizeFormatPhoneLink.js";
 
 Fancybox.bind("[data-fancybox]", {
 
