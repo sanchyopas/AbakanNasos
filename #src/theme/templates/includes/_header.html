@@ -46,7 +46,9 @@
         <button type="button" class="social__mobile-btn"><i class="fa-solid fa-share-nodes"></i></button>
         <div class="social__mobile-cnt">
           {% for social in socials %}
-          <a href="{{ social.link }}"><img src="{{ social.icon_dark.url }}" alt="{{ social.name }}"></a>
+          <a href="{{ social.link }}" aria-label="Перейти в наш {{ social.name }}">
+            <img src="{{ social.icon_dark.url }}" alt="">
+          </a>
           {% endfor %}
         </div>
       </div>
