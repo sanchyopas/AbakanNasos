@@ -1615,7 +1615,7 @@ p {
 }
 
 .phone {
-  color: #107BF0;
+  color: rgb(1, 90, 147);
   -webkit-transition: 0.25s;
   -o-transition: 0.25s;
   transition: 0.25s;

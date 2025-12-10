@@ -33,7 +33,8 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .phone {
-  color: #107BF0;
+  //color: #107BF0;
+  color: rgb(1, 90, 147);
   transition: $animation_speed;
 
   @media (hover: hover) {
