@@ -1,3 +1,13 @@
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'avroraweb_tompc',
+        'USER': 'avroraweb_tompc',
+        'PASSWORD': 'qxHk1&Pnnw6b',
+        'HOST': 'localhost',
+    }
+}
+
 INSTALLED_APPS = [
     # "django.contrib.admin",
     "admin",
@@ -17,7 +27,7 @@ INSTALLED_APPS = [
     # "coupons",
     "users",
     "service",
-#     'django.contrib.sites',
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -41,12 +51,4 @@ MIDDLEWARE = [
 #     'allauth.account.middleware.AccountMiddleware',
 ]
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'avroraweb_tompc',
-        'USER': 'avroraweb_tompc',
-        'PASSWORD': 'qxHk1&Pnnw6b',
-        'HOST': 'localhost',
-    }
-}
+
