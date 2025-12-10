@@ -21,16 +21,16 @@
       <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
          class="breadcrumbs__item">
         Главная
-        <meta itemprop="position" content="1"/>
+        <meta itemprop="position" content="1">
       </a>
       <a href="{% url 'category' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
          class="breadcrumbs__item">
         Каталог
-        <meta itemprop="position" content="2"/>
+        <meta itemprop="position" content="2">
       </a>
       <span itemprop="name" class="breadcrumbs__item">
             {{ category.name }}
-            <meta itemprop="position" content="3"/>
+            <meta itemprop="position" content="3">
         </span>
     </div>
     <h1 class="top-page__title title">{{ category.name }}</h1>

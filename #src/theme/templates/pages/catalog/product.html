@@ -20,22 +20,22 @@
       <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
          class="breadcrumbs__item">
         Главная
-        <meta itemprop="position" content="1"/>
+        <meta itemprop="position" content="1">
       </a>
       <a href="{% url 'category' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
          class="breadcrumbs__item">
         Каталог
-        <meta itemprop="position" content="1"/>
+        <meta itemprop="position" content="2">
       </a>
       <a href="{{ category.get_absolute_url }}" itemprop="itemListElement" itemscope=""
          itemtype="http://schema.org/ListItem"
          class="breadcrumbs__item">
         {{ category.name }}
-        <meta itemprop="position" content="1"/>
+        <meta itemprop="position" content="3">
       </a>
       <span itemprop="name" class="breadcrumbs__item">
             {{ product.name }}
-            <meta itemprop="position" content="3"/>
+            <meta itemprop="position" content="4">
         </span>
     </div>
   </div>

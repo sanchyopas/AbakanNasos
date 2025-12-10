@@ -16,17 +16,17 @@
           <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
              class="breadcrumbs__item">
             Главная
-            <meta itemprop="position" content="1"/>
+            <meta itemprop="position" content="1">
           </a>
           <a href="{% url 'service' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
              class="breadcrumbs__item">
             Услуги
-            <meta itemprop="position" content="2"/>
+            <meta itemprop="position" content="2">
           </a>
           <span itemprop="itemListElement" itemscope=""
                 itemtype="http://schema.org/ListItem" class="breadcrumbs__item">
           {{ service.name }}
-          <meta itemprop="position" content="4"/>
+          <meta itemprop="position" content="3">
         </span>
         </div>
         <h1 class="banner__title title-h2">{% if service.meta_h1 %}{{ service.meta_h1}} {% else %} {{ service.name }}{% endif %}</h1>
