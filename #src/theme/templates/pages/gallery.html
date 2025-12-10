@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load thumbnail %}
-{% block title %}{{ gallery.meta_title }}{% endblock %}
+{% block title %}
+{% if gallery.meta_title %}{{ gallery.meta_title }}{% else %}Галерея{% endif %}
+{% endblock %}
 {% block description %}{{ gallery.meta_description }}{% endblock %}
 {% block keywords %}{{ gallery.meta_keywords }}{% endblock %}
 

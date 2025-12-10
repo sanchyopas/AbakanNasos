@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load thumbnail %}
-{% block title %}{{ about.meta_title }}{% endblock %}
+{% block title %}
+{% if about.meta_title %}
+{{ about.meta_title }}
+{% else %}
+О нас
+{% endif %}
+{% endblock %}
 {% block description %}{{ about.meta_description }}{% endblock %}
 {% block keywords %}{{ about.meta_keywords }}{% endblock %}
 

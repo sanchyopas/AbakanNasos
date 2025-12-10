@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load thumbnail %}
-{% block title %}{{ contact.meta_title }}{% endblock %}
+{% block title %}
+{% if contact.meta_title %}{{ contact.meta_title }}{% else %}Контакты{% endif %}
+{% endblock %}
 {% block description %}{{ contact.meta_description }}{% endblock %}
 {% block keywords %}{{ contact.meta_keywords }}{% endblock %}
 

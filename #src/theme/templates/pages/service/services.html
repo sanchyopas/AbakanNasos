@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load thumbnail %}
-{% block title %}{{ service.meta_title }}{% endblock %}
+{% block title %}
+{% if service.meta_title %}{{ service.meta_title }}{% else %}Услуги{% endif %}
+{% endblock %}
 {% block description %}{{ service.meta_description }}{% endblock %}
 {% block keywords %}{{ service.meta_keywords }}{% endblock %}
 

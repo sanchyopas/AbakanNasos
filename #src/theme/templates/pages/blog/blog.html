@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load thumbnail %}
-{% block title %}{{ blog.meta_title }}{% endblock %}
+{% block title %}
+{% if blog.meta_title %}{{ blog.meta_title }}{% else %}Блог{% endif %}
+{% endblock %}
 {% block description %}{{ blog.meta_description }}{% endblock %}
 {% block keywords %}{{ blog.meta_keywords }}{% endblock %}
 

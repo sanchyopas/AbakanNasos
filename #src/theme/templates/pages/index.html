@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load thumbnail %}
-{% block title %}{{ home_page.meta_title }}{% endblock %}
+{% block title %}
+{% if home_page.meta_title %}{{ home_page.meta_title }}{% else %}Главная страница{% endif %}
+{% endblock %}
 {% block description %}{{ home_page.meta_description }}{% endblock %}
 {% block keywords %}{{ home_page.meta_keywords }}{% endblock %}
 

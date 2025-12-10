@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load thumbnail %}
-{% block title %}{{ delivery_page.meta_title }}{% endblock %}
+{% block title %}
+{% if delivery_page.meta_title %}{{ delivery_page.meta_title }}{% else %}Доставка{% endif %}
+{% endblock %}
 {% block description %}{{ delivery_page.meta_description }}{% endblock %}
 {% block keywords %}{{ delivery_page.meta_keywords }}{% endblock %}
 
