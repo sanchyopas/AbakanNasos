@@ -5,9 +5,6 @@
       <div class="popup__top">
         <button data-close type="button" class="popup__close close"></button>
       </div>
-      <div class="popup__loading">
-        <img src="{% static 'theme/mb/images/loading.gif' %}" alt="Загрузка" title="Загрузка"/>
-      </div>
       <h2 class="popup__title">Оставить заявку</h2>
       <form action="" class="popup__form form" method="POST" id="order-form">
         {% csrf_token %}
@@ -32,9 +29,6 @@
     <div class="popup__content">
       <div class="popup__top">
         <button data-close type="button" class="popup__close close"></button>
-      </div>
-      <div class="popup__loading">
-        <img src="{% static 'theme/mb/images/loading.gif' %}" alt="Загрузка" title="Загрузка"/>
       </div>
       <h2 class="popup__title">Обратный звонок</h2>
       <form action="" class="popup__form form" method="POST" id="callback-form">
