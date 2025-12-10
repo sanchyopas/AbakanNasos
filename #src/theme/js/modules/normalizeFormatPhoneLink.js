@@ -1,5 +1,13 @@
-// Создание правильной ссылка номера телефона
-// const regNum = document.querySelectorAll("a[href^=\"tel:\"]");
+/**
+ * Складывает два числа и возвращает результат.
+ *
+ * @param {number} a - Первое число для сложения.
+ * @param {number} b - Второе число для сложения.
+ * @returns {number} Сумма двух чисел.
+ * @example
+
+*/
+
 const regNum = document.querySelectorAll("[data-phone]");
 
 if (regNum) {
