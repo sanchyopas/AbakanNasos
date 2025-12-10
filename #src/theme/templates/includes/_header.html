@@ -43,7 +43,9 @@
 
       {% if socials %}
       <div class="header__social social">
-        <button type="button" class="social__mobile-btn"><i class="fa-solid fa-share-nodes"></i></button>
+        <button type="button" class="social__mobile-btn" aria-label="Открыть список соц.сетей">
+          <i class="fa-solid fa-share-nodes"></i>
+        </button>
         <div class="social__mobile-cnt">
           {% for social in socials %}
           <a href="{{ social.link }}" aria-label="Перейти в наш {{ social.name }}">

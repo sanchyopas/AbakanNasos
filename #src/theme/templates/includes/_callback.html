@@ -42,10 +42,9 @@
                 {% if socials %}
                 <div class="social">
                   {% for social in socials %}
-                  <a href="{{ social.link }}">
+                  <a href="{{ social.link }}" aria-label="Переходите в наш {{ social.name }}">
                     {% thumbnail social.icon_white "32x32" format="WEBP" crop="center" as im %}
-                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ social.name }}"
-                         title="{{ social.name }}">
+                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="">
                     {% endthumbnail %}
                   </a>
                   {% endfor %}
