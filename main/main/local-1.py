@@ -51,4 +51,40 @@ MIDDLEWARE = [
 #     'allauth.account.middleware.AccountMiddleware',
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(name)-12s %(levelname)-8s %(message)s'
+        },
+        'file': {
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console'
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'formatter': 'file',
+            'filename': '/home/a/avroraweb/tompc-tech/public_html/debug.log'
+        }
+    },
+    'loggers': {
+        '': {
+            'level': 'INFO',
+            'handlers': ['console', 'file'],
+        },
+        'myapp_test': {
+            'level': 'INFO',
+            'handlers': ['console', 'file'],
+            'propagate': False,
+        },
+    }
+}
+
 

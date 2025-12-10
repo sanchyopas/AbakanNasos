@@ -124,14 +124,14 @@ def import_products_from_excel(file_path):
     df = pd.read_excel(file_path, engine='openpyxl', skiprows=1)
 
     for _, row in df.iterrows():
-        category = row.iloc[0]
-#         category = None if pd.isna(row.iloc[0]) else str(row.iloc[0]).strip()
-#         if not category:
-#             continue
+        category = None if pd.isna(row.iloc[0]) else str(row.iloc[0]).strip()
+        if not category:
+            continue
 
         category_slug = slugify(category)
         description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
         image = rename_image(row.iloc[3])
+        logger.debug(f"[IMPORT] Category image renamed = {image}")
 
         # --- CATEGORY ---
         try:
