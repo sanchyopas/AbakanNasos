@@ -2574,6 +2574,11 @@ tbody td:last-child {
   overflow: hidden;
 }
 
+.contact__map iframe {
+  width: 100%;
+  border: 0;
+}
+
 body::after {
   content: "";
   background-color: rgba(0, 0, 0, 0.5);
