@@ -26,7 +26,8 @@ import math
 from pytils.translit import slugify
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-
+import logging
+logger = logging.getLogger(__name__)
 
 
 general_url_product = "/admin/product/"
