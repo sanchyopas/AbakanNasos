@@ -33,7 +33,7 @@
         {{ category.name }}
         <meta itemprop="position" content="3"/>
       </a>
-      <a href="{{ category.get_absolute_url }}" itemprop="itemListElement" itemscope=""
+      <a href="{{ product.get_absolute_url }}" itemprop="itemListElement" itemscope=""
          itemtype="http://schema.org/ListItem"
          class="breadcrumbs__item">
         {{ product.name }}
@@ -50,8 +50,8 @@
 <div class="info">
   <div class="container">
     <div class="info__row">
+      {% if model.image %}
       <div class="info__image" style="grid-template-columns: 1fr;">
-        {% if model.image %}
         <div class="swiper info__slider">
           <div class="swiper-wrapper">
             <div class="swiper-slide info__slide">
@@ -59,8 +59,9 @@
             </div>
           </div>
         </div>
-        {% endif %}
+
       </div>
+      {% endif %}
       <div class="info__text">
         <h1 class="info__title">
           {% if model.meta_h1 %}{{ model.meta_h1 }}{% else %}{{ model.model }}{% endif %}

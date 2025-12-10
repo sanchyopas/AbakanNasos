@@ -4,6 +4,10 @@
   flex-direction: column;
   gap: 20px;
 
+  &__required {
+    color: red;
+  }
+
   //.form__controls-select
   &__controls-select {
     padding: 15px 20px;

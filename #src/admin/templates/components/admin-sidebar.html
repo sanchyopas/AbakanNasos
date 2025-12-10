@@ -23,7 +23,7 @@
       <p class="menu-sidebar__item-title">Каталог</p>
       <a href="{% url 'admin_shop' %}" class="menu-sidebar__link-general">
         <i class="fa-solid fa-gear"></i>
-        <span>Настройки каталога</span>
+        <span>Настройки</span>
       </a>
       <a href="{% url 'admin_category' %}" class="menu-sidebar__link-general">
         <i class="fa-solid fa-layer-group"></i>
@@ -44,27 +44,19 @@
     </div>
 
     <div class="menu-sidebar__item">
-      <p class="menu-sidebar__item-title">Остальные страницы</p>
+      <p class="menu-sidebar__item-title">Блог</p>
       <a href="{% url 'blog_settings' %}" class="menu-sidebar__link-general">
-        <i class="fa-solid fa-newspaper"></i>
-        <span>Настройки блога</span>
+        <i class="fa-solid fa-gear"></i>
+        <span>Настройки</span>
       </a>
-      <div class="menu-sidebar__dropdown" id="attr">
-        <div class="menu-sidebar__dropdown-title">
-          <div class="menu-sidebar__dropdow-inner">
-            <i class="fas fa-rss-square"></i>
-            <span>Настрйоки блога</span>
-          </div>
-          <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="menu-sidebar__dropdown-content">
-          <ul>
-            <li><a >Настройки блога</a></li>
-            <li><a href="{% url 'category_blog' %}" >Категории блога</a></li>
-            <li><a >Статьи блога</a></li>
-          </ul>
-        </div>
-      </div>
+      <a href="{% url 'category_blog' %}" class="menu-sidebar__link-general">
+        <i class="fa-solid fa-newspaper"></i>
+        <span>Категории</span>
+      </a>
+      <a href="{% url 'category_blog' %}" class="menu-sidebar__link-general">
+        <i class="fa-solid fa-newspaper"></i>
+        <span>Статьи</span>
+      </a>
     </div>
 
     <div class="menu-sidebar__item">

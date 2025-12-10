@@ -121,89 +121,108 @@ def import_products_from_excel(file_path):
     Models.objects.all().delete()
 
     # Загружаем данные из Excel
-    df = pd.read_excel(file_path, engine='openpyxl', skiprows = 1)
+    df = pd.read_excel(file_path, engine='openpyxl', skiprows=1)
 
     for _, row in df.iterrows():
-      category = row.iloc[0]
-      category_slug = slugify(category)
-      description = row.iloc[2]
-      image = rename_image(row.iloc[3])
+        category = None if pd.isna(row.iloc[0]) else str(row.iloc[0]).strip()
+        if not category:
+            continue
 
-      try:
-        category = Category.objects.get(slug=category_slug)
-      except ObjectDoesNotExist:
-        if not Category.objects.filter(name=category).exists():
-          category = Category.objects.create(
-            name=category,
-            slug=category_slug,
-            image=image,
-            status='published'
-          )
+        category_slug = slugify(category)
+        description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
+        image = rename_image(row.iloc[3])
 
-      name = row.iloc[1]
+        # --- CATEGORY ---
+        try:
+            category_obj = Category.objects.get(slug=category_slug)
+        except ObjectDoesNotExist:
+            category_obj = Category.objects.create(
+                name=category,
+                slug=category_slug,
+                image=image,
+                status='published'
+            )
 
-      if pd.isna(name) or not str(name).strip():
-        continue
+        # --- PRODUCT ---
+        name = row.iloc[1]
+        if pd.isna(name) or not str(name).strip():
+            continue
 
-      slug = get_unique_slug(Product, slugify(name))
-      model_slug = get_unique_slug(Models, slugify(name))
-      product_image = rename_image(row.iloc[4])
-      print(product_image)
+        slug = get_unique_slug(Product, slugify(name))
+        product_image = rename_image(row.iloc[4])
 
-      try:
-          new_product = Product.objects.create(
-              name=name,
-              slug=slug,
-              image=product_image,
-              description=description,
-              status='published'
-          )
-      except IntegrityError:
-          print(f"Duplicate slug detected: {slug}, generating a new one.")
-          slug = get_unique_slug(Product, slug)
-          new_product = Product.objects.create(
-              name=name,
-              slug=slug,
-              image=product_image,
-              status='published'
-          )
-      new_product.category.add(category)
+        try:
+            new_product = Product.objects.create(
+                name=name,
+                slug=slug,
+                image=product_image,
+                description=description,
+                status='published'
+            )
+        except IntegrityError:
+            slug = get_unique_slug(Product, slug)
+            new_product = Product.objects.create(
+                name=name,
+                slug=slug,
+                image=product_image,
+                description=description,
+                status='published'
+            )
 
-      try:
-          models_image, _ = parse_excel_column(row.iloc[5])
-          models_list, _ = parse_excel_column(row.iloc[6])
-          power_list, _ = parse_excel_column(row.iloc[7])
-          el_network_list, _ = parse_excel_column(row.iloc[8])
-          nom_capacity_list, _ = parse_excel_column(row.iloc[9])
-          max_capacity_list, _ = parse_excel_column(row.iloc[10])
-          max_capacity_min_list, _ = parse_excel_column(row.iloc[11])
-          now_head_list, _ = parse_excel_column(row.iloc[12])
-          max_head_list, _ = parse_excel_column(row.iloc[13])
-          suction_depth_list, _ = parse_excel_column(row.iloc[14])
-          con_size_list, _ = parse_excel_column(row.iloc[15])
+        new_product.category.add(category_obj)
 
-          count = len(models_list)
+        # --- MODELS ---
+        try:
+            models_image, _ = parse_excel_column(row.iloc[5])
+            models_list, _ = parse_excel_column(row.iloc[6])
+            power_list, _ = parse_excel_column(row.iloc[7])
+            el_network_list, _ = parse_excel_column(row.iloc[8])
+            nom_capacity_list, _ = parse_excel_column(row.iloc[9])
+            max_capacity_list, _ = parse_excel_column(row.iloc[10])
+            max_capacity_min_list, _ = parse_excel_column(row.iloc[11])
+            now_head_list, _ = parse_excel_column(row.iloc[12])
+            max_head_list, _ = parse_excel_column(row.iloc[13])
+            suction_depth_list, _ = parse_excel_column(row.iloc[14])
+            con_size_list, _ = parse_excel_column(row.iloc[15])
 
-          for i in range(count):
-              Models.objects.create(
-                  parent=new_product,
-                  image=get_value(models_image, i, count),
-                  slug=model_slug,
-                  model=get_value(models_list, i, count),
-                  power=get_value(power_list, i, count),
-                  el_network=get_value(el_network_list, i, count),
-                  nom_capacity=get_value(nom_capacity_list, i, count),
-                  max_capacity=get_value(max_capacity_list, i, count),
-                  max_capacity_min=get_value(max_capacity_min_list, i, count),
-                  now_head=get_value(now_head_list, i, count),
-                  max_head=get_value(max_head_list, i, count),
-                  suction_depth=get_value(suction_depth_list, i, count),
-                  con_size=get_value(con_size_list, i, count),
-                  status='published'
-              )
+            count = len(models_list)
 
-      except Exception as e:
-          print("Ошибка при импорте модели:", e)
+            for i in range(count):
+                model_name = get_value(models_list, i, count)
+                if not model_name:
+                    continue
+
+                # уникальный slug для каждой модели
+                model_slug = get_unique_slug(Models, slugify(model_name))
+
+                # --- ОБРАБОТКА КАРТИНКИ МОДЕЛИ ---
+                raw_model_image = get_value(models_image, i, count)
+                model_image = rename_image(raw_model_image) if raw_model_image else None
+
+                # создаем модель
+                model_obj, created = Models.objects.get_or_create(
+                    parent=new_product,
+                    slug=model_slug,
+                    defaults={
+                        'image': model_image,
+                        'model': model_name,
+                        'power': get_value(power_list, i, count),
+                        'el_network': get_value(el_network_list, i, count),
+                        'nom_capacity': get_value(nom_capacity_list, i, count),
+                        'max_capacity': get_value(max_capacity_list, i, count),
+                        'max_capacity_min': get_value(max_capacity_min_list, i, count),
+                        'now_head': get_value(now_head_list, i, count),
+                        'max_head': get_value(max_head_list, i, count),
+                        'suction_depth': get_value(suction_depth_list, i, count),
+                        'con_size': get_value(con_size_list, i, count),
+                        'status': 'published'
+                    }
+                )
+
+        except Exception as e:
+            print("Ошибка при импорте модели:", e)
+
+
 
 
 # @user_passes_test(lambda u: u.is_superuser)

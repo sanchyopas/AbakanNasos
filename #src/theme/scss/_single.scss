@@ -108,5 +108,11 @@
   &__btn {
   }
 
+  &__list {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
 
 }

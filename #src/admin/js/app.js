@@ -1,5 +1,4 @@
 import("./modules/dropdownMenu.js");
-import("./modules/generateSlug.js");
 import("./modules/uploadFileInput.js");
 import("./modules/notice.js");
 import ("./modules/mask.js");
@@ -10,20 +9,6 @@ import ("./modules/slugify.js");
  * Переключение вкладок на страницах продуктов, категорий
  */
 
-// const pageEditButton1 = document.querySelectorAll('.page-content');
-// const tabButton1 = document.querySelectorAll('[data-tab]');
-// tabButton1?.forEach(btn => {
-//   btn.addEventListener('click', function (e) {
-//     tabButton1.forEach(item => item.classList.remove('_active'));
-//     pageEditButton1.forEach(item => item.classList.remove('_show'));
-//
-//
-//     let bodyTabBody = document.getElementById(this.dataset.tab);
-//
-//     btn.classList.add('_active');
-//     bodyTabBody.classList.add('_show');
-//   })
-// })
 
 const tabButton = document.querySelectorAll('[data-name]');
 const pageEditButton = document.querySelectorAll('.page-content');
@@ -51,11 +36,6 @@ tabButton?.forEach(btn => {
   }
 })
 
-// document.addEventListener('DOMContentLoaded', () => {
-//   const newUrl = window.location.pathname + '?tab=' + this.dataset.name;
-//   window.history.pushState({}, '', newUrl);
-// })
-
 
 /**
  * Подсчет и отображение количества символов в meta-полях
@@ -80,11 +60,6 @@ metaFields?.forEach(item => {
     checkLengthSymbol(numberSymbols, e.currentTarget);
   })
 })
-
-// document.querySelector('.product-block__plus').addEventListener('click', function (event) {
-//   var image = '<div class="form__group  form__group-image"><input type="file" multiple="multiple" name="src" accept="image/*" required="" id="id_src"><div class="product-block__minus form__remove">Удалить</div></div>';
-//   document.querySelector('.product-field').insertAdjacentHTML('beforeend', image);
-// })
 
 
 function checkLengthSymbol(lengthSymbol, item) {
