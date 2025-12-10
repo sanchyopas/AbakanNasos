@@ -5,10 +5,10 @@
   <title>{% block title %}{% endblock %}</title>
   <meta name="description" content="{% block description %}{% endblock %}">
   <meta name="keywords" content="{% block keywords %}{% endblock %}">
-  <link rel="canonical" href="">
+  <link rel="canonical" href="https://{{ request.get_host }}{{ request.path }}">
   <meta charset="UTF-8">
   <meta name="format-detection" content="telephone=no">
-  <link rel="shortcut icon" href="{% if site_settings.favicon %} {{ site_settings.favicon.url }} {% endif%}">
+  <link rel="shortcut icon" href="{% if site_settings.favicon %} {{ site_settings.favicon.url }}{% else %}/favivon.ico{% endif%}">
   <link rel="apple-touch-icon" href="{% static 'images/logo.png' %}" sizes="120x120">
   <meta name="robots" content="all">
   <meta name="viewport" content="width=device-width, initial-scale=1">
