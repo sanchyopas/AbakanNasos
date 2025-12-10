@@ -81,7 +81,7 @@ WSGI_APPLICATION = "main.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-SITE_ID = 2
+SITE_ID = 1
 
 
 
