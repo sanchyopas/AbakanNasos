@@ -1,4 +1,5 @@
 import * as functions from './modules/functions.js';
+// import { Fancybox } from "@fancyapps/ui/dist/fancybox/";
 
 functions.isWebp();
 
@@ -6,12 +7,13 @@ import "./modules/sliders.js";
 import "./modules/menu/mobileMenu.js";
 import "./modules/popup/popup.js";
 import "./modules/normalizeFormatPhoneLink.js";
+import "./modules/font-awesome.js";
 
-import { Fancybox } from "@fancyapps/ui/dist/fancybox/";
 
-Fancybox.bind("[data-fancybox]", {
-
-});
+//
+// Fancybox.bind("[data-fancybox]", {
+//
+// });
 
 const socialBtn = document.querySelector('.social__mobile-btn');
 socialBtn?.addEventListener('click', (e) => {
