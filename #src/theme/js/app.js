@@ -7,6 +7,8 @@ import "./modules/menu/mobileMenu.js";
 import "./modules/popup/popup.js";
 import "./modules/normalizeFormatPhoneLink.js";
 
+import { Fancybox } from "@fancyapps/ui/dist/fancybox/";
+
 Fancybox.bind("[data-fancybox]", {
 
 });

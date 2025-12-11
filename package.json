@@ -21,6 +21,7 @@
   "homepage": "",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^44.3.0",
+    "@fancyapps/ui": "^6.1.7",
     "bootstrap": "^5.2.3",
     "gulp-cli": "^2.3.0",
     "normalize.css": "^8.0.1",
