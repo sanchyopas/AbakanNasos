@@ -18,7 +18,12 @@
           <div class="swiper-slide hero__slide">
             <h2>{{ slide.name }}</h2>
             {{ slide.description|safe|truncatewords:40 }}
-            <img src="{{ slide.image.url }}" alt="" class="hero__image">
+            {% thumbnail slide.image "146x46" format="WEBP" upscale=False as im %}
+            <!--<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ slide.name }}"
+                 title="{{ slide.name }}" class="hero__image">-->
+            <img src="{{ slide.image.url }}" alt="" fetchpriority="high">
+            {% endthumbnail %}
+
             <a href="{{ slide.get_absolute_url }}" class="hero__btn">Посмотреть товары</a>
           </div>
           {% endfor %}
