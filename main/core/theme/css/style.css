@@ -5583,6 +5583,8 @@ body {
   min-width: 360px;
   overflow-x: hidden;
   font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
 }
 
 body main {
