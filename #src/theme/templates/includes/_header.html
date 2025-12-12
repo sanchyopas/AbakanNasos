@@ -1,10 +1,13 @@
-{% load static %}
+{% load static %}{% load thumbnail %}
 <div class="header">
   <div class="container">
     <div class="header__top">
       {% if site_settings.logo %}
       <a href="/" class="header__logo">
-        <img src="{{ site_settings.logo.url }}" alt="Логотип Абакан насос" title="Логотип Абакан насос">
+        {% thumbnail site_settings.logo "146x46" format="WEBP" upscale=False as im %}
+        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="Логотип Абакан насос"
+             title="Логотип Абакан насос">
+        {% endthumbnail %}
       </a>
       {% endif %}
       {% include '../components/search-form.html' %}
@@ -49,7 +52,7 @@
         <div class="social__mobile-cnt">
           {% for social in socials %}
           <a href="{{ social.link }}" aria-label="Перейти в наш {{ social.name }}">
-            <img src="{{ social.icon_dark.url }}" alt="">
+            <img src="{{ social.icon_dark.url }}" width="30px" height="20px" alt="">
           </a>
           {% endfor %}
         </div>
