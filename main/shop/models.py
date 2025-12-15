@@ -35,6 +35,7 @@ class Category(models.Model):
   meta_description = models.TextField(null=True, blank=True, verbose_name="META описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="META keywords")
   updated_at = models.DateTimeField(auto_now=True)
+  order_by = models.CharField(max_length=150, default="0", blank=True, null=True,  db_index=True, verbose_name="Порядок сортировки")
   add_slider = models.CharField(
    max_length=20,
    choices=STATUS_VIEW,
@@ -78,6 +79,7 @@ class Product(models.Model):
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
   updated_at = models.DateTimeField(auto_now=True)
+  order_by = models.CharField(max_length=150, blank=True, null=True, default="0",  db_index=True, verbose_name="Порядок сортировки")
   status = models.CharField(
     max_length=20,
     choices=STATUS_CHOICES,
@@ -136,6 +138,7 @@ class Models(models.Model):
   max_head = models.CharField(max_length=150, blank=True, null=True, db_index=True, verbose_name="Максимальный напор (м)")
   suction_depth = models.CharField(max_length=150, blank=True, null=True, db_index=True, verbose_name="Максимальная глуб. всасывания(м)")
   con_size = models.CharField(max_length=150, blank=True, null=True, db_index=True, verbose_name="Присоединительный размер (дюйм)")
+  order_by = models.CharField(max_length=150, blank=True, null=True,  db_index=True, default="0", verbose_name="Порядок сортировки")
   status = models.CharField(
       max_length=20,
       choices=STATUS_CHOICES,

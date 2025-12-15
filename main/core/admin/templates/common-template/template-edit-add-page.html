@@ -287,11 +287,11 @@
               {% endif %}
 
             </div>
-
-
+            {% if image %}
             <div class="form__group form__group-image">
-              <label for="{{ image_form.src.id_for_label }}" class="form__controls-label"> Дополнительные
-                изображения: </label>
+              <label for="{{ image_form.src.id_for_label }}" class="form__controls-label">
+                Дополнительные изображения:
+              </label>
               {{ image_form.src }} {{ image_form.src.errors }}
             </div>
             <div class="product-field"></div>
@@ -305,6 +305,7 @@
 
               {% endfor %}
             </div>
+            {% endif %}
             {% if form.text %}
             <div class="form__group">
               <label for="{{ form.text.id_for_label }}" class="form__controls-label">Текст на странице: </label>

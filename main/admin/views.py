@@ -384,7 +384,12 @@ def admin_callback_block(request):
 """ Настройки главной страницы """
 @user_passes_test(lambda u: u.is_superuser)
 def admin_home_page(request):
-  return generic_singleton_edit(request, HomeTemplateForm, HomeTemplate, "Настройки главной страницы", template_name=None)
+  return generic_singleton_edit(request,
+  HomeTemplateForm,
+  HomeTemplate,
+  "Настройки главной страницы",
+  template_name="common-template/singleton_page_edit.html"
+  )
 
 
 """ Настройки страницы о нас """

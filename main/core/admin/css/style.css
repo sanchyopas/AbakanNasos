@@ -1228,6 +1228,9 @@ ol {
 }
 
 .page-content {
+  padding: 10px 20px;
+  background: #fff;
+  margin-top: 20px;
   display: none;
 }
 
