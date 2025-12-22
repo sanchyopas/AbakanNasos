@@ -1,4 +1,7 @@
 .page-content {
+  padding: 10px 20px;
+  background: #fff;
+  margin-top: 20px;
   display: none;
 
   &._show {
@@ -46,7 +49,8 @@
 
   // .page-content__seo
 
-  &__seo {}
+  &__seo {
+  }
 
   .product-field {
     display: grid;
@@ -78,12 +82,13 @@
     align-self: flex-end;
   }
 }
+
 form._show {
-  display: flex!important;
+  display: flex !important;
 }
 
 div._show {
-  display: flex!important;
+  display: flex !important;
   flex-direction: column;
   gap: 20px;
 }
