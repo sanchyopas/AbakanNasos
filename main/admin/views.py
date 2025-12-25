@@ -106,8 +106,7 @@ def rename_image(filename):
     if os.path.exists(old_path):
         os.rename(old_path, new_path)
     else:
-      pass
-#        print(f"ФАЙЛ НЕ НАЙДЕН: {original_name}")
+      print(f"ФАЙЛ НЕ НАЙДЕН: {original_name}")
 
 
     return f"goods/{new_filename}"
