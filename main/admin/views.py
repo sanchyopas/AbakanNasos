@@ -100,7 +100,6 @@ def rename_image(filename):
     if os.path.exists(old_path):
         os.rename(old_path, new_path)
     else:
-        logger.warning(f"File not found: {old_path}")
         return None
 
     return f"goods/{new_filename}"
