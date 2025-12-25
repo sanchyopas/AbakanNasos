@@ -29,7 +29,7 @@ from django.db import IntegrityError
 import logging
 logger = logging.getLogger(__name__)
 
-
+from slugify import slugify
 general_url_product = "/admin/product/"
 
 path = f"{BASE_DIR}/upload/upload.zip"
@@ -82,41 +82,28 @@ def get_value(values, index, total_count):
 
 
 def rename_image(filename):
-  original_name = filename
-  logger.exception(f"❌ Original name rename func: {original_name}")
+    if not filename:
+        return None
 
-  try:
-    # Убираем пробелы по краям
-    original_name = original_name.strip()
-
-    # Разделяем имя и расширение
+    original_name = filename.strip()
     image_name, ext = os.path.splitext(original_name)
     ext = ext.strip().lower()
 
-    # Генерируем slug
-    slug_name = slugify(image_name)
-    # Новое имя файла
+    # транслитерация русских букв в английские через slugify
+    slug_name = slugify(image_name, lowercase=False)
 
     new_filename = f"{slug_name}{ext}"
-    logger.exception(f"❌ New name rename func: {new_filename}")
 
-    # Полные пути
     old_path = os.path.join(images_folder, original_name)
     new_path = os.path.join(images_folder, new_filename)
 
-    # Если оригинальный файл существует — переименовываем
     if os.path.exists(old_path):
-        logger.exception(f"❌ New name if rename func: {old_path}")
         os.rename(old_path, new_path)
     else:
-      logger.exception(f"❌ New name else rename func: {old_path}")
-
+        logger.warning(f"Файл не найден: {old_path}")
+        return None
 
     return f"goods/{new_filename}"
-
-  except Exception:
-    logger.exception(f"❌ Ошибка при обработке изображения: {filename}")
-    return None
 
 def import_products_from_excel(file_path):
     Product.objects.all().delete()
