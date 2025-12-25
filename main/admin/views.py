@@ -91,7 +91,7 @@ def rename_image(filename):
     # Разделяем имя и расширение
     image_name, ext = os.path.splitext(original_name)
     ext = ext.strip().lower()
-#     print(f'{image_name} - {ext}')
+
     # Генерируем slug
     slug_name = slugify(image_name)
     # Новое имя файла
@@ -127,7 +127,8 @@ def import_products_from_excel(file_path):
         category = None if pd.isna(row.iloc[0]) else str(row.iloc[0]).strip()
         if not category:
             continue
-#         print(row.iloc[5])
+
+        logger.info(f"This epta")
         category_slug = slugify(category)
         description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
         image = rename_image(row.iloc[3])
@@ -197,9 +198,8 @@ def import_products_from_excel(file_path):
 
                 # --- ОБРАБОТКА КАРТИНКИ МОДЕЛИ ---
                 raw_model_image = get_value(models_image, i, count)
-#                 print(rename_image(f'{raw_model_image}-{models_image}'))
                 model_image = rename_image(raw_model_image) if raw_model_image else None
-#                 logger.info(f"info image ---------------- {model_image}")
+                logger.info(f"info image ---------------- {model_image}")
 
                 # создаем модель
                 model_obj, created = Models.objects.get_or_create(
@@ -222,7 +222,7 @@ def import_products_from_excel(file_path):
                 )
 
         except Exception as e:
-            print("Ошибка при импорте модели:", e)
+            print("Error", e)
 
 
 # @user_passes_test(lambda u: u.is_superuser)
