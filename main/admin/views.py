@@ -100,7 +100,7 @@ def rename_image(filename):
     if os.path.exists(old_path):
         os.rename(old_path, new_path)
     else:
-        logger.warning(f"Файл не найден: {old_path}")
+        logger.warning(f"File not found: {old_path}")
         return None
 
     return f"goods/{new_filename}"
@@ -214,7 +214,7 @@ def import_products_from_excel(file_path):
                 )
 
         except Exception as e:
-            print("Error", e)
+            print(e)
 
 
 # @user_passes_test(lambda u: u.is_superuser)
