@@ -17,9 +17,7 @@
           {% for social in socials %}
           <a href="{{ social.link }}" aria-label="Переходите в наш {{ social.name }}">
             {% if social.icon_white %}
-            {% thumbnail social.icon_white "32x32" format="WEBP" crop="center" as im %}
-            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="">
-            {% endthumbnail %}
+            <img src="{{ social.icon_white.url }}" width="32px" height="32px" alt="">
             {% endif %}
           </a>
           {% endfor %}
