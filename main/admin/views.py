@@ -106,15 +106,15 @@ def rename_image(filename):
     if os.path.exists(old_path):
         os.rename(old_path, new_path)
     else:
-  except Exception:
-    logger.exception(f"❌ Ошибка при обработке изображения: {filename}")
-    return None
+      pass
+#        print(f"ФАЙЛ НЕ НАЙДЕН: {original_name}")
 
 
     return f"goods/{new_filename}"
 
-  except:
-    pass
+  except Exception:
+    logger.exception(f"❌ Ошибка при обработке изображения: {filename}")
+    return None
 
 def import_products_from_excel(file_path):
     Product.objects.all().delete()
