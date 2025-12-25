@@ -131,7 +131,6 @@ def import_products_from_excel(file_path):
         if not category:
             continue
 
-        logger.info(f"This epta")
         category_slug = slugify(category)
         description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
         image = rename_image(row.iloc[3])
@@ -202,7 +201,7 @@ def import_products_from_excel(file_path):
                 # --- ОБРАБОТКА КАРТИНКИ МОДЕЛИ ---
                 raw_model_image = get_value(models_image, i, count)
                 model_image = rename_image(raw_model_image) if raw_model_image else None
-                logger.info(f"info image ---------------- {raw_model_image}-------------{model_image}")
+#                 logger.info(f"info image ---------------- {raw_model_image}-------------{model_image}")
 
                 # создаем модель
                 model_obj, created = Models.objects.get_or_create(
