@@ -83,6 +83,7 @@ def get_value(values, index, total_count):
 
 def rename_image(filename):
   original_name = filename
+  logger.exception(f"❌ Original name rename func: {original_name}")
 
   try:
     # Убираем пробелы по краям
@@ -97,6 +98,7 @@ def rename_image(filename):
     # Новое имя файла
 
     new_filename = f"{slug_name}{ext}"
+    logger.exception(f"❌ New name rename func: {new_filename}")
 
     # Полные пути
     old_path = os.path.join(images_folder, original_name)
@@ -104,9 +106,10 @@ def rename_image(filename):
 
     # Если оригинальный файл существует — переименовываем
     if os.path.exists(old_path):
+        logger.exception(f"❌ New name if rename func: {old_path}")
         os.rename(old_path, new_path)
     else:
-      pass
+      logger.exception(f"❌ New name else rename func: {old_path}")
 
 
     return f"goods/{new_filename}"
@@ -134,7 +137,7 @@ def import_products_from_excel(file_path):
         category_slug = slugify(category)
         description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
         image = rename_image(row.iloc[3])
-        logger.info(f"image category ----------- {image}")
+        logger.info(f"image category ----------- {row.iloc[3]}")
         # --- CATEGORY ---
         try:
             category_obj = Category.objects.get(slug=category_slug)
