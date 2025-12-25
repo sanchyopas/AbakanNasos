@@ -119,113 +119,113 @@ def import_products_from_excel(file_path):
     Product.objects.all().delete()
     Category.objects.all().delete()
     Models.objects.all().delete()
-    a = Product.objects.all()
-    logger.warning(f"⚠ Очистка таблиц Product, Category, Models -----------------{a}")
-    logger.warning(f"⚠ Очистка таблиц Product, Category, Models -----------------{path_to_excel}")
-
-    # Загружаем данные из Excel
-    df = pd.read_excel(file_path, engine='openpyxl', skiprows=1)
-
-    for _, row in df.iterrows():
-        category = None if pd.isna(row.iloc[0]) else str(row.iloc[0]).strip()
-        if not category:
-            continue
-
-        logger.info(f"This epta")
-        category_slug = slugify(category)
-        description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
-        image = rename_image(row.iloc[3])
-
-        # --- CATEGORY ---
-        try:
-            category_obj = Category.objects.get(slug=category_slug)
-        except ObjectDoesNotExist:
-            category_obj = Category.objects.create(
-                name=category,
-                slug=category_slug,
-                image=image,
-                status='published'
-            )
-
-        # --- PRODUCT ---
-        name = row.iloc[1]
-        if pd.isna(name) or not str(name).strip():
-            continue
-
-        slug = get_unique_slug(Product, slugify(name))
-        product_image = rename_image(row.iloc[4])
-
-        try:
-            new_product = Product.objects.create(
-                name=name,
-                slug=slug,
-                image=product_image,
-                description=description,
-                status='published'
-            )
-        except IntegrityError:
-            slug = get_unique_slug(Product, slug)
-            new_product = Product.objects.create(
-                name=name,
-                slug=slug,
-                image=product_image,
-                description=description,
-                status='published'
-            )
-
-        new_product.category.add(category_obj)
-
-        # --- MODELS ---
-        try:
-            models_image, _ = parse_excel_column(row.iloc[5])
-            models_list, _ = parse_excel_column(row.iloc[6])
-            power_list, _ = parse_excel_column(row.iloc[7])
-            el_network_list, _ = parse_excel_column(row.iloc[8])
-            nom_capacity_list, _ = parse_excel_column(row.iloc[9])
-            max_capacity_list, _ = parse_excel_column(row.iloc[10])
-            max_capacity_min_list, _ = parse_excel_column(row.iloc[11])
-            now_head_list, _ = parse_excel_column(row.iloc[12])
-            max_head_list, _ = parse_excel_column(row.iloc[13])
-            suction_depth_list, _ = parse_excel_column(row.iloc[14])
-            con_size_list, _ = parse_excel_column(row.iloc[15])
-
-            count = len(models_list)
-
-            for i in range(count):
-                model_name = get_value(models_list, i, count)
-                if not model_name:
-                    continue
-
-                # уникальный slug для каждой модели
-                model_slug = get_unique_slug(Models, slugify(model_name))
-
-                # --- ОБРАБОТКА КАРТИНКИ МОДЕЛИ ---
-                raw_model_image = get_value(models_image, i, count)
-                model_image = rename_image(raw_model_image) if raw_model_image else None
-                logger.info(f"info image ---------------- {model_image}")
-
-                # создаем модель
-                model_obj, created = Models.objects.get_or_create(
-                    parent=new_product,
-                    slug=model_slug,
-                    defaults={
-                        'image': model_image,
-                        'model': model_name,
-                        'power': get_value(power_list, i, count),
-                        'el_network': get_value(el_network_list, i, count),
-                        'nom_capacity': get_value(nom_capacity_list, i, count),
-                        'max_capacity': get_value(max_capacity_list, i, count),
-                        'max_capacity_min': get_value(max_capacity_min_list, i, count),
-                        'now_head': get_value(now_head_list, i, count),
-                        'max_head': get_value(max_head_list, i, count),
-                        'suction_depth': get_value(suction_depth_list, i, count),
-                        'con_size': get_value(con_size_list, i, count),
-                        'status': 'published'
-                    }
-                )
-
-        except Exception as e:
-            print("Error", e)
+#     a = Product.objects.all()
+#     logger.warning(f"⚠ Очистка таблиц Product, Category, Models -----------------{a}")
+#     logger.warning(f"⚠ Очистка таблиц Product, Category, Models -----------------{path_to_excel}")
+#
+#     # Загружаем данные из Excel
+#     df = pd.read_excel(file_path, engine='openpyxl', skiprows=1)
+#
+#     for _, row in df.iterrows():
+#         category = None if pd.isna(row.iloc[0]) else str(row.iloc[0]).strip()
+#         if not category:
+#             continue
+#
+#         logger.info(f"This epta")
+#         category_slug = slugify(category)
+#         description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
+#         image = rename_image(row.iloc[3])
+#
+#         # --- CATEGORY ---
+#         try:
+#             category_obj = Category.objects.get(slug=category_slug)
+#         except ObjectDoesNotExist:
+#             category_obj = Category.objects.create(
+#                 name=category,
+#                 slug=category_slug,
+#                 image=image,
+#                 status='published'
+#             )
+#
+#         # --- PRODUCT ---
+#         name = row.iloc[1]
+#         if pd.isna(name) or not str(name).strip():
+#             continue
+#
+#         slug = get_unique_slug(Product, slugify(name))
+#         product_image = rename_image(row.iloc[4])
+#
+#         try:
+#             new_product = Product.objects.create(
+#                 name=name,
+#                 slug=slug,
+#                 image=product_image,
+#                 description=description,
+#                 status='published'
+#             )
+#         except IntegrityError:
+#             slug = get_unique_slug(Product, slug)
+#             new_product = Product.objects.create(
+#                 name=name,
+#                 slug=slug,
+#                 image=product_image,
+#                 description=description,
+#                 status='published'
+#             )
+#
+#         new_product.category.add(category_obj)
+#
+#         # --- MODELS ---
+#         try:
+#             models_image, _ = parse_excel_column(row.iloc[5])
+#             models_list, _ = parse_excel_column(row.iloc[6])
+#             power_list, _ = parse_excel_column(row.iloc[7])
+#             el_network_list, _ = parse_excel_column(row.iloc[8])
+#             nom_capacity_list, _ = parse_excel_column(row.iloc[9])
+#             max_capacity_list, _ = parse_excel_column(row.iloc[10])
+#             max_capacity_min_list, _ = parse_excel_column(row.iloc[11])
+#             now_head_list, _ = parse_excel_column(row.iloc[12])
+#             max_head_list, _ = parse_excel_column(row.iloc[13])
+#             suction_depth_list, _ = parse_excel_column(row.iloc[14])
+#             con_size_list, _ = parse_excel_column(row.iloc[15])
+#
+#             count = len(models_list)
+#
+#             for i in range(count):
+#                 model_name = get_value(models_list, i, count)
+#                 if not model_name:
+#                     continue
+#
+#                 # уникальный slug для каждой модели
+#                 model_slug = get_unique_slug(Models, slugify(model_name))
+#
+#                 # --- ОБРАБОТКА КАРТИНКИ МОДЕЛИ ---
+#                 raw_model_image = get_value(models_image, i, count)
+#                 model_image = rename_image(raw_model_image) if raw_model_image else None
+#                 logger.info(f"info image ---------------- {model_image}")
+#
+#                 # создаем модель
+#                 model_obj, created = Models.objects.get_or_create(
+#                     parent=new_product,
+#                     slug=model_slug,
+#                     defaults={
+#                         'image': model_image,
+#                         'model': model_name,
+#                         'power': get_value(power_list, i, count),
+#                         'el_network': get_value(el_network_list, i, count),
+#                         'nom_capacity': get_value(nom_capacity_list, i, count),
+#                         'max_capacity': get_value(max_capacity_list, i, count),
+#                         'max_capacity_min': get_value(max_capacity_min_list, i, count),
+#                         'now_head': get_value(now_head_list, i, count),
+#                         'max_head': get_value(max_head_list, i, count),
+#                         'suction_depth': get_value(suction_depth_list, i, count),
+#                         'con_size': get_value(con_size_list, i, count),
+#                         'status': 'published'
+#                     }
+#                 )
+#
+#         except Exception as e:
+#             print("Error", e)
 
 
 # @user_passes_test(lambda u: u.is_superuser)
