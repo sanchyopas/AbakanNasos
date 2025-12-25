@@ -121,7 +121,6 @@ def import_products_from_excel(file_path):
         category_slug = slugify(category)
         description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
         image = rename_image(row.iloc[3])
-        logger.info(f"image category ----------- {row.iloc[3]}")
         # --- CATEGORY ---
         try:
             category_obj = Category.objects.get(slug=category_slug)
