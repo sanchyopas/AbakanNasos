@@ -119,6 +119,8 @@ def import_products_from_excel(file_path):
     Product.objects.all().delete()
     Category.objects.all().delete()
     Models.objects.all().delete()
+    a = Product.objects.all()
+    logger.warning(f"⚠ Очистка таблиц Product, Category, Models -----------------{a}")
 
     # Загружаем данные из Excel
     df = pd.read_excel(file_path, engine='openpyxl', skiprows=1)
