@@ -106,8 +106,9 @@ def rename_image(filename):
     if os.path.exists(old_path):
         os.rename(old_path, new_path)
     else:
-      pass
-#        print(f"ФАЙЛ НЕ НАЙДЕН: {original_name}")
+  except Exception:
+    logger.exception(f"❌ Ошибка при обработке изображения: {filename}")
+    return None
 
 
     return f"goods/{new_filename}"
