@@ -129,7 +129,7 @@
            {% endif %}
          </td>
          {% endif %}
-         {% if model.power %}
+         {% if model.power is not none and model.power == model.power %}
          <td data-label="{{ model.power }}">{{ model.power }}</td>
          {% endif %}
          {% if model.el_network %}

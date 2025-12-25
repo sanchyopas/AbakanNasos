@@ -53,14 +53,14 @@ def get_unique_slug(model, base_slug):
 def parse_excel_column(value):
     """ Превращает ячейку Excel в список значений.
         Пустые ячейки -> [''] (одно пустое значение) """
-#     if pd.isna(value) or value is None:
-#         return [''], True  # как список
+    if pd.isna(value) or value is None:
+        return [''], True  # как список
 
     # Делаем строки и разделяем
     items = [x.strip() for x in str(value).split(',')]
     # Если после очистки пусто → одно пустое значение
-#     if not any(items):
-#         return [''], True
+    if not any(items):
+        return [''], True
 
     return items, True
 
