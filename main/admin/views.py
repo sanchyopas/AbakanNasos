@@ -88,6 +88,7 @@ def rename_image(filename):
     try:
         # приводим к строке + нормализуем unicode
         original_name = unicodedata.normalize("NFC", str(filename).strip())
+        logger.info(f"Original name ---------------- {original_name}")
 
         image_name, ext = os.path.splitext(original_name)
         ext = ext.lower().strip()
@@ -102,7 +103,7 @@ def rename_image(filename):
         old_path = os.path.join(images_folder, original_name)
         new_path = os.path.join(images_folder, new_filename)
 
-        # ❗ если исходного файла нет — выходим
+
         if not os.path.exists(old_path):
             return None
 
