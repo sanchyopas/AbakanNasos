@@ -80,29 +80,48 @@ def get_value(values, index, total_count):
     # Если значений меньше чем моделей — пусто
     return ""
 
-
+import unicodedata
 def rename_image(filename):
     if not filename:
         return None
 
-    original_name = filename.strip()
-    image_name, ext = os.path.splitext(original_name)
-    ext = ext.strip().lower()
+    try:
+        # приводим к строке + нормализуем unicode
+        original_name = unicodedata.normalize("NFC", str(filename).strip())
 
-    # транслитерация русских букв в английские через slugify
-    slug_name = slugify(image_name, lowercase=False)
+        image_name, ext = os.path.splitext(original_name)
+        ext = ext.lower().strip()
 
-    new_filename = f"{slug_name}{ext}"
+        if not ext:
+            return None
 
-    old_path = os.path.join(images_folder, original_name)
-    new_path = os.path.join(images_folder, new_filename)
+        # транслитерация
+        slug_name = slugify(image_name)
+        new_filename = f"{slug_name}{ext}"
 
-    if os.path.exists(old_path):
+        old_path = os.path.join(images_folder, original_name)
+        new_path = os.path.join(images_folder, new_filename)
+
+        # ❗ если исходного файла нет — выходим
+        if not os.path.exists(old_path):
+            return None
+
+        # ❗ если имя уже правильное — ничего не делаем
+        if os.path.abspath(old_path) == os.path.abspath(new_path):
+            return f"goods/{new_filename}"
+
+        # ❗ если файл с новым именем УЖЕ есть — не трогаем
+        if os.path.exists(new_path):
+            return f"goods/{new_filename}"
+
+        # переименовываем
         os.rename(old_path, new_path)
-    else:
-        return None
 
-    return f"goods/{new_filename}"
+        return f"goods/{new_filename}"
+
+    except Exception:
+        # не валим импорт из-за одной картинки
+        return None
 
 def import_products_from_excel(file_path):
     Product.objects.all().delete()
