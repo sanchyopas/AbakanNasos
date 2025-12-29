@@ -82,38 +82,37 @@ def get_value(values, index, total_count):
 
 import unicodedata
 def rename_image(filename):
-  original_name = filename
+    if not filename or pd.isna(filename):
+        return ""
 
-  try:
-    # Убираем пробелы по краям
-    original_name = original_name.strip()
+    try:
+        original_name = unicodedata.normalize("NFKC", str(filename)).strip()
+        image_name, ext = os.path.splitext(original_name)
+        ext = ext.lower()
 
-    # Разделяем имя и расширение
-    image_name, ext = os.path.splitext(original_name)
-    ext = ext.strip().lower()
+        slug_name = slugify(image_name)
+        if not slug_name:
+            slug_name = "image"
 
-    # Генерируем slug
-    slug_name = slugify(image_name)
+        new_filename = f"{slug_name}{ext}"
 
-    # Новое имя файла
-    new_filename = f"{slug_name}{ext}"
+        old_path = os.path.join(images_folder, original_name)
+        new_path = os.path.join(images_folder, new_filename)
 
-    # Полные пути
-    old_path = os.path.join(images_folder, original_name)
-    new_path = os.path.join(images_folder, new_filename)
-    print(f'{old_path} - {new_path}')
-    # Если оригинальный файл существует — переименовываем
-    if os.path.exists(old_path):
-        os.rename(old_path, new_path)
-    else:
-      pass
-#        print(f"ФАЙЛ НЕ НАЙДЕН: {original_name}")
+        if os.path.exists(new_path):
+            return f"goods/{new_filename}"
 
+        if os.path.exists(old_path):
+            os.rename(old_path, new_path)
+        else:
+            print(f"ФАЙЛ НЕ НАЙДЕН: {old_path}")
 
-    return f"goods/{new_filename}"
+        return f"goods/{new_filename}"
 
-  except:
-    pass
+    except Exception as e:
+        print(f"Ошибка rename_image({filename}): {e}")
+        return ""
+
 
 def import_products_from_excel(file_path):
     Product.objects.all().delete()
