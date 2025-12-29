@@ -111,7 +111,6 @@ def rename_image(filename):
         return f"goods/{new_filename}"
 
     except Exception as e:
-      pass
 #         print(f"Ошибка rename_image({filename}): {e}")
         return ""
 
