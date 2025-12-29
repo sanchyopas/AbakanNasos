@@ -105,12 +105,14 @@ def rename_image(filename):
         if os.path.exists(old_path):
             os.rename(old_path, new_path)
         else:
-            print(f"ФАЙЛ НЕ НАЙДЕН: {old_path}")
+          pass
+#             print(f"ФАЙЛ НЕ НАЙДЕН: {old_path}")
 
         return f"goods/{new_filename}"
 
     except Exception as e:
-        print(f"Ошибка rename_image({filename}): {e}")
+      pass
+#         print(f"Ошибка rename_image({filename}): {e}")
         return ""
 
 
