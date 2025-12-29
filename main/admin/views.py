@@ -82,47 +82,38 @@ def get_value(values, index, total_count):
 
 import unicodedata
 def rename_image(filename):
-    if not filename:
-        return None
+  original_name = filename
 
-    try:
-        # приводим к строке + нормализуем unicode
-        original_name = unicodedata.normalize("NFC", str(filename).strip())
-        logger.info(f"Original name ---------------- {original_name}")
+  try:
+    # Убираем пробелы по краям
+    original_name = original_name.strip()
 
-        image_name, ext = os.path.splitext(original_name)
-        ext = ext.lower().strip()
+    # Разделяем имя и расширение
+    image_name, ext = os.path.splitext(original_name)
+    ext = ext.strip().lower()
 
-        if not ext:
-            return None
+    # Генерируем slug
+    slug_name = slugify(image_name)
 
-        # транслитерация
-        slug_name = slugify(image_name)
-        new_filename = f"{slug_name}{ext}"
+    # Новое имя файла
+    new_filename = f"{slug_name}{ext}"
 
-        old_path = os.path.join(images_folder, original_name)
-        new_path = os.path.join(images_folder, new_filename)
-
-
-        if not os.path.exists(old_path):
-            return None
-
-        # ❗ если имя уже правильное — ничего не делаем
-        if os.path.abspath(old_path) == os.path.abspath(new_path):
-            return f"goods/{new_filename}"
-
-        # ❗ если файл с новым именем УЖЕ есть — не трогаем
-        if os.path.exists(new_path):
-            return f"goods/{new_filename}"
-
-        # переименовываем
+    # Полные пути
+    old_path = os.path.join(images_folder, original_name)
+    new_path = os.path.join(images_folder, new_filename)
+    print(f'{old_path} - {new_path}')
+    # Если оригинальный файл существует — переименовываем
+    if os.path.exists(old_path):
         os.rename(old_path, new_path)
+    else:
+      pass
+#        print(f"ФАЙЛ НЕ НАЙДЕН: {original_name}")
 
-        return f"goods/{new_filename}"
 
-    except Exception:
-        # не валим импорт из-за одной картинки
-        return None
+    return f"goods/{new_filename}"
+
+  except:
+    pass
 
 def import_products_from_excel(file_path):
     Product.objects.all().delete()
@@ -141,6 +132,7 @@ def import_products_from_excel(file_path):
         category_slug = slugify(category)
         description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
         image = rename_image(row.iloc[3])
+#         logger.info(f"category_image -------{row.iloc[3]}--------- {row.iloc[3]}")
         # --- CATEGORY ---
         try:
             category_obj = Category.objects.get(slug=category_slug)
@@ -159,7 +151,7 @@ def import_products_from_excel(file_path):
 
         slug = get_unique_slug(Product, slugify(name))
         product_image = rename_image(row.iloc[4])
-
+#         logger.info(f"product_image ---------------- {product_image}")
         try:
             new_product = Product.objects.create(
                 name=name,
@@ -205,9 +197,10 @@ def import_products_from_excel(file_path):
                 model_slug = get_unique_slug(Models, slugify(model_name))
 
                 # --- ОБРАБОТКА КАРТИНКИ МОДЕЛИ ---
+#                 logger.info(f"info image - {models_image} - { i } - {count}")
                 raw_model_image = get_value(models_image, i, count)
-                model_image = rename_image(raw_model_image) if raw_model_image else None
-#                 logger.info(f"info image ---------------- {raw_model_image}-------------{model_image}")
+                model_image = rename_image(raw_model_image)
+#                 logger.info(f"info image ---------------- {model_image}")
 
                 # создаем модель
                 model_obj, created = Models.objects.get_or_create(
