@@ -9,7 +9,7 @@
 
 {% block content %}
 
-  {% if slides or slider_category %}
+
   <section class="hero">
     <div class="container">
       <div class="swiper hero__slider">
@@ -45,7 +45,7 @@
       </div>
     </div>
   </section>
-  {% endif %}
+
 
   {% if category %}
     {% include "../section/services.html" with category=category %}
