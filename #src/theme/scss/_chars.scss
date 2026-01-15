@@ -1,0 +1,31 @@
+.chars {
+
+
+  &__title {}
+
+  &__grid {
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 30px;
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__name {}
+
+  &__line {
+    min-width: 100px;
+    height: 1px;
+    background: #000;
+  }
+
+  &__value {}
+
+}

@@ -66,19 +66,6 @@
         <h1 class="info__title">
           {% if model.meta_h1 %}{{ model.meta_h1 }}{% else %}{{ model.model }}{% endif %}
         </h1>
-        <ul class="info__list">
-          {% if model.power %}
-          <li><b>Мощность: </b>{{ model.power }}</li>
-          {% endif %}
-          {% if model.el_network %}<li><b>Электрическая: </b>{{ model.el_network }}</li>{% endif %}
-          {% if model.nom_capacity %}<li><b>Ном. Производительность(м3/час): </b>{{ model.nom_capacity }}</li>{% endif %}
-          {% if model.max_capacity %}<li><b>Макс. Производительность(м3/час): </b>{{ model.max_capacity }}</li>{% endif %}
-          {% if model.max_capacity_min %}<li><b>Макс. производительность (л/мин): </b>{{ model.max_capacity_min }}</li>{% endif %}
-          {% if model.now_headr %}<li><b>Номинальный напор(м): </b>{{ model.now_head }}</li>{% endif %}
-          {% if model.max_head %}<li><b>Максимальный напор (м): </b>{{ model.max_head }}</li>{% endif %}
-          {% if model.suction_depth %}<li><b>Максимальная глуб. всасывания(м): </b>{{ model.suction_depth }}</li>{% endif %}
-          {% if model.con_size %}<li><b>Присоединительный размер (дюйм): </b>{{ model.con_size }}</li>{% endif %}
-        </ul>
         {% if model.description %}
         <div class="text">
           {{ model.description|safe }}
@@ -94,6 +81,102 @@
     </div>
   </div>
 </div>
+
+<section class="chars py">
+  <div class="container">
+    <h2 class="chars__title">Технические характеристики</h2>
+    <div class="chars__grid">
+      {% if model.power %}
+      <div class="chars__item">
+        <p class="chars__name"><b>Мощность: </b></p>
+        <div class="chars__line"></div>
+        <p class="chars__value">{{ model.power }}</p>
+      </div>
+      {% endif %}
+
+      {% if model.el_network %}
+      <div class="chars__item">
+        <p class="chars__name"><b>Электрическая: </b></p>
+        <div class="chars__line"></div>
+        <p class="chars__value">{{ model.el_network }}</p>
+      </div>
+      {% endif %}
+
+      {% if model.nom_capacity %}
+      <div class="chars__item">
+        <p class="chars__name"><b>Ном. Производительность(м3/час): </b></p>
+        <div class="chars__line"></div>
+        <p class="chars__value">{{ model.nom_capacity }}</p>
+      </div>
+      {% endif %}
+
+      {% if model.max_capacity %}
+      <div class="chars__item">
+        <p class="chars__name"><b>Макс. Производительность(м3/час): </b></p>
+        <div class="chars__line"></div>
+        <p class="chars__value">{{ model.max_capacity }}</p>
+      </div>
+      {% endif %}
+
+      {% if model.max_capacity_min %}
+      <div class="chars__item">
+        <p class="chars__name"><b>Макс. производительность (л/мин): </b></p>
+        <div class="chars__line"></div>
+        <p class="chars__value">{{ model.max_capacity_min }}</p>
+      </div>
+      {% endif %}
+
+      {% if model.now_headr %}
+      <div class="chars__item">
+        <p class="chars__name"><b>Номинальный напор(м): </b></p>
+        <div class="chars__line"></div>
+        <p class="chars__value">{{ model.now_headr }}</p>
+      </div>
+      {% endif %}
+
+      {% if model.now_headr %}
+      <div class="chars__item">
+        <p class="chars__name"><b>Номинальный напор(м): </b></p>
+        <div class="chars__line"></div>
+        <p class="chars__value">{{ model.now_headr }}</p>
+      </div>
+      {% endif %}
+
+      {% if model.max_head %}
+      <div class="chars__item">
+        <p class="chars__name"><b>Максимальный напор (м): </b></p>
+        <div class="chars__line"></div>
+        <p class="chars__value">{{ model.max_head }}</p>
+      </div>
+      {% endif %}
+
+      {% if model.suction_depth %}
+      <div class="chars__item">
+        <p class="chars__name"><b>Максимальная глуб. всасывания(м): </b></p>
+        <div class="chars__line"></div>
+        <p class="chars__value">{{ model.suction_depth }}</p>
+      </div>
+      {% endif %}
+
+      {% if model.suction_depth %}
+      <div class="chars__item">
+        <p class="chars__name"><b>Максимальная глуб. всасывания(м): </b></p>
+        <div class="chars__line"></div>
+        <p class="chars__value">{{ model.suction_depth }}</p>
+      </div>
+      {% endif %}
+
+      {% if model.con_size %}
+      <div class="chars__item">
+        <p class="chars__name"><b>Присоединительный размер (дюйм): </b></p>
+        <div class="chars__line"></div>
+        <p class="chars__value">{{ model.con_size }}</p>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
 
 {% if model.text %}
 <section class="py border-l">

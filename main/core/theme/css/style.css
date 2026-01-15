@@ -4343,6 +4343,33 @@ tbody td:last-child {
   transition: 0.25s;
 }
 
+.chars__grid {
+  max-width: 900px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.chars__item {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+}
+
+.chars__line {
+  min-width: 100px;
+  height: 1px;
+  background: #000;
+}
+
 .header {
   -webkit-box-flex: 0;
       -ms-flex: 0 0 auto;
