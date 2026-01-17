@@ -14,11 +14,13 @@
   &__item {
     display: grid;
     grid-template-columns: auto 1fr auto;
-    align-items: center;
+    align-items: flex-end;
     gap: 10px;
   }
 
-  &__name {}
+  &__name {
+    white-space: nowrap;
+  }
 
   &__line {
     min-width: 100px;
@@ -26,6 +28,8 @@
     background: #000;
   }
 
-  &__value {}
+  &__value {
+    white-space: nowrap;
+  }
 
 }

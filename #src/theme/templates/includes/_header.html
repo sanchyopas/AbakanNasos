@@ -39,25 +39,26 @@
             {{ branch.email }}
           </a>
           {% endif %}
+          {% if socials %}
+          <div class="header__social social">
+            <button type="button" class="social__mobile-btn" aria-label="Открыть список соц.сетей">
+              <i class="fa-solid fa-share-nodes"></i>
+            </button>
+            <div class="social__mobile-cnt">
+              {% for social in socials %}
+              <a href="{{ social.link }}" aria-label="Перейти в наш {{ social.name }}">
+                <img src="{{ social.icon_dark.url }}" width="30px" height="30px" alt="">
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
         </div>
         {% endfor %}
       </div>
       {% endif %}
 
-      {% if socials %}
-      <div class="header__social social">
-        <button type="button" class="social__mobile-btn" aria-label="Открыть список соц.сетей">
-          <i class="fa-solid fa-share-nodes"></i>
-        </button>
-        <div class="social__mobile-cnt">
-          {% for social in socials %}
-          <a href="{{ social.link }}" aria-label="Перейти в наш {{ social.name }}">
-            <img src="{{ social.icon_dark.url }}" width="30px" height="30px" alt="">
-          </a>
-          {% endfor %}
-        </div>
-      </div>
-      {% endif %}
+
 
       <button type="button" class="header__burger" id="burger">
         <i class="fa-solid fa-bars-staggered"></i>

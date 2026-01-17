@@ -1,5 +1,18 @@
 .table {
 
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    div {
+      font-weight: 400;
+      padding: 7px;
+      border: 1px solid rgba(1, 112, 184, 1);
+      border-radius: 30px;
+    }
+  }
+
   &__inner {
     width: 100%;
     padding-bottom: 30px;
@@ -61,7 +74,18 @@ table th {
   }
 }
 
+thead {
+
+  th {
+  }
+
+}
+
 tbody {
+  .model-chars {
+    text-align: left;
+    white-space: nowrap;
+  }
   td {
     padding: 10px 10px;
     font-weight: 600;

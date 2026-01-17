@@ -106,6 +106,26 @@
 <div class="table py">
   <div class="container">
    <div class="table__inner">
+     <div class="table__head">
+       {% if columns %}
+         {% for column in columns %}
+         <div>{{ column.verbose }}</div>
+         {% endfor %}
+         <div>Закажите</div>
+       {% endif %}
+
+     </div>
+     <div class="table__body">
+       {% if model.model %}
+       <div data-label="{{ model.model }}" class="model-chars">
+         {% if model.slug %}
+         <a href="{{ model.get_absolute_url }}">Ensi {{ model.model }}</a>
+         {% else %}
+         Ensi {{ model.model }}
+         {% endif %}
+       </div>
+       {% endif %}
+     </div>
      <table>
        {% if columns %}
        <thead>
@@ -121,11 +141,11 @@
        {% for model in models %}
        <tr>
          {% if model.model %}
-         <td data-label="{{ model.model }}">
+         <td data-label="{{ model.model }}" class="model-chars">
            {% if model.slug %}
-           <a href="{{ model.get_absolute_url }}">{{ model.model }}</a>
+           <a href="{{ model.get_absolute_url }}">Ensi {{ model.model }}</a>
            {% else %}
-            {{ model.model }}
+            Ensi {{ model.model }}
            {% endif %}
          </td>
          {% endif %}
