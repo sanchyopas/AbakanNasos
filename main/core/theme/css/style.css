@@ -4207,6 +4207,7 @@ p {
 }
 
 table {
+  table-layout: fixed;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -4219,16 +4220,29 @@ table td {
 }
 
 table th {
-  min-width: 166px;
+  max-width: 120px;
   padding-inline: 7px;
 }
 
 table th p {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 70px;
   font-weight: 400;
   padding: 7px;
-  white-space: nowrap;
   border: 1px solid rgb(1, 112, 184);
   border-radius: 30px;
+}
+
+thead th {
+  font-size: 14px;
 }
 
 tbody .model-chars {
@@ -4237,6 +4251,7 @@ tbody .model-chars {
 }
 
 tbody td {
+  font-size: 14px;
   padding: 10px 10px;
   font-weight: 600;
   border-right: 1px solid rgba(1, 112, 184, 0.16);

@@ -77,6 +77,7 @@ def product(request, parent, slug):
     ]
 
     columns = []
+    rows = []
 
     for field_name in FIELDS_TO_SHOW:
         field = Models._meta.get_field(field_name)

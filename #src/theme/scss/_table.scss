@@ -51,6 +51,7 @@
 }
 
 table {
+  table-layout: fixed;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -70,13 +71,17 @@ table td {
 }
 
 table th {
-  min-width: 166px;
+  max-width: 120px;
   padding-inline: 7px;
 
   p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
     font-weight: 400;
     padding: 7px;
-    white-space: nowrap;
+    //white-space: nowrap;
     border: 1px solid rgba(1, 112, 184, 1);
     border-radius: 30px;
   }
@@ -85,6 +90,7 @@ table th {
 thead {
 
   th {
+    font-size: 14px;
   }
 
 }
@@ -95,6 +101,7 @@ tbody {
     white-space: nowrap;
   }
   td {
+    font-size: 14px;
     padding: 10px 10px;
     font-weight: 600;
     border-right: 1px solid rgba(1, 112, 184, 0.16);

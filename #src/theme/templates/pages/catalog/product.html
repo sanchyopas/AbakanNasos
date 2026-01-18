@@ -106,33 +106,6 @@
 <div class="table py">
   <div class="container">
    <div class="table__inner">
-     <div class="table__head">
-       {% if columns %}
-         {% for column in columns %}
-         <div>{{ column.verbose }}</div>
-         {% endfor %}
-         <div>Закажите</div>
-       {% endif %}
-
-     </div>
-     <div class="table__body">
-       {% for model in models %}
-       <div class="table__row">
-       {% if model.model %}
-       <div data-label="{{ model.model }}" class="model-chars">
-         {% if model.slug %}
-         <a href="{{ model.get_absolute_url }}" class="model-name">{{ model.model }}</a>
-         {% else %}
-         <p class="model-name">{{ model.model }}</p>
-         {% endif %}
-       </div>
-       {% endif %}
-       {% if model.power is not none and model.power == model.power %}
-       <div data-label="{{ model.power }}">{{ model.power }}</div>
-       {% endif %}
-       </div>
-       {% endfor %}
-     </div>
      <table>
        {% if columns %}
        <thead>
@@ -171,9 +144,11 @@
          {% if model.max_capacity_min %}
          <td data-label="{{ model.max_capacity_min }}">{{ model.max_capacity_min }}</td>
          {% endif %}
-         {% if model.nom_head %}
-         <td data-label="{{ model.nom_head }}">{{ model.nom_head }}</td>
+
+         {% if model.now_head %}
+         <td data-label="{{ model.now_head }}">{{ model.now_head }}</td>
          {% endif %}
+
          {% if model.max_head %}
          <td data-label="{{ model.max_head }}">{{ model.max_head }}</td>
          {% endif %}
