@@ -2,7 +2,6 @@
 
   &__head {
     display: flex;
-    justify-content: space-between;
     gap: 10px;
 
     div {
@@ -11,6 +10,15 @@
       border: 1px solid rgba(1, 112, 184, 1);
       border-radius: 30px;
     }
+  }
+
+  &__body {
+
+  }
+
+  &__row {
+    display: flex;
+    gap: 10px;
   }
 
   &__inner {

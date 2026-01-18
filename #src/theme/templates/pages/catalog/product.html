@@ -116,15 +116,22 @@
 
      </div>
      <div class="table__body">
+       {% for model in models %}
+       <div class="table__row">
        {% if model.model %}
        <div data-label="{{ model.model }}" class="model-chars">
          {% if model.slug %}
-         <a href="{{ model.get_absolute_url }}">Ensi {{ model.model }}</a>
+         <a href="{{ model.get_absolute_url }}" class="model-name">{{ model.model }}</a>
          {% else %}
-         Ensi {{ model.model }}
+         <p class="model-name">{{ model.model }}</p>
          {% endif %}
        </div>
        {% endif %}
+       {% if model.power is not none and model.power == model.power %}
+       <div data-label="{{ model.power }}">{{ model.power }}</div>
+       {% endif %}
+       </div>
+       {% endfor %}
      </div>
      <table>
        {% if columns %}
@@ -143,9 +150,9 @@
          {% if model.model %}
          <td data-label="{{ model.model }}" class="model-chars">
            {% if model.slug %}
-           <a href="{{ model.get_absolute_url }}">Ensi {{ model.model }}</a>
+           <a href="{{ model.get_absolute_url }}" class="model-name">1{{ model.model }}</a>
            {% else %}
-            Ensi {{ model.model }}
+            <p class="model-name">1{{ model.model }}</p>
            {% endif %}
          </td>
          {% endif %}

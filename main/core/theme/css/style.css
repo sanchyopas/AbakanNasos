@@ -4165,9 +4165,6 @@ p {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
   gap: 10px;
 }
 
@@ -4176,6 +4173,13 @@ p {
   padding: 7px;
   border: 1px solid rgb(1, 112, 184);
   border-radius: 30px;
+}
+
+.table__row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
 }
 
 .table__inner {

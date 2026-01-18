@@ -31,3 +31,14 @@ inputSearch?.addEventListener('focus', (e) => {
 inputSearch?.addEventListener('blur', (e) => {
     inputSearch.parentElement.classList.remove('focused');
 });
+
+const modelName = document.querySelectorAll('.model-name')
+
+modelName?.forEach((el) => {
+  const text = el.innerText.trim()
+
+  // Проверяем, начинается ли строка с ENSI или ensi (без учёта регистра)
+  if (!/^ensi\b/i.test(text)) {
+    el.innerText = `ENSI ${text}`
+  }
+})
