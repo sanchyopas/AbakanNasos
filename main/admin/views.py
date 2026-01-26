@@ -30,6 +30,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from slugify import slugify
+
 general_url_product = "/admin/product/"
 
 path = f"{BASE_DIR}/upload/upload.zip"
@@ -114,116 +115,133 @@ def rename_image(filename):
 #         print(f"Ошибка rename_image({filename}): {e}")
         return ""
 
+def models_chars(model, file_path):
+  first_row = pd.read_excel(
+    file_path,
+    engine='openpyxl',
+    nrows=1,
+    header=None
+  )
+  print(first_row)
+#   print(first_row.iloc[0, 1])
+#   print(model.model)
 
 def import_products_from_excel(file_path):
-    Product.objects.all().delete()
-    Category.objects.all().delete()
-    Models.objects.all().delete()
-    a = Product.objects.all()
+  print('Погнали')
+#   Product.objects.all().delete()
+#   Category.objects.all().delete()
+#   Models.objects.all().delete()
 
-    # Загружаем данные из Excel
-    df = pd.read_excel(file_path, engine='openpyxl', skiprows=1)
+  # Загружаем данные из Excel
+  df = pd.read_excel(file_path, engine='openpyxl', skiprows=1)
 
-    for _, row in df.iterrows():
-        category = None if pd.isna(row.iloc[0]) else str(row.iloc[0]).strip()
-        if not category:
-            continue
+  for _, row in df.iterrows():
+    category = None if pd.isna(row.iloc[0]) else str(row.iloc[0]).strip()
+    if not category:
+      continue
 
-        category_slug = slugify(category)
-        description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
-        image = rename_image(row.iloc[3])
-#         logger.info(f"category_image -------{row.iloc[3]}--------- {row.iloc[3]}")
-        # --- CATEGORY ---
-        try:
-            category_obj = Category.objects.get(slug=category_slug)
-        except ObjectDoesNotExist:
-            category_obj = Category.objects.create(
-                name=category,
-                slug=category_slug,
-                image=image,
-                status='published'
-            )
+    category_slug = slugify(category)
+    description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
+    image = rename_image(row.iloc[3])
 
-        # --- PRODUCT ---
-        name = row.iloc[1]
-        if pd.isna(name) or not str(name).strip():
-            continue
+    try:
+      category_obj = Category.objects.get(slug=category_slug)
+    except ObjectDoesNotExist:
+      category_obj = Category.objects.create(
+        name=category,
+        slug=category_slug,
+        image=image,
+        status='published'
+      )
 
-        slug = get_unique_slug(Product, slugify(name))
-        product_image = rename_image(row.iloc[4])
-#         logger.info(f"product_image ---------------- {product_image}")
-        try:
-            new_product = Product.objects.create(
-                name=name,
-                slug=slug,
-                image=product_image,
-                description=description,
-                status='published'
-            )
-        except IntegrityError:
-            slug = get_unique_slug(Product, slug)
-            new_product = Product.objects.create(
-                name=name,
-                slug=slug,
-                image=product_image,
-                description=description,
-                status='published'
-            )
+    name = row.iloc[1]
+    if pd.isna(name) or not str(name).strip():
+      continue
 
-        new_product.category.add(category_obj)
+    slug = slugify(name)
+    product_image = rename_image(row.iloc[4])
 
-        # --- MODELS ---
-        try:
-            models_image, _ = parse_excel_column(row.iloc[5])
-            models_list, _ = parse_excel_column(row.iloc[6])
-            power_list, _ = parse_excel_column(row.iloc[7])
-            el_network_list, _ = parse_excel_column(row.iloc[8])
-            nom_capacity_list, _ = parse_excel_column(row.iloc[9])
-            max_capacity_list, _ = parse_excel_column(row.iloc[10])
-            max_capacity_min_list, _ = parse_excel_column(row.iloc[11])
-            now_head_list, _ = parse_excel_column(row.iloc[12])
-            max_head_list, _ = parse_excel_column(row.iloc[13])
-            suction_depth_list, _ = parse_excel_column(row.iloc[14])
-            con_size_list, _ = parse_excel_column(row.iloc[15])
+    try:
+      new_product = Product.objects.get(slug=slug)
+    except ObjectDoesNotExist:
+      new_product = Product.objects.create(
+        name=name,
+        slug=slug,
+        image=product_image,
+        description=description,
+        status='published'
+      )
 
-            count = len(models_list)
+    new_product.category.add(category_obj)
+    model = row.iloc[2]
+#     model_image = row.iloc[5]
+    model_slug = slugify(model)
 
-            for i in range(count):
-                model_name = get_value(models_list, i, count)
-                if not model_name:
-                    continue
+    try:
+      new_model = Models.objects.get(slug=model_slug)
+    except:
+      new_model = Models.objects.create(
+        model=model,
+        slug=model_slug,
+  #         image=model_image,
+        status='published'
+      )
+    models_chars(new_model, file_path)
 
-                # уникальный slug для каждой модели
-                model_slug = get_unique_slug(Models, slugify(model_name))
 
-                # --- ОБРАБОТКА КАРТИНКИ МОДЕЛИ ---
-#                 logger.info(f"info image - {models_image} - { i } - {count}")
-                raw_model_image = get_value(models_image, i, count)
-                model_image = rename_image(raw_model_image)
-#                 logger.info(f"info image ---------------- {model_image}")
-
-                # создаем модель
-                model_obj, created = Models.objects.get_or_create(
-                    parent=new_product,
-                    slug=model_slug,
-                    defaults={
-                        'image': model_image,
-                        'model': model_name,
-                        'power': get_value(power_list, i, count),
-                        'el_network': get_value(el_network_list, i, count),
-                        'nom_capacity': get_value(nom_capacity_list, i, count),
-                        'max_capacity': get_value(max_capacity_list, i, count),
-                        'max_capacity_min': get_value(max_capacity_min_list, i, count),
-                        'now_head': get_value(now_head_list, i, count),
-                        'max_head': get_value(max_head_list, i, count),
-                        'suction_depth': get_value(suction_depth_list, i, count),
-                        'con_size': get_value(con_size_list, i, count),
-                        'status': 'published'
-                    }
-                )
-
-        except Exception as e:
-            pass
+#
+#         # --- MODELS ---
+#         try:
+#             models_image, _ = parse_excel_column(row.iloc[5])
+#             models_list, _ = parse_excel_column(row.iloc[6])
+#             power_list, _ = parse_excel_column(row.iloc[7])
+#             el_network_list, _ = parse_excel_column(row.iloc[8])
+#             nom_capacity_list, _ = parse_excel_column(row.iloc[9])
+#             max_capacity_list, _ = parse_excel_column(row.iloc[10])
+#             max_capacity_min_list, _ = parse_excel_column(row.iloc[11])
+#             now_head_list, _ = parse_excel_column(row.iloc[12])
+#             max_head_list, _ = parse_excel_column(row.iloc[13])
+#             suction_depth_list, _ = parse_excel_column(row.iloc[14])
+#             con_size_list, _ = parse_excel_column(row.iloc[15])
+#
+#             count = len(models_list)
+#
+#             for i in range(count):
+#                 model_name = get_value(models_list, i, count)
+#                 if not model_name:
+#                     continue
+#
+#                 # уникальный slug для каждой модели
+#                 model_slug = get_unique_slug(Models, slugify(model_name))
+#
+#                 # --- ОБРАБОТКА КАРТИНКИ МОДЕЛИ ---
+# #                 logger.info(f"info image - {models_image} - { i } - {count}")
+#                 raw_model_image = get_value(models_image, i, count)
+#                 model_image = rename_image(raw_model_image)
+# #                 logger.info(f"info image ---------------- {model_image}")
+#
+#                 # создаем модель
+#                 model_obj, created = Models.objects.get_or_create(
+#                     parent=new_product,
+#                     slug=model_slug,
+#                     defaults={
+#                         'image': model_image,
+#                         'model': model_name,
+#                         'power': get_value(power_list, i, count),
+#                         'el_network': get_value(el_network_list, i, count),
+#                         'nom_capacity': get_value(nom_capacity_list, i, count),
+#                         'max_capacity': get_value(max_capacity_list, i, count),
+#                         'max_capacity_min': get_value(max_capacity_min_list, i, count),
+#                         'now_head': get_value(now_head_list, i, count),
+#                         'max_head': get_value(max_head_list, i, count),
+#                         'suction_depth': get_value(suction_depth_list, i, count),
+#                         'con_size': get_value(con_size_list, i, count),
+#                         'status': 'published'
+#                     }
+#                 )
+#
+#         except Exception as e:
+#             pass
 
 
 # @user_passes_test(lambda u: u.is_superuser)
@@ -272,39 +290,42 @@ from PIL import Image
 @user_passes_test(lambda u: u.is_superuser)
 def upload_goods(request):
     form = UploadFileForm()
+
     if request.method == 'POST':
       form = UploadFileForm(request.POST, request.FILES)
       if form.is_valid():
-          file = request.FILES['file']
+        file = request.FILES['file']
+        import_products_from_excel(file)
 
-          destination = open(os.path.join('upload/', file.name), 'wb+')
-          for chunk in file.chunks():
-              destination.write(chunk)
-          destination.close()
+        destination = open(os.path.join('upload/', file.name), 'wb+')
 
-          # Распаковка архива
-          with zipfile.ZipFile('upload/upload.zip', 'r') as zip_ref:
-              zip_ref.extractall('media/')
+        for chunk in file.chunks():
+          destination.write(chunk)
+        destination.close()
 
-          # Удаление загруженного архива
-          os.remove('upload/upload.zip')
+        # Распаковка архива
+        with zipfile.ZipFile(f'upload/{file}', 'r') as zip_ref:
+            zip_ref.extractall('media/')
 
-          # Сжатие фотографий
-          for filename in os.listdir('media/upload'):
-
-            if filename.endswith('.jpg') or filename.endswith('.png') or filename.endswith('.JPG') or filename.endswith('.JPEG') or filename.endswith('.jpeg'):
-              with Image.open(os.path.join('media/upload', filename)) as img:
-                temp = filename.replace('.jpeg', '')
-                temp_one = temp.replace('№', '')
-                temp_b = temp_one.replace('В', 'B')
-                temp_e = temp_one.replace('Э', 'E')
-                img.save(os.path.join('media/goods', temp_e), quality=60)  # quality=60 для JPEG файла
-
-          # Очистка временной папки
-          os.system('rm -rf media/upload')
-          return redirect('upload-succes')
-      else:
-        form = UploadFileForm()
+        # Удаление загруженного архива
+        os.remove(f'upload/{file}')
+#
+#         # Сжатие фотографий
+#         for filename in os.listdir('media/upload'):
+#
+#           if filename.endswith('.jpg') or filename.endswith('.png') or filename.endswith('.JPG') or filename.endswith('.JPEG') or filename.endswith('.jpeg'):
+#             with Image.open(os.path.join('media/upload', filename)) as img:
+#               temp = filename.replace('.jpeg', '')
+#               temp_one = temp.replace('№', '')
+#               temp_b = temp_one.replace('В', 'B')
+#               temp_e = temp_one.replace('Э', 'E')
+#               img.save(os.path.join('media/goods', temp_e), quality=60)  # quality=60 для JPEG файла
+#
+#         # Очистка временной папки
+#         os.system('rm -rf media/upload')
+#         return redirect('upload-succes')
+#       else:
+#         form = UploadFileForm()
     return render(request, 'upload/upload.html', {'form': form})
 
 @user_passes_test(lambda u: u.is_superuser)

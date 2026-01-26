@@ -129,16 +129,18 @@ class Models(models.Model):
   parent = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True,related_name="models_parent", verbose_name="Продукт")
   slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, verbose_name="URL")
   model = models.CharField(max_length=150, default="", db_index=True, verbose_name="Модель")
-  power = models.CharField(max_length=150, db_index=True,null=True, blank=True, verbose_name="Мощность")
-  el_network = models.CharField(max_length=150,  db_index=True, null=True, blank=True, verbose_name="Электрическая сеть")
-  nom_capacity = models.CharField(max_length=150,  db_index=True, null=True, blank=True,verbose_name="Ном. Производительность (м3/час)")
-  max_capacity = models.CharField(max_length=150,   db_index=True,null=True, blank=True, verbose_name="Макс. Производительность (м3/час)")
-  max_capacity_min = models.CharField(max_length=150,   db_index=True,null=True, blank=True, verbose_name="Макс. производительность (л/мин)")
-  now_head = models.CharField(max_length=150,  db_index=True,null=True, blank=True,  verbose_name="Номинальный напор(м)")
-  max_head = models.CharField(max_length=150,  db_index=True, null=True, blank=True,verbose_name="Максимальный напор (м)")
-  suction_depth = models.CharField(max_length=150,  db_index=True, null=True, blank=True, verbose_name="Максимальная глуб. всасывания(м)")
-  con_size = models.CharField(max_length=150,  db_index=True,null=True, blank=True, verbose_name="Присоединительный размер (дюйм)")
-  order_by = models.CharField(max_length=150,   db_index=True,null=True, blank=True, default="0", verbose_name="Порядок сортировки")
+
+#   power = models.CharField(max_length=150, db_index=True,null=True, blank=True, verbose_name="Мощность")
+#   el_network = models.CharField(max_length=150,  db_index=True, null=True, blank=True, verbose_name="Электрическая сеть")
+#   nom_capacity = models.CharField(max_length=150,  db_index=True, null=True, blank=True,verbose_name="Ном. Производительность (м3/час)")
+#   max_capacity = models.CharField(max_length=150,   db_index=True,null=True, blank=True, verbose_name="Макс. Производительность (м3/час)")
+#   max_capacity_min = models.CharField(max_length=150,   db_index=True,null=True, blank=True, verbose_name="Макс. производительность (л/мин)")
+#   now_head = models.CharField(max_length=150,  db_index=True,null=True, blank=True,  verbose_name="Номинальный напор(м)")
+#   max_head = models.CharField(max_length=150,  db_index=True, null=True, blank=True,verbose_name="Максимальный напор (м)")
+#   suction_depth = models.CharField(max_length=150,  db_index=True, null=True, blank=True, verbose_name="Максимальная глуб. всасывания(м)")
+#   con_size = models.CharField(max_length=150,  db_index=True,null=True, blank=True, verbose_name="Присоединительный размер (дюйм)")
+#   order_by = models.CharField(max_length=150,   db_index=True,null=True, blank=True, default="0", verbose_name="Порядок сортировки")
+
   status = models.CharField(
       max_length=20,
       choices=STATUS_CHOICES,
@@ -155,12 +157,17 @@ class Models(models.Model):
       "model": self.slug
     })
 
-class ProductImage(models.Model):
-    parent = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="Привязка к продукту")
-    src = models.ImageField(upload_to="product-image/", null=True, blank=True, verbose_name="Дополнительны изображения")
+class ModelChars(models.Model):
+  parent = models.ForeignKey(Models, on_delete=models.CASCADE, related_name="chars", verbose_name="Привязка к модели")
+  name = models.CharField(max_length=250, null=True, blank=True, verbose_name="Имя характеристики")
+  value = models.CharField(max_length=250, null=True, blank=True, verbose_name="Значение характеристики")
 
-    class Meta:
-      verbose_name = 'Изображение'
+class ProductImage(models.Model):
+  parent = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="Привязка к продукту")
+  src = models.ImageField(upload_to="product-image/", null=True, blank=True, verbose_name="Дополнительны изображения")
+
+  class Meta:
+    verbose_name = 'Изображение'
 
 
 
