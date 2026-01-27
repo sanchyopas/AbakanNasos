@@ -4175,6 +4175,10 @@ p {
   border-radius: 30px;
 }
 
+.table__btn {
+  font-weight: 600;
+}
+
 .table__row {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -4215,6 +4219,10 @@ table {
   border-spacing: 0;
 }
 
+table tr {
+  border-bottom: 1px solid rgba(1, 112, 184, 0.16);
+}
+
 table td {
   text-align: center;
 }
@@ -4234,11 +4242,14 @@ table th p {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  height: 70px;
   font-weight: 400;
   padding: 7px;
   border: 1px solid rgb(1, 112, 184);
   border-radius: 30px;
+}
+
+thead tr {
+  border-bottom: none;
 }
 
 thead th {
@@ -4246,8 +4257,7 @@ thead th {
 }
 
 tbody .model-chars {
-  text-align: left;
-  white-space: nowrap;
+  text-align: center;
 }
 
 tbody td {
@@ -4412,6 +4422,8 @@ tbody td:last-child {
       -ms-flex-align: end;
           align-items: flex-end;
   gap: 10px;
+  padding: 0 20px 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .chars__name {
@@ -4420,8 +4432,6 @@ tbody td:last-child {
 
 .chars__line {
   min-width: 100px;
-  height: 1px;
-  background: #000;
 }
 
 .chars__value {
@@ -4432,7 +4442,7 @@ tbody td:last-child {
   -webkit-box-flex: 0;
       -ms-flex: 0 0 auto;
           flex: 0 0 auto;
-  padding-top: 37px;
+  padding-top: 10px;
 }
 
 .header__top {

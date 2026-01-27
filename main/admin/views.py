@@ -115,133 +115,103 @@ def rename_image(filename):
 #         print(f"Ошибка rename_image({filename}): {e}")
         return ""
 
-def models_chars(model, file_path):
-  first_row = pd.read_excel(
-    file_path,
-    engine='openpyxl',
-    nrows=1,
-    header=None
-  )
-  print(first_row)
-#   print(first_row.iloc[0, 1])
-#   print(model.model)
 
 def import_products_from_excel(file_path):
-  print('Погнали')
-#   Product.objects.all().delete()
-#   Category.objects.all().delete()
-#   Models.objects.all().delete()
+#     Product.objects.all().delete()
+#     Category.objects.all().delete()
+#     Models.objects.all().delete()
 
-  # Загружаем данные из Excel
-  df = pd.read_excel(file_path, engine='openpyxl', skiprows=1)
+    df = pd.read_excel(file_path, engine='openpyxl')
 
-  for _, row in df.iterrows():
-    category = None if pd.isna(row.iloc[0]) else str(row.iloc[0]).strip()
-    if not category:
-      continue
+    FIXED_COLUMNS_COUNT = 7
 
-    category_slug = slugify(category)
-    description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
-    image = rename_image(row.iloc[3])
+    for _, row in df.iterrows():
 
-    try:
-      category_obj = Category.objects.get(slug=category_slug)
-    except ObjectDoesNotExist:
-      category_obj = Category.objects.create(
-        name=category,
-        slug=category_slug,
-        image=image,
-        status='published'
-      )
+        category_name = str(row.iloc[0]).strip()
+        if not category_name:
+            continue
 
-    name = row.iloc[1]
-    if pd.isna(name) or not str(name).strip():
-      continue
+        description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
+        image = rename_image(row.iloc[3])
 
-    slug = slugify(name)
-    product_image = rename_image(row.iloc[4])
+        category_slug = slugify(category_name)
+        category, created = Category.objects.get_or_create(
+            slug=category_slug,
+            defaults={
+                'name': category_name,
+                'status': 'published',
+                'description': description,
+                'image': image
+            }
+        )
 
-    try:
-      new_product = Product.objects.get(slug=slug)
-    except ObjectDoesNotExist:
-      new_product = Product.objects.create(
-        name=name,
-        slug=slug,
-        image=product_image,
-        description=description,
-        status='published'
-      )
+        if not created:
+            category.description = description
+            if image:
+                category.image = image
+            category.save(update_fields=['description', 'image'])
 
-    new_product.category.add(category_obj)
-    model = row.iloc[2]
-#     model_image = row.iloc[5]
-    model_slug = slugify(model)
+        product_name = str(row.iloc[1]).strip()
+        if not product_name:
+            continue
 
-    try:
-      new_model = Models.objects.get(slug=model_slug)
-    except:
-      new_model = Models.objects.create(
-        model=model,
-        slug=model_slug,
-  #         image=model_image,
-        status='published'
-      )
-    models_chars(new_model, file_path)
+        product_image = rename_image(row.iloc[4])
+
+        product_slug = slugify(product_name)
+        product, pr_created = Product.objects.get_or_create(
+            slug=product_slug,
+            defaults={
+              'name': product_name,
+              'status': 'published',
+              'image': product_image
+            }
+        )
+
+        if not pr_created:
+          if product_image:
+            product.image = image
+          product.save(update_fields=['image'])
+
+        product.category.add(category)
+
+        # -------- Модель --------
+        model_name = str(row.iloc[2]).strip()
+        if not model_name:
+            continue
+
+        model_slug = slugify(model_name)
+        model_stock = row.iloc[6]
 
 
-#
-#         # --- MODELS ---
-#         try:
-#             models_image, _ = parse_excel_column(row.iloc[5])
-#             models_list, _ = parse_excel_column(row.iloc[6])
-#             power_list, _ = parse_excel_column(row.iloc[7])
-#             el_network_list, _ = parse_excel_column(row.iloc[8])
-#             nom_capacity_list, _ = parse_excel_column(row.iloc[9])
-#             max_capacity_list, _ = parse_excel_column(row.iloc[10])
-#             max_capacity_min_list, _ = parse_excel_column(row.iloc[11])
-#             now_head_list, _ = parse_excel_column(row.iloc[12])
-#             max_head_list, _ = parse_excel_column(row.iloc[13])
-#             suction_depth_list, _ = parse_excel_column(row.iloc[14])
-#             con_size_list, _ = parse_excel_column(row.iloc[15])
-#
-#             count = len(models_list)
-#
-#             for i in range(count):
-#                 model_name = get_value(models_list, i, count)
-#                 if not model_name:
-#                     continue
-#
-#                 # уникальный slug для каждой модели
-#                 model_slug = get_unique_slug(Models, slugify(model_name))
-#
-#                 # --- ОБРАБОТКА КАРТИНКИ МОДЕЛИ ---
-# #                 logger.info(f"info image - {models_image} - { i } - {count}")
-#                 raw_model_image = get_value(models_image, i, count)
-#                 model_image = rename_image(raw_model_image)
-# #                 logger.info(f"info image ---------------- {model_image}")
-#
-#                 # создаем модель
-#                 model_obj, created = Models.objects.get_or_create(
-#                     parent=new_product,
-#                     slug=model_slug,
-#                     defaults={
-#                         'image': model_image,
-#                         'model': model_name,
-#                         'power': get_value(power_list, i, count),
-#                         'el_network': get_value(el_network_list, i, count),
-#                         'nom_capacity': get_value(nom_capacity_list, i, count),
-#                         'max_capacity': get_value(max_capacity_list, i, count),
-#                         'max_capacity_min': get_value(max_capacity_min_list, i, count),
-#                         'now_head': get_value(now_head_list, i, count),
-#                         'max_head': get_value(max_head_list, i, count),
-#                         'suction_depth': get_value(suction_depth_list, i, count),
-#                         'con_size': get_value(con_size_list, i, count),
-#                         'status': 'published'
-#                     }
-#                 )
-#
-#         except Exception as e:
-#             pass
+        model, created = Models.objects.get_or_create(
+            slug=model_slug,
+            parent=product,
+            defaults={'model': model_name, 'status': 'published', 'in_stock': model_stock}
+        )
+
+        if not created:
+          model.model = model_name
+          model.in_stock = model_stock
+          model.status = 'published'
+          model.save(update_fields=['model', 'in_stock', 'status'])
+
+
+        for column in df.columns[FIXED_COLUMNS_COUNT:]:
+            value = row[column]
+
+            if pd.isna(value):
+                continue
+
+            char, _ = Characteristic.objects.get_or_create(
+                name=str(column).strip()
+            )
+
+            ModelCharacteristic.objects.update_or_create(
+                model=model,
+                characteristic=char,
+                defaults={'value': str(value)}
+            )
+
 
 
 # @user_passes_test(lambda u: u.is_superuser)

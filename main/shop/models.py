@@ -119,6 +119,13 @@ class Models(models.Model):
       ('draft', 'Черновик'),
       ('hidden', 'Скрыто'),
   ]
+
+  STATUS_STOCK = [
+        ('published', 'В наличие'),
+        ('draft', 'В пути'),
+        ('hidden', 'Нет в наличии'),
+    ]
+
   meta_h1 = models.CharField(max_length=250, null=True, blank=True, verbose_name="Заголовок первого уровня")
   meta_title = models.CharField(max_length=250, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
@@ -129,17 +136,12 @@ class Models(models.Model):
   parent = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True,related_name="models_parent", verbose_name="Продукт")
   slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, verbose_name="URL")
   model = models.CharField(max_length=150, default="", db_index=True, verbose_name="Модель")
-
-#   power = models.CharField(max_length=150, db_index=True,null=True, blank=True, verbose_name="Мощность")
-#   el_network = models.CharField(max_length=150,  db_index=True, null=True, blank=True, verbose_name="Электрическая сеть")
-#   nom_capacity = models.CharField(max_length=150,  db_index=True, null=True, blank=True,verbose_name="Ном. Производительность (м3/час)")
-#   max_capacity = models.CharField(max_length=150,   db_index=True,null=True, blank=True, verbose_name="Макс. Производительность (м3/час)")
-#   max_capacity_min = models.CharField(max_length=150,   db_index=True,null=True, blank=True, verbose_name="Макс. производительность (л/мин)")
-#   now_head = models.CharField(max_length=150,  db_index=True,null=True, blank=True,  verbose_name="Номинальный напор(м)")
-#   max_head = models.CharField(max_length=150,  db_index=True, null=True, blank=True,verbose_name="Максимальный напор (м)")
-#   suction_depth = models.CharField(max_length=150,  db_index=True, null=True, blank=True, verbose_name="Максимальная глуб. всасывания(м)")
-#   con_size = models.CharField(max_length=150,  db_index=True,null=True, blank=True, verbose_name="Присоединительный размер (дюйм)")
-#   order_by = models.CharField(max_length=150,   db_index=True,null=True, blank=True, default="0", verbose_name="Порядок сортировки")
+  in_stock = models.CharField(
+                   max_length=20,
+                   choices=STATUS_STOCK,
+                   default='draft',
+                   verbose_name="В наличие"
+                 )
 
   status = models.CharField(
       max_length=20,
@@ -157,10 +159,24 @@ class Models(models.Model):
       "model": self.slug
     })
 
-class ModelChars(models.Model):
-  parent = models.ForeignKey(Models, on_delete=models.CASCADE, related_name="chars", verbose_name="Привязка к модели")
-  name = models.CharField(max_length=250, null=True, blank=True, verbose_name="Имя характеристики")
-  value = models.CharField(max_length=250, null=True, blank=True, verbose_name="Значение характеристики")
+class Characteristic(models.Model):
+    name = models.CharField(max_length=250, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ModelCharacteristic(models.Model):
+    model = models.ForeignKey(
+      Models,
+      on_delete=models.CASCADE,
+      related_name="characteristics"
+    )
+    characteristic = models.ForeignKey(
+      Characteristic,
+      on_delete=models.CASCADE
+    )
+    value = models.CharField(max_length=250, null=True, blank=True)
 
 class ProductImage(models.Model):
   parent = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="Привязка к продукту")

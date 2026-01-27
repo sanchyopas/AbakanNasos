@@ -102,64 +102,56 @@
     </div>
   </div>
 </div>
+
 {% if models %}
 <div class="table py">
   <div class="container">
    <div class="table__inner">
      <table>
-       {% if columns %}
        <thead>
        <tr>
-         {% for column in columns %}
-         <th><p>{{ column.verbose }}</p></th>
-         {% endfor %}
-         <th><p>Закажите</p></th>
+         <th><p>Модель</p></th>
+         <th><p>Мощность, кВт</p></th>
+         <th><p>Напряжение, В</p></th>
+         <th><p>Подача</p></th>
+         <th><p>Напор</p></th>
+         <th><p>Подключение</p></th>
+         <th><p>Наличие</p></th>
        </tr>
        </thead>
-       {% endif %}
        <tbody>
        {% for model in models %}
        <tr>
          {% if model.model %}
          <td data-label="{{ model.model }}" class="model-chars">
            {% if model.slug %}
-           <a href="{{ model.get_absolute_url }}" class="model-name">1{{ model.model }}</a>
+           <a href="{{ model.get_absolute_url }}" class="model-name">{{ model.model }}</a>
            {% else %}
-            <p class="model-name">1{{ model.model }}</p>
+            <p class="model-name">{{ model.model }}</p>
            {% endif %}
          </td>
-         {% endif %}
-         {% if model.power is not none and model.power == model.power %}
-         <td data-label="{{ model.power }}">{{ model.power }}</td>
-         {% endif %}
-         {% if model.el_network %}
-         <td data-label="{{ model.el_network }}">{{ model.el_network }}</td>
-         {% endif %}
-         {% if model.nom_capacity %}
-         <td data-label="{{ model.nom_capacity }}">{{ model.nom_capacity }}</td>
-         {% endif %}
-         {% if model.max_capacity %}
-         <td data-label="{{ model.max_capacity }}">{{ model.max_capacity }}</td>
-         {% endif %}
-         {% if model.max_capacity_min %}
-         <td data-label="{{ model.max_capacity_min }}">{{ model.max_capacity_min }}</td>
+          {% for char in model.characteristics.all|slice:":5" %}
+             <td data-label="{{ model.model }}" class="model-chars">
+               <p class="model-name">{{ char.value }}</p>
+             </td>
+          {% endfor %}
          {% endif %}
 
-         {% if model.now_head %}
-         <td data-label="{{ model.now_head }}">{{ model.now_head }}</td>
-         {% endif %}
+         <td data-label="{{ model.in_stock }}">
+           <button type="button" class="table__btn">
+             {% if model.in_stock == "В наличии" %}
+              <span style="color: green;">{{ model.in_stock }}</span>
+             {% endif %}
 
-         {% if model.max_head %}
-         <td data-label="{{ model.max_head }}">{{ model.max_head }}</td>
-         {% endif %}
-         {% if model.suction_depth %}
-         <td data-label="{{ model.suction_depth }}">{{ model.suction_depth }}</td>
-         {% endif %}
-         {% if model.con_size %}
-         <td data-label="{{ model.con_size }}">{{ model.con_size }}</td>
-         {% endif %}
-         <td data-label="Под вопросом">
-           <button type="button" data-popup="leave-request"  data-name="{{ model.model }}">Заказать</button>
+             {% if model.in_stock == "Нет в наличии" %}
+             <span style="color: red;">{{ model.in_stock }}</span>
+             {% endif %}
+
+             {% if model.in_stock == "В пути" %}
+             <span style="color: orange;">{{ model.in_stock }}</span>
+             {% endif %}
+
+           </button>
          </td>
        </tr>
        {% endfor %}

@@ -16,6 +16,10 @@
 
   }
 
+  &__btn {
+    font-weight: 600;
+  }
+
   &__row {
     display: flex;
     gap: 10px;
@@ -59,10 +63,11 @@ table {
   border-spacing: 0;
 
 
-
 }
 
 table tr {
+  border-bottom: 1px solid rgba(1, 112, 184, .16);
+
 
 }
 
@@ -78,7 +83,6 @@ table th {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 70px;
     font-weight: 400;
     padding: 7px;
     //white-space: nowrap;
@@ -89,6 +93,10 @@ table th {
 
 thead {
 
+  tr {
+    border-bottom: none;
+  }
+
   th {
     font-size: 14px;
   }
@@ -97,9 +105,14 @@ thead {
 
 tbody {
   .model-chars {
-    text-align: left;
-    white-space: nowrap;
+    text-align: center;
+
+    //&:first-child {
+    //  text-align: left;
+    //  white-space: nowrap;
+    //}
   }
+
   td {
     font-size: 14px;
     padding: 10px 10px;
@@ -107,9 +120,9 @@ tbody {
     border-right: 1px solid rgba(1, 112, 184, 0.16);
   }
 
-    td:last-child {
-      border-right: none;
-    }
+  td:last-child {
+    border-right: none;
+  }
 }
 
 @media screen and (max-width: 600px) {

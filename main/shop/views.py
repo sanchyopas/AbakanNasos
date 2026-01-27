@@ -50,68 +50,31 @@ def product(request, parent, slug):
     images = ProductImage.objects.filter(parent=product)
 
     # модели текущего продукта
-    models_qs = Models.objects.filter(parent=product)
+    models = Models.objects.filter(parent=product)
 
-    if not models_qs.exists():
-        return render(request, "pages/catalog/product.html", {
-            "category": category,
-            "product": product,
-            "images": images,
-            "models": [],
-            "columns": [],
-            "models_list": [],
-        })
+#     chars = ModelCharacteristic.objects.get(model=models_qs)
 
-    # нужные поля
-    FIELDS_TO_SHOW = [
-        "model",
-        "power",
-        "el_network",
-        "nom_capacity",
-        "max_capacity",
-        "max_capacity_min",
-        "now_head",
-        "max_head",
-        "suction_depth",
-        "con_size",
-    ]
-
-    columns = []
-    rows = []
-
-    for field_name in FIELDS_TO_SHOW:
-        field = Models._meta.get_field(field_name)
-        verbose = field.verbose_name
-
-        has_value = models_qs.exclude(**{field_name: None}).exclude(**{field_name: ""}).exists()
-
-        if has_value:
-            columns.append({
-                "name": field_name,
-                "verbose": verbose,
-            })
+#     print(chars)
 
     context = {
         "category": category,
         "product": product,
         "images": images,
-        "models": models_qs,
-        "columns": columns,
-        "models_list": models_qs,
+        "models": models,
     }
 
     return render(request, "pages/catalog/product.html", context)
 
 
 def model_detail(request, parent, product, model):
-  model_obj = get_object_or_404(Models, slug=model)
+  model = get_object_or_404(Models, slug=model)
   product = Product.objects.get(slug=product)
   category = Category.objects.get(slug=parent)
 
   context = {
     "category": category,
     "product": product,
-    "model": model_obj
+    "model": model
   }
 
   return render(request, "pages/catalog/model.html", context)
