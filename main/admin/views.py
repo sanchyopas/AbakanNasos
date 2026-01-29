@@ -169,7 +169,7 @@ def import_products_from_excel(file_path):
 
         if not pr_created:
           if product_image:
-            product.image = image
+            product.image = product_image
           product.save(update_fields=['image'])
 
         product.category.add(category)
@@ -182,18 +182,23 @@ def import_products_from_excel(file_path):
         model_slug = slugify(model_name)
         model_stock = row.iloc[6]
 
+        model_image = rename_image(row.iloc[5])
+
+        if pd.isna(model_image):
+            model_image=""
 
         model, created = Models.objects.get_or_create(
             slug=model_slug,
             parent=product,
-            defaults={'model': model_name, 'status': 'published', 'in_stock': model_stock}
+            defaults={'model': model_name, 'status': 'published', 'image': model_image, 'in_stock': model_stock}
         )
 
         if not created:
           model.model = model_name
           model.in_stock = model_stock
           model.status = 'published'
-          model.save(update_fields=['model', 'in_stock', 'status'])
+          model.image = model_image
+          model.save(update_fields=['model', 'in_stock', 'status', 'image'])
 
 
         for column in df.columns[FIXED_COLUMNS_COUNT:]:
