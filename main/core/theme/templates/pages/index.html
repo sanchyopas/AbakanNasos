@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% block title %}
+{% if home_page.meta_title %}{{ home_page.meta_title }}{% else %}Главная страница{% endif %}
+{% endblock %}
+{% block description %}{{ home_page.meta_description }}{% endblock %}
+{% block keywords %}{{ home_page.meta_keywords }}{% endblock %}
+
+{% block content %}
+
+
+  <section class="hero">
+    <div class="container">
+      <div class="swiper hero__slider">
+        <div class="swiper-wrapper hero__wrapper">
+          {% for slide in slider_category %}
+          <div class="swiper-slide hero__slide">
+            <h2>{{ slide.name }}</h2>
+            {{ slide.description|safe|truncatewords:40 }}
+            {% thumbnail slide.image "460x409" format="WEBP" upscale=False as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ slide.name }}"
+                 title="{{ slide.name }}" fetchpriority="high" class="hero__image">
+            {% endthumbnail %}
+
+            <a href="{{ slide.get_absolute_url }}" class="hero__btn">Посмотреть товары</a>
+          </div>
+          {% endfor %}
+
+          {% for slide in slides %}
+          <div class="swiper-slide hero__slide">
+            <h1>{{ slide.title }}</h1>
+            <p>
+              {{ slide.description }}
+            </p>
+            <img src="{{ slide.image.url }}" alt="" class="hero__image">
+            <button type="button" class="hero__btn">Посмотреть товары</button>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="hero__arrows">
+          <div class="swiper-button-prev hero__arrow-prev"></div>
+          <div class="swiper-button-next hero__arrow-next"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  {% if category %}
+    {% include "../section/services.html" with category=category %}
+  {% endif %}
+
+  {% include "../includes/_callback.html" %}
+
+  {% include "../section/clients.html" %}
+
+  {% include "../includes/_contact.html" %}
+
+  {% if about %}
+  <div class="about py">
+    <div class="container">
+    <div class="about__row">
+      <div class="about__info">
+
+        <h2 class="about__title title">{{ about.title }}</h2>
+
+        <div class="about__text text">
+          {{ about.description|safe }}
+        </div>
+      </div>
+      <div class="about__image">
+        {% thumbnail about.image "654x481" format="WEBP" crop="center" as im %}
+        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ about.title }}"
+             title="{{ about.title }}" class="about__bg">
+        {% endthumbnail %}
+
+        {% if site_settings.logo_dark %}
+        {% thumbnail site_settings.logo_dark "145x46" format="WEBP" crop="center" as im %}
+        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ callback.title }}"
+             title="{{ callback.title }}" class="about__logo">
+        {% endthumbnail %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  </div>
+  {% endif %}
+
+{% endblock %}
