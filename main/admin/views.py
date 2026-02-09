@@ -199,10 +199,11 @@ def import_products_from_excel(file_path):
 
 
         for column in df.columns[FIXED_COLUMNS_COUNT:]:
+
             value = row[column]
 
             if pd.isna(value):
-                continue
+                value = "-"
 
             char, _ = Characteristic.objects.get_or_create(
                 name=str(column).strip()
