@@ -131,9 +131,15 @@
            {% endif %}
          </td>
           {% for char in model.characteristics.all|slice:":5" %}
-             <td data-label="{{ model.model }}" class="model-chars">
-               <p class="model-name">{{ char.value }}</p>
-             </td>
+            {% if char.value %}
+               <td data-label="{{ model.model }}" class="model-chars">
+                 <p class="model-name">{{ char.value }}</p>
+               </td>
+            {% else %}
+               <td data-label="{{ model.model }}" class="model-chars">
+                 <p class="model-name">-</p>
+               </td>
+            {% endif %}
           {% endfor %}
          {% endif %}
 
