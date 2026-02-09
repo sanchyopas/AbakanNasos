@@ -269,12 +269,12 @@ def upload_goods(request):
         file = request.FILES['file']
         import_products_from_excel(file)
 
-        destination = open(os.path.join('upload/', file.name), 'wb+')
-
-        for chunk in file.chunks():
-          destination.write(chunk)
-
-        destination.close()
+#         destination = open(os.path.join('upload/', file.name), 'wb+')
+#
+#         for chunk in file.chunks():
+#           destination.write(chunk)
+#
+#         destination.close()
 
         # Распаковка архива
 #         with zipfile.ZipFile(f'upload/{file}', 'r') as zip_ref:
