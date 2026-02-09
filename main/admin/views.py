@@ -172,7 +172,6 @@ def import_products_from_excel(file_path):
 
         product.category.add(category)
 
-        # -------- Модель --------
         model_name = str(row.iloc[2]).strip()
         if not model_name:
             continue
@@ -274,11 +273,12 @@ def upload_goods(request):
 
         for chunk in file.chunks():
           destination.write(chunk)
+
         destination.close()
 
         # Распаковка архива
-        with zipfile.ZipFile(f'upload/{file}', 'r') as zip_ref:
-            zip_ref.extractall('media/')
+#         with zipfile.ZipFile(f'upload/{file}', 'r') as zip_ref:
+#             zip_ref.extractall('media/')
 
         # Удаление загруженного архива
         os.remove(f'upload/{file}')
