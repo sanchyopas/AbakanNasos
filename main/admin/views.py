@@ -281,7 +281,7 @@ def upload_goods(request):
 #             zip_ref.extractall('media/')
 
         # Удаление загруженного архива
-        os.remove(f'upload/{file}')
+#         os.remove(f'upload/{file}')
 #
 #         # Сжатие фотографий
 #         for filename in os.listdir('media/upload'):
