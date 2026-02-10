@@ -468,7 +468,7 @@ def category_add(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def category_edit(request, pk):
-  return generic_edit(  request,  pk, Category,  CategoryForm, "admin_category", "Редактирование категории", template_name=None)
+  return generic_edit(  request,  pk, Category,  CategoryForm, "", "Редактирование категории", template_name=None)
 
 @user_passes_test(lambda u: u.is_superuser)
 def category_delete(request, pk):

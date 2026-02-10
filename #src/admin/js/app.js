@@ -49,7 +49,7 @@ const numberSymbols = {
 const metaFields = document.querySelectorAll('.meta_field');
 
 metaFields?.forEach(item => {
-  let parentItem = item.closest('.form__group').querySelector('.meta-lenght');
+  let parentItem = item.closest('.form__group').querySelector('.meta-length');
   if (item.value <= 0 && parentItem) {
     parentItem.innerText = 0;
   } else {
@@ -93,4 +93,18 @@ addPropertyBtn?.addEventListener("click", (e) => {
   blockPasteChar.appendChild(newCharGroup)
 })
 
+
+document.querySelector('#myForm')?.addEventListener('change', function(event) {
+  console.log('Изменение в:', event.target.name);
+});
+
+document.addEventListener('keydown', function(event) {
+  if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+    event.preventDefault();
+
+    const form = document.getElementById('myForm');
+    console.log(form)
+    form.submit();
+  }
+});
 

@@ -65,7 +65,10 @@ def generic_edit(request, pk, model, form_class, redirect_name, title,  template
         if form.is_valid():
             form.save()
             messages.success(request, "Успешно сохранено !")
-            return redirect(redirect_name)
+            if redirect_name:
+              return redirect(redirect_name)
+            else:
+              return redirect(request.META.get('HTTP_REFERER'))
         else:
             return render(request, template_name, {"form": form, "item": item})
 

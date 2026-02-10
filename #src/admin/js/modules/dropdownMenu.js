@@ -15,7 +15,7 @@ const saveState = (e) => {
 
 const activateStateDropdowmItem = () => {
   const idDropdownItem = localStorage.getItem("idDropdownItem");
-  idDropdownItem && document.getElementById(idDropdownItem).classList.add("_active");
+  idDropdownItem && document.getElementById(idDropdownItem)?.classList.add("_active");
 }
 
 dropdownItems?.forEach(item => item.addEventListener("click", saveState));

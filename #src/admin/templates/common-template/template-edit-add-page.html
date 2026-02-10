@@ -3,9 +3,9 @@
   <div class="page__inner">
     <div class="page__top">
       <h1 class="page__title">{{ title }}</h1>
-      <a href="">Назад</a>
+      <a href="javascript:history.back()">Назад</a>
     </div>
-    <form action="." method="POST" class="form" enctype="multipart/form-data">
+    <form action="." method="POST" id="myForm" class="form" enctype="multipart/form-data">
       <div class="page__head">
         <div class="page__head-tab">
           <button type="button" data-name="basic" class="page__head-btn _active">Основные</button>
@@ -337,6 +337,15 @@
             <div class="form__group">
               <label for="{{ form.parent.id_for_label }}" class="form__controls-label">Родительская категория:</label>
               {{ form.parent }} {{ form.parent.errors }}
+            </div>
+            {% endif %}
+
+            {% if form.order_by %}
+            <div class="form__group">
+              <label for="{{ form.order_by.id_for_label }}" class="form__controls-label">
+                {{ form.order_by.label }}:
+              </label>
+              {{ form.order_by }} {{ form.order_by.errors }}
             </div>
             {% endif %}
 

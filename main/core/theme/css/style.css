@@ -4260,6 +4260,11 @@ tbody .model-chars {
   text-align: center;
 }
 
+tbody .model-chars:first-child {
+  text-align: left;
+  white-space: nowrap;
+}
+
 tbody td {
   font-size: 14px;
   padding: 10px 10px;
@@ -5439,6 +5444,10 @@ body._lock::after {
 
 .form-search__input::placeholder {
   color: rgb(111, 111, 111);
+}
+
+.form-search__input:focus {
+  outline: none;
 }
 
 .form {

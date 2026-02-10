@@ -1,3 +1,4 @@
+<!--
 {% extends 'admin_base.html' %}
 {% load static %}
 {% load thumbnail %}
@@ -6,7 +7,7 @@
 <div class="page">
   <div class="page__inner">
     <h1 class="page__title">{{ title }}</h1>
-    <form action="." method="POST" class="form" enctype="multipart/form-data">
+    <form action="." method="POST" id="myForm" class="form" enctype="multipart/form-data">
       {% csrf_token %}
       {{ form.media }}
       <div class="page__head">
@@ -204,6 +205,8 @@
             </div>
             {% endif %}
 
+
+
           </div>
           {% endif %}
         </div>
@@ -255,4 +258,4 @@
   </div>
 </div>
 
-{% endblock %}
+{% endblock %}-->

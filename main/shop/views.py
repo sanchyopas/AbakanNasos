@@ -8,7 +8,7 @@ from .models import *
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-
+import urllib.parse
 
 
 def category(request):
@@ -17,7 +17,7 @@ def category(request):
   except: 
     settings = ShopSettings()
 
-  category = Category.objects.filter(parent=None, status='published')
+  category = Category.objects.filter(parent=None, status='published').order_by('order_by')
 
   context = {
     "category":category,
@@ -25,11 +25,11 @@ def category(request):
   }
 
   return render(request, "pages/catalog/category.html", context)
-import urllib.parse
+
 
 def category_detail(request, slug):
   page = request.GET.get("page", 1)
-  category = category = get_object_or_404(Category, slug=slug)
+  category = get_object_or_404(Category, slug=slug)
   products = Product.objects.filter(status='published', category=category).order_by('order_by')
 
   if category.children:
