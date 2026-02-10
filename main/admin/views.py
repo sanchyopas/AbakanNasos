@@ -200,13 +200,20 @@ def import_products_from_excel(file_path):
 
         for column in df.columns[FIXED_COLUMNS_COUNT:]:
 
+            if str(column).startswith('Unnamed'):
+              continue
+
             value = row[column]
 
             if pd.isna(value):
                 value = "-"
 
+            col_name = str(column).strip()
+            if not col_name or col_name.startswith('Unnamed'):
+                continue
+
             char, _ = Characteristic.objects.get_or_create(
-                name=str(column).strip()
+                name=col_name
             )
 
             ModelCharacteristic.objects.update_or_create(
