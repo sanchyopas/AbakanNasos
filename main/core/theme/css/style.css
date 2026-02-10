@@ -4245,6 +4245,8 @@ table th p {
   font-weight: 400;
   padding: 7px;
   border: 1px solid rgb(1, 112, 184);
+  background: #0170b8;
+  color: #fff;
   border-radius: 30px;
 }
 

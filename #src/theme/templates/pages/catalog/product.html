@@ -45,7 +45,7 @@
   <div class="container">
     <div class="info__row">
       {% if product.image or images %}
-      <div class="info__image" {% if not images %}style="grid-template-columns: 1fr;"{% endif %}>
+      <div class="info__image" {% if not images %}style="grid-template-columns: 1fr;" {% endif %}>
         {% if images %}
         <div class="info__thumb">
           <div class="swiper info__slider-thumb">
@@ -93,10 +93,11 @@
         </div>
         {% endif %}
         <div class="info__btns">
-          <button type="button" class="info__btn btn btn--outline" data-popup="leave-request" data-name="{{ product.name }}">
+          <button type="button" class="info__btn btn btn--outline" data-popup="leave-request"
+                  data-name="{{ product.name }}">
             Оставить заявку
           </button>
-          <button type="button" class="info__btn btn btn--primary"  data-popup="callback">Связаться с нами</button>
+          <button type="button" class="info__btn btn btn--primary" data-popup="callback">Связаться с нами</button>
         </div>
       </div>
     </div>
@@ -106,64 +107,64 @@
 {% if models %}
 <div class="table py">
   <div class="container">
-   <div class="table__inner">
-     <table>
-       <thead>
-       <tr>
-         <th><p>Модель</p></th>
-         <th><p>Мощность, кВт</p></th>
-         <th><p>Напряжение, В</p></th>
-         <th><p>Подача</p></th>
-         <th><p>Напор</p></th>
-         <th><p>Подключение</p></th>
-         <th><p>Наличие</p></th>
-       </tr>
-       </thead>
-       <tbody>
-       {% for model in models %}
-       <tr>
-         {% if model.model %}
-         <td data-label="{{ model.model }}" class="model-chars">
-           {% if model.slug %}
-           <a href="{{ model.get_absolute_url }}" class="model-name">{{ model.model }}</a>
-           {% else %}
-            <p class="model-name">{{ model.model }}</p>
-           {% endif %}
-         </td>
-          {% for char in model.characteristics.all|slice:":5" %}
-            {% if char.value %}
-               <td data-label="{{ model.model }}" class="model-chars">
-                 <p class="model-name">{{ char.value }}</p>
-               </td>
+    <div class="table__inner">
+      <table>
+        <thead>
+        <tr>
+          <th><p>Модель</p></th>
+          <th><p>Мощность</p></th>
+          <th><p>Напряжение</p></th>
+          <th><p>Подача</p></th>
+          <th><p>Напор</p></th>
+          <th><p>Подключение</p></th>
+          <th><p>Наличие</p></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for model in models %}
+        <tr>
+          {% if model.model %}
+          <td data-label="{{ model.model }}" class="model-chars">
+            {% if model.slug %}
+            <a href="{{ model.get_absolute_url }}" class="model-name">{{ model.model }}</a>
             {% else %}
-               <td data-label="{{ model.model }}" class="model-chars">
-                 <p class="model-name">-</p>
-               </td>
+            <p class="model-name">{{ model.model }}</p>
             {% endif %}
+          </td>
+          {% for char in model.characteristics.all|slice:":5" %}
+          {% if char.value %}
+          <td data-label="{{ model.model }}" class="model-chars">
+            <p class="model-name">{{ char.value }}</p>
+          </td>
+          {% else %}
+          <td data-label="{{ model.model }}" class="model-chars">
+            <p class="model-name">-</p>
+          </td>
+          {% endif %}
           {% endfor %}
-         {% endif %}
+          {% endif %}
 
-         <td data-label="{{ model.in_stock }}">
-           <button type="button" class="table__btn">
-             {% if model.in_stock == "В наличии" %}
+          <td data-label="{{ model.in_stock }}">
+            <button type="button" class="table__btn">
+              {% if model.in_stock == "В наличии" %}
               <span style="color: green;">{{ model.in_stock }}</span>
-             {% endif %}
+              {% endif %}
 
-             {% if model.in_stock == "Нет в наличии" %}
-             <span style="color: red;">{{ model.in_stock }}</span>
-             {% endif %}
+              {% if model.in_stock == "Нет в наличии" %}
+              <span style="color: red;">{{ model.in_stock }}</span>
+              {% endif %}
 
-             {% if model.in_stock == "В пути" %}
-             <span style="color: orange;">{{ model.in_stock }}</span>
-             {% endif %}
+              {% if model.in_stock == "В пути" %}
+              <span style="color: orange;">{{ model.in_stock }}</span>
+              {% endif %}
 
-           </button>
-         </td>
-       </tr>
-       {% endfor %}
-       </tbody>
-     </table>
-   </div>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 {% endif %}
