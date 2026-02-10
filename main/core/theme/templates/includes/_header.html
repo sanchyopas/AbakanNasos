@@ -10,6 +10,7 @@
         {% endthumbnail %}
       </a>
       {% endif %}
+
       {% include '../components/search-form.html' %}
 
       {% if branch %}
@@ -65,7 +66,7 @@
       </button>
     </div>
     <nav class="header__nav nav">
-      <button class="nav__close" id="close"><i class="fa-solid fa-xmark"></i></button>
+      <button class="nav__close" id="menu-close"><i class="fa-solid fa-xmark"></i></button>
       <ul class="nav__list">
         <li class="nav__item"><a href="{% url 'category' %}" class="nav__link nav__link--first">Каталог</a></li>
         <li class="nav__item"><a href="{% url 'about' %}" class="nav__link">О нас</a></li>

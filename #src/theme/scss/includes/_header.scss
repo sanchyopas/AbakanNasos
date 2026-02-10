@@ -2,6 +2,16 @@
   flex: 0 0 auto;
   padding-top: 10px;
 
+  @media screen and (max-width: 992px) {
+    padding: 15px 0;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
   //.header__top
   &__top {
     display: flex;
@@ -105,6 +115,7 @@
     z-index: 999;
     flex-direction: column;
     justify-content: center;
+    margin-top: 0;
   }
 
   &._active {

@@ -124,7 +124,7 @@
         {% for model in models %}
         <tr>
           {% if model.model %}
-          <td data-label="{{ model.model }}" class="model-chars">
+          <td data-label="Наименование" class="model-chars">
             {% if model.slug %}
             <a href="{{ model.get_absolute_url }}" class="model-name">{{ model.model }}</a>
             {% else %}
@@ -133,11 +133,11 @@
           </td>
           {% for char in model.characteristics.all|slice:":5" %}
           {% if char.value %}
-          <td data-label="{{ model.model }}" class="model-chars">
+          <td data-label="{{ char.characteristic }}" class="model-chars">
             <p class="model-name">{{ char.value }}</p>
           </td>
           {% else %}
-          <td data-label="{{ model.model }}" class="model-chars">
+          <td data-label="{{ char.characteristic }}" class="model-chars">
             <p class="model-name">-</p>
           </td>
           {% endif %}
