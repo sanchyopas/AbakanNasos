@@ -4265,6 +4265,14 @@ tbody .model-chars:first-child {
   white-space: nowrap;
 }
 
+tbody .model-chars a {
+  text-decoration: underline;
+  color: #0d6efd;
+  -webkit-transition: 0.25s;
+  -o-transition: 0.25s;
+  transition: 0.25s;
+}
+
 tbody td {
   font-size: 14px;
   padding: 10px 10px;
@@ -10852,6 +10860,10 @@ body main {
   .clients__lines:hover .marquee {
     -webkit-animation-play-state: paused;
             animation-play-state: paused;
+  }
+
+  tbody .model-chars a:hover {
+    color: #003252;
   }
 
   .card-news__image:hover img {

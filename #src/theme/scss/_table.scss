@@ -111,6 +111,19 @@ tbody {
       text-align: left;
       white-space: nowrap;
     }
+
+    a {
+      text-decoration: underline;
+      color: #0d6efd;
+      transition: $animation_speed;
+
+      @media (hover: hover) {
+        &:hover {
+          color: #003252;
+        }
+      }
+    }
+
   }
 
   td {
