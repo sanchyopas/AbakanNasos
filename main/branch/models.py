@@ -42,4 +42,4 @@ class Socials(models.Model):
   )
 
   def __str__(self):
-    return f"{self.name} ({self.branch})"
+      return self.name or "Соцсеть"

@@ -40,13 +40,13 @@
             {{ branch.email }}
           </a>
           {% endif %}
-          {% if socials %}
+          {% if branch.socials %}
           <div class="header__social social">
             <button type="button" class="social__mobile-btn" aria-label="Открыть список соц.сетей">
               <i class="fa-solid fa-share-nodes"></i>
             </button>
             <div class="social__mobile-cnt">
-              {% for social in socials %}
+              {% for social in branch.socials.all %}
               <a href="{{ social.link }}" aria-label="Перейти в наш {{ social.name }}">
                 <img src="{{ social.icon_dark.url }}" width="30px" height="30px" alt="">
               </a>

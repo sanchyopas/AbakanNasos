@@ -41,6 +41,16 @@
           </div>
           {% endif %}
 
+
+
+          {% if item.branch %}
+          {% for br in item.branch.all %}
+          <div class="grid-item__title">
+            {{ br.address }}
+          </div>
+          {% endfor %}
+          {% endif %}
+
           <div class="grid-item__content">
             <p class="grid-item__title">
               {% if item.title %}{{ item.title }} {% endif %}
