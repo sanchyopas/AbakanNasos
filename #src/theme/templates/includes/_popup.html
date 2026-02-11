@@ -11,6 +11,13 @@
         <input type="text" name="name" class="form__input" placeholder="Ваше имя" required>
         <input type="tel" name="phone" class="form__input" placeholder="номер телефона" required data-tel-input>
         <input type="text" name="product" id="order-product" class="form__input form__input--hidden">
+        {% if branch %}
+        <select name="branch" class="form__select" required>
+          {% for br in branch %}
+          <option value="{{ br.id }}">{{ br.address }}</option>
+          {% endfor %}
+        </select>
+        {% endif %}
         <div class="form__privacy">
           <label>
             <input type="checkbox" name="privacy" class="form__checkbox" required>
@@ -36,6 +43,13 @@
         <input type="text" name="name" class="form__input" placeholder="Ваше имя" required>
         <input type="tel" name="phone" class="form__input" placeholder="номер телефона" required data-tel-input>
         <input type="text" name="product" class="form__input form__input--hidden">
+        {% if branch %}
+        <select name="branch" class="form__select" required>
+          {% for br in branch %}
+          <option value="{{ br.id }}">{{ br.address }}</option>
+          {% endfor %}
+        </select>
+        {% endif %}
         <div class="form__privacy">
           <label>
             <input type="checkbox" name="privacy" class="form__checkbox" required>
@@ -56,10 +70,17 @@
         <button data-close type="button" class="popup__close close"></button>
       </div>
       <h2 class="popup__title">Обратный звонок</h2>
-      <form action="." class="popup__form form" method="POST" id="callback-form">
+      <form action="{% url 'callback_form' %}" class="popup__form form" method="POST" id="callback-form">
         {% csrf_token %}
         <input type="text" name="name" class="form__input" placeholder="Ваше имя" required>
         <input type="tel" name="phone" class="form__input" placeholder="Номер телефона" required data-tel-input>
+        {% if branch %}
+        <select name="branch" class="form__select" required>
+          {% for br in branch %}
+          <option value="{{ br.id }}">{{ br.address }}</option>
+          {% endfor %}
+        </select>
+        {% endif %}
         <div class="form__privacy">
           <label>
             <input type="checkbox" name="privacy" class="form__checkbox" required>

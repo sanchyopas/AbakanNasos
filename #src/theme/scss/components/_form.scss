@@ -21,7 +21,6 @@
 
     }
 
-
     &--hidden {
       position: absolute;
       top: 0;
@@ -47,6 +46,16 @@
     background: rgba(255, 255, 255, 1);
     outline: none;
     border: none;
+  }
+
+  &__select {
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 1);
+    font-size: 20px;
+    font-weight: 400;
+    border: 1px solid #0b6caa;
   }
 
   &__submit {
@@ -98,7 +107,7 @@
     font-weight: 500;
     white-space: nowrap;
 
-    @media(hover:hover) {
+    @media(hover: hover) {
       &:hover {
         text-decoration: underline;
       }

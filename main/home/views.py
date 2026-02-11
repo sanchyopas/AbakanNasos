@@ -14,8 +14,16 @@ def order_form(request):
       phone = form.cleaned_data['phone']
       product = form.cleaned_data['product']
       title = 'Заказ обратного звонка'
+      branch = form.cleaned_data['branch']
+      recipient = branch.email
+
       mailTpl = "Заявка с сайта" + "\n\n" + "Имя: " +str(name) + "\n" + "Номер телефон: " + str(phone) + "\n" + "Насос: " + str(product) + "\n"
-      email_callback(mailTpl, title)
+      if recipient:
+        recipients = [recipient]
+      else:
+        recipients = [BaseSettings.objects.first().email]
+
+      email_callback(mailTpl, title, recipients)
 
       return JsonResponse({"success": "success", "message": "Форма успешно отправлена !"})
     else:
@@ -34,8 +42,16 @@ def callback_form(request):
       phone = form.cleaned_data['phone']
       message = form.cleaned_data['message']
       title = 'Заказ обратного звонка'
+      branch = form.cleaned_data['branch']
+      recipient = branch.email
+
       mailTpl = "Обратный звонок" + "\n\n" + "Имя: " +str(name) + "\n" + "Номер телефон: " + str(phone) + "\n" + "Сообщение: " + str(message) + "\n"
-      email_callback(mailTpl, title)
+      if recipient:
+        recipients = [recipient]
+      else:
+        recipients = [BaseSettings.objects.first().email]
+
+      email_callback(mailTpl, title, recipients)
 
       return JsonResponse({"success": "success", "message": "Форма успешно отправлена !"})
     else:
@@ -53,9 +69,18 @@ def contact_us_form(request):
       name  = form.cleaned_data['name']
       phone = form.cleaned_data['phone']
       product = form.cleaned_data['product']
+      branch = form.cleaned_data['branch']
+      recipient = branch.email
+
       title = 'Заказ обратного звонка'
+
       mailTpl = "Связаться с нами" + "\n\n" + "Имя: " +str(name) + "\n" + "Номер телефон: " + str(phone) + "\n" + "Адрес филиала: " + str(product) + "\n"
-      email_callback(mailTpl, title)
+      if recipient:
+        recipients = [recipient]
+      else:
+        recipients = [BaseSettings.objects.first().email]
+
+      email_callback(mailTpl, title, recipients)
 
       return JsonResponse({"success": "success", "message": "Форма успешно отправлена !"})
     else:

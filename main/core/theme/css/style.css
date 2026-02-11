@@ -5526,6 +5526,16 @@ body._lock::after {
   border: none;
 }
 
+.form__select {
+  width: 100%;
+  padding: 20px;
+  border-radius: 10px;
+  background: rgb(255, 255, 255);
+  font-size: 20px;
+  font-weight: 400;
+  border: 1px solid #0b6caa;
+}
+
 .form__submit {
   border-radius: 40px;
   background: rgb(1, 112, 184);
@@ -10647,10 +10657,6 @@ body main {
     -webkit-box-ordinal-group: 5;
         -ms-flex-order: 4;
             order: 4;
-  }
-
-  .form-search__input {
-    display: none;
   }
 
   .filter {

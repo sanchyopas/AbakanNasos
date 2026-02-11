@@ -10,11 +10,11 @@ except:
   email_clients = 'saniagolovanev@gmail.com'
   
 
-def email_callback(messages, title):
+def email_callback(messages, title, recipient_list):
   send_mail(
     title,
     messages,
     EMAIL_FROM,
-    email_clients.split(','),
+    recipient_list,
     fail_silently=False,
   )
