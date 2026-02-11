@@ -13,6 +13,7 @@
         <input type="text" name="product" id="order-product" class="form__input form__input--hidden">
         {% if branch %}
         <select name="branch" class="form__select" required>
+          <option selected disabled hidden>Филиал</option>
           {% for br in branch %}
           <option value="{{ br.id }}">{{ br.address }}</option>
           {% endfor %}
@@ -45,6 +46,7 @@
         <input type="text" name="product" class="form__input form__input--hidden">
         {% if branch %}
         <select name="branch" class="form__select" required>
+          <option selected disabled hidden>Филиал</option>
           {% for br in branch %}
           <option value="{{ br.id }}">{{ br.address }}</option>
           {% endfor %}
@@ -76,6 +78,7 @@
         <input type="tel" name="phone" class="form__input" placeholder="Номер телефона" required data-tel-input>
         {% if branch %}
         <select name="branch" class="form__select" required>
+          <option selected disabled hidden>Филиал</option>
           {% for br in branch %}
           <option value="{{ br.id }}">{{ br.address }}</option>
           {% endfor %}
