@@ -1,0 +1,47 @@
+.notice {
+  padding: 15px 20px;
+  position: fixed;
+  top: 20px;
+  right: 10px;
+  z-index: 999;
+  border-radius: 10px;
+  cursor: pointer;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+
+  &.active {
+    opacity: 1;
+    z-index: 999;
+    pointer-events: all;
+  }
+
+  //.notice--success
+  &--success {
+    background-color: green;
+    color: #fff;
+  }
+
+  //.notice--error
+  &--error {
+    background-color: red;
+    color: #fff;
+  }
+
+  //.notice__body
+  &__body {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 10px 30px;
+  }
+
+  //.notice__close
+  &__close{
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+}
+

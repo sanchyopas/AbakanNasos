@@ -24,6 +24,7 @@
 @import "_news";
 @import "_gallery";
 @import "_chars";
+@import "_notice";
 
 @import "./includes/header";
 @import "./includes/_footer";
@@ -35,7 +36,7 @@
 @import "./service/service";
 
 // Компоненты
-@import "./components/search-form";
+@import "components/search-form";
 @import "./components/_breadcrumbs";
 @import "./components/_form";
 @import "./components/_filter";

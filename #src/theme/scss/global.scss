@@ -32,6 +32,12 @@ h1, h2, h3, h4, h5, h6, p {
   padding: 0;
 }
 
+input[disabled], button[disabled] {
+  opacity: 0.5;
+
+
+}
+
 .phone {
   //color: #107BF0;
   color: rgb(1, 90, 147);

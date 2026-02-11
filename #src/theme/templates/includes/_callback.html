@@ -31,9 +31,10 @@
 
       </div>
       <div class="callback__form">
-        <form action="." class="form">
+        <form action="{% url 'callback_form' %}" class="form" method="POST" id="callback-form">
+          {% csrf_token %}
           <input type="text" class="form__input" placeholder="Имя" name="name">
-          <input type="tel" class="form__input" placeholder="Номер телефона" name="phone">
+          <input type="tel" class="form__input" placeholder="Номер телефона" name="phone" data-tel-input>
           <textarea name="message" placeholder="Ваш вопрос" rows="5" class="form__textarea"></textarea>
           <div class="form__bottom">
             <div class="form__action">
@@ -56,7 +57,7 @@
 
             <div class="form__pivacy">
               <label>
-                <input type="checkbox" class="form__checkbox">
+                <input type="checkbox" class="form__checkbox" required>
                 Я даю свое согласие на обработку персональных данных и подверждаю, что ознакомлен(а)
                 с политикой конфиденциальности и обработки персональных данных
               </label>
