@@ -165,6 +165,9 @@ class SocialsForm(AutoStyledModelForm):
   class Meta:
     model = Socials
     fields = "__all__"
+    widgets = {
+      'branch': forms.CheckboxSelectMultiple,
+    }
 
 class SliderHeroForm(AutoStyledModelForm):
   class Meta:

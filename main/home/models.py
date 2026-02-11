@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-
 from admin.singleton_model import SingletonModel
 
 class BaseSettings(SingletonModel):
@@ -73,24 +72,6 @@ class ContactPage(SingletonModel):
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.CharField(max_length=350, null=True, blank=True, verbose_name="Meta keywords")
-
-class Socials(models.Model):
-  STATUS_CHOICES = [
-    ('published', 'Опубликовано'),
-    ('draft', 'Черновик'),
-    ('hidden', 'Скрыто'),
-  ]
-
-  name = models.CharField(max_length=250, blank=True, null=True, verbose_name="Название соц.сети")
-  icon_white = models.FileField(upload_to="icons/", blank=True, null=True, verbose_name="Иконка светлая")
-  icon_dark = models.FileField(upload_to="icons/", blank=True, null=True, verbose_name="Иконка темная")
-  link = models.CharField(max_length=250, blank=True, null=True, verbose_name="Ссылка")
-  status = models.CharField(
-    max_length=20,
-    choices=STATUS_CHOICES,
-    default='draft',
-    verbose_name="Статус"
-  )
 
 class SliderHero(models.Model):
   STATUS_CHOICES = [

@@ -2,7 +2,7 @@ from home.models import *
 from shop.models import Category
 from blog.models import BlogCategory
 from service.models import Service
-from branch.models import Branch
+from branch.models import *
 
 # проверенные функции
 
