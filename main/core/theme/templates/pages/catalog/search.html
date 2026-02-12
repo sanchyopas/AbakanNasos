@@ -36,13 +36,13 @@
     {% else %}
     <p>Введите поисковый запрос</p>
     {% endif %}
+    <br>
+    <hr>
+    <br>
   </div>
 </div>
 
 <div class="container">
-
-
-
 
 {% if categories %}
 <h2>Категории</h2>
@@ -50,21 +50,23 @@
 {% include "../../section/services.html" with category=categories %}
 
 {% endif %}
-  <hr>
+
 {% if products %}
 <h2>Подкатегории</h2>
   {% include "../../section/services.html" with category=products %}
-{% endif %}
   <hr>
+  <br>
+{% endif %}
+
 {% if models %}
 <h2>Модели</h2>
-{% for model in models %}
   {% include "../../section/services.html" with category=models %}
-{% endfor %}
+  <hr>
+  <br>
 {% endif %}
 
 {% if not products and not models and query and not categories %}
-<p>Ничего не найдено</p>
+<p class="empty">Ничего не найдено</p>
 {% endif %}
 </div>
 {% endblock %}
