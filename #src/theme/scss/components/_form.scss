@@ -3,6 +3,12 @@
   flex-direction: column;
   gap: 10px;
 
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+
   &__input {
     width: 100%;
     padding: 20px;

@@ -5481,6 +5481,13 @@ body._lock::after {
   gap: 10px;
 }
 
+.form__grid {
+  display: -ms-grid;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
 .form__input {
   width: 100%;
   padding: 20px;

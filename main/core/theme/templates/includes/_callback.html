@@ -33,36 +33,25 @@
       <div class="callback__form">
         <form action="{% url 'callback_form' %}" class="form" method="POST" id="callback-form">
           {% csrf_token %}
-          <input type="text" class="form__input" placeholder="Имя" name="name">
-          <input type="tel" class="form__input" placeholder="Номер телефона" name="phone" data-tel-input>
-          <textarea name="message" placeholder="Ваш вопрос" rows="5" class="form__textarea"></textarea>
-          <div class="form__bottom">
-            <div class="form__action">
-              <button type="submit" class="form__submit">Оставить заявку</button>
-              <div class="form__action-social">
-                {% if socials %}
-                <div class="social">
-                  {% for social in socials %}
-                  <a href="{{ social.link }}" aria-label="Переходите в наш {{ social.name }}">
-                    <img src="{{ social.icon_white.url }}" width="32px" height="32px" alt="">
-                  </a>
-                  {% endfor %}
-                </div>
-                {% endif %}
-                {% if site_settings.phone %}
-                <a href="#" data-phone="{{ site_settings.phone }}" class="form__action-phone">{{ site_settings.phone }}</a>
-                {% endif %}
-              </div>
-            </div>
-
-            <div class="form__pivacy">
-              <label>
-                <input type="checkbox" class="form__checkbox" required>
-                Я даю свое согласие на обработку персональных данных и подверждаю, что ознакомлен(а)
-                с политикой конфиденциальности и обработки персональных данных
-              </label>
-            </div>
+          <div class="form__grid">
+            <input type="text" class="form__input" placeholder="Имя" name="name">
+            <input type="tel" class="form__input" placeholder="Номер телефона" name="phone" data-tel-input>
           </div>
+          {% if branch %}
+          <select name="branch" class="form__select" required>
+            <option selected disabled hidden>Филиал</option>
+            {% for br in branch %}
+            <option value="{{ br.id }}">{{ br.address }}</option>
+            {% endfor %}
+          </select>
+          {% endif %}
+          <textarea name="message" placeholder="Ваш вопрос" rows="5" class="form__textarea"></textarea>
+          <label class="form__pivacy">
+            <input type="checkbox" class="form__checkbox" required>
+            Я даю свое согласие на обработку персональных данных и подверждаю, что ознакомлен(а)
+            с политикой конфиденциальности и обработки персональных данных
+          </label>
+          <button type="submit" class="form__submit">Оставить заявку</button>
         </form>
       </div>
     </div>
