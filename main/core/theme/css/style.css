@@ -5494,6 +5494,7 @@ body._lock::after {
   border-radius: 10px;
   background: rgb(255, 255, 255);
   font-size: 20px;
+  color: rgb(128, 128, 128);
   font-weight: 400;
   outline: none;
   border: none;
@@ -5536,6 +5537,7 @@ body._lock::after {
   font-weight: 400;
   width: 100%;
   padding: 20px;
+  color: rgb(128, 128, 128);
   border-radius: 10px;
   background: rgb(255, 255, 255);
   outline: none;
@@ -5549,6 +5551,7 @@ body._lock::after {
   background: rgb(255, 255, 255);
   font-size: 20px;
   font-weight: 400;
+  color: rgb(128, 128, 128);
   border: 1px solid #0b6caa;
 }
 
