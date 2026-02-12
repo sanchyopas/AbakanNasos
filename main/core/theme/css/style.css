@@ -5555,6 +5555,10 @@ body._lock::after {
   border: 1px solid #0b6caa;
 }
 
+.form__select:focus {
+  outline: none;
+}
+
 .form__submit {
   border-radius: 40px;
   background: rgb(1, 112, 184);
