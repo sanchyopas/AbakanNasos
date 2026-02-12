@@ -123,12 +123,12 @@
         <tbody>
         {% for model in models %}
         <tr>
-          {% if model.model %}
+          {% if model.name %}
           <td data-label="Наименование" class="model-chars">
             {% if model.slug %}
-            <a href="{{ model.get_absolute_url }}" class="model-name">{{ model.model }}</a>
+            <a href="{{ model.get_absolute_url }}" class="model-name">{{ model.name }}</a>
             {% else %}
-            <p class="model-name">{{ model.model }}</p>
+            <p class="model-name">{{ model.name }}</p>
             {% endif %}
           </td>
           {% for char in model.characteristics.all|slice:":5" %}
