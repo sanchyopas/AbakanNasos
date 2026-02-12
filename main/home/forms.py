@@ -13,6 +13,7 @@ class CallbackForm(forms.Form):
     name = forms.CharField()
     phone = forms.CharField()
     message = forms.CharField()
+    branch = forms.ModelChoiceField(queryset=Branch.objects.all())
 
 class contactUsForm(forms.Form):
     name = forms.CharField()
