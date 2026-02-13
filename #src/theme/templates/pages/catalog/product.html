@@ -143,6 +143,22 @@
               </tr>
               {% endif %}
               {% endfor %}
+              <td data-label="{{ model.in_stock }}">
+                <button type="button" class="table__btn">
+                  {% if model.in_stock == "В наличии" %}
+                  <span style="color: green;">{{ model.in_stock }}</span>
+                  {% endif %}
+
+                  {% if model.in_stock == "Нет в наличии" %}
+                  <span style="color: red;">{{ model.in_stock }}</span>
+                  {% endif %}
+
+                  {% if model.in_stock == "В пути" %}
+                  <span style="color: orange;">{{ model.in_stock }}</span>
+                  {% endif %}
+
+                </button>
+              </td>
               </tbody>
             </table>
           </div>
