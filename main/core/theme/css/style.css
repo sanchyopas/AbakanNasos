@@ -4441,10 +4441,6 @@ tbody td:last-child {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.chars__name {
-  white-space: nowrap;
-}
-
 .chars__line {
   min-width: 50px;
 }
