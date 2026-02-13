@@ -4613,7 +4613,6 @@ tbody td:last-child {
   left: 0;
   width: 100%;
   z-index: 99;
-  padding: 0 0 10px;
 }
 
 .header.sticky .nav__link {
