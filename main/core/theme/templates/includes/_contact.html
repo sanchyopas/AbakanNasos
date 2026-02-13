@@ -37,6 +37,16 @@
           <a href="mailto:{{ branch.email }}" class="contact__mail">{{ branch.email }}</a>
           {% endif %}
 
+          {% if branch.socials %}
+          <div class="social">
+              {% for social in branch.socials.all %}
+              <a href="{{ social.link }}" aria-label="Перейти в наш {{ social.name }}" target="_blank">
+                <img src="{{ social.icon_dark.url }}" width="30px" height="30px" alt="">
+              </a>
+              {% endfor %}
+          </div>
+          {% endif %}
+
           {% if branch.address %}
           <button type="button" class="btn contact__btn" data-popup="contact-us" data-name="{{ branch.address}}">
             Связаться с филлиалом

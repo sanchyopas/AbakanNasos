@@ -36,12 +36,16 @@
     }
   }
 
+  &__slider-thumb-wrapper {
+    max-width: 250px !important;
+  }
+
   &__slider-thumb {
     height: 100%;
 
 
 
-    .swiper-slide-active {
+    .swiper-slide-thumb-active {
       border: 1px solid rgba(1, 112, 184, 0.5);
     }
 
@@ -62,8 +66,8 @@
   }
 
   &__slide-thumb {
-    width: 162px;
-    height: 121px;
+    width: 162px !important;
+    height: 121px !important;
     border: 1px solid rgba(1, 112, 184, 0.16);
     border-radius: 30px;
     overflow: hidden;

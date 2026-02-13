@@ -42,19 +42,14 @@
           {% endif %}
           {% if branch.socials %}
           <div class="header__social social">
-            <button type="button" class="social__mobile-btn" aria-label="Открыть список соц.сетей">
-              <i class="fa-solid fa-share-nodes"></i>
-            </button>
-            <div class="social__mobile-cnt">
-              {% for social in branch.socials.all %}
-              <a href="{{ social.link }}" aria-label="Перейти в наш {{ social.name }}" target="_blank">
-                <img src="{{ social.icon_dark.url }}" width="30px" height="30px" alt="">
-              </a>
-              {% endfor %}
+            {% for social in branch.socials.all %}
+            <a href="{{ social.link }}" aria-label="Перейти в наш {{ social.name }}" target="_blank">
+              <img src="{{ social.icon_dark.url }}" width="30px" height="30px" alt="">
+            </a>
+            {% endfor %}
             </div>
-          </div>
           {% endif %}
-        </div>
+          </div>
         {% endfor %}
       </div>
       {% endif %}
@@ -69,13 +64,36 @@
       <ul class="nav__list">
         <li class="nav__item"><a href="{% url 'category' %}" class="nav__link nav__link--first">Каталог</a></li>
         <li class="nav__item"><a href="{% url 'about' %}" class="nav__link">О нас</a></li>
-<!--        <li class="nav__item"><a href="{% url 'gallery' %}" class="nav__link">Галерея</a></li>-->
         <li class="nav__item"><a href="{% url 'blog' %}" class="nav__link">Новости</a></li>
         <li class="nav__item"><a href="{% url 'contact' %}" class="nav__link">Контакты</a></li>
       </ul>
       {% if site_settings.status == 'published' %}
       <a href="/category/rasprodazha/" class="header__btn">Распродажа</a>
       {% endif %}
+
+      <div class="header__mobile-social">
+        {% for branch in branch %}
+        <div class="header__mobile-inner">
+        {% if branch.address %}
+        <p class="address">
+          {{ branch.address }}
+        </p>
+        {% endif %}
+
+        {% if branch.socials %}
+        <div class="header__mobile-item social">
+          {% for social in branch.socials.all %}
+          <a href="{{ social.link }}" aria-label="Перейти в наш {{ social.name }}" target="_blank">
+            <img src="{{ social.icon_dark.url }}" width="30px" height="30px" alt="">
+          </a>
+          {% endfor %}
+        </div>
+        {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+
     </nav>
   </div>
 </div>

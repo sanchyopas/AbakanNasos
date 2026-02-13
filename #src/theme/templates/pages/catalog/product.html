@@ -49,25 +49,25 @@
         {% if images %}
         <div class="info__thumb">
           <div class="swiper info__slider-thumb">
-            <div class="swiper-wrapper">
-              {% for image in images %}
-              <div class="swiper-slide info__slide-thumb">
-                <img src="{{ image.src.url }}" alt="">
-              </div>
-              {% endfor %}
-
+            <div class="swiper-wrapper info__slider-thumb-wrapper">
               {% if product.image %}
               <div class="swiper-slide info__slide-thumb">
                 <img src="{{ product.image.url }}" alt="">
               </div>
               {% endif %}
+
+              {% for image in images %}
+              <div class="swiper-slide info__slide-thumb">
+                <img src="{{ image.src.url }}" alt="">
+              </div>
+              {% endfor %}
             </div>
           </div>
         </div>
         {% endif %}
 
         {% if product.image %}
-        <div class="swiper info__slider">
+          <div class="swiper info__slider">
           <div class="swiper-wrapper">
             <div class="swiper-slide info__slide">
               <img src="{{ product.image.url }}" alt="">
@@ -107,8 +107,50 @@
 {% if models %}
 <div class="table py">
   <div class="container">
+
+    <h2 class="title table__title">Модели</h2>
+
     <div class="table__inner">
-      <table>
+
+      <div class="table__accordion accordion">
+        {% for model in models %}
+        <div class="accordion__item">
+          <div class="accordion__title active">
+            <div>
+              {% if model.slug %}
+              <a href="{{ model.get_absolute_url }}" class="model-chars">{{ model.name }}</a>
+              {% else %}
+              <p class="model-name">{{ model.name }}</p>
+              {% endif %}
+            </div>
+            <button type="button" class="accordion__btn">
+              <img src="{% static 'theme/img/arrow-down.png' %}" alt="">
+            </button>
+          </div>
+          <div class="accordion__body">
+            <table>
+              <tbody>
+              {% for char in model.characteristics.all|slice:":5" %}
+              {% if char.value %}
+              <tr>
+                <td data-label="{{ char.characteristic }}" class="model-chars">
+                  <p class="model-name">{{ char.value }}</p>
+                </td>
+                {% else %}
+                <td data-label="{{ char.characteristic }}" class="model-chars">
+                  <p class="model-name">-</p>
+                </td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <table class="table__table">
         <thead>
         <tr>
           <th><p>Модель</p></th>
@@ -124,7 +166,7 @@
         {% for model in models %}
         <tr>
           {% if model.name %}
-          <td data-label="Наименование" class="model-chars">
+          <td data-label="{{ model.name }}" class="model-chars">
             {% if model.slug %}
             <a href="{{ model.get_absolute_url }}" class="model-name">{{ model.name }}</a>
             {% else %}

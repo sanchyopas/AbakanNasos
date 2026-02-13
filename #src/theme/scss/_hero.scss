@@ -11,9 +11,11 @@
     display: flex !important;
     flex-direction: column;
     justify-content: space-between;
+    padding: 30px 40px;
     gap: 20px;
     min-height: 400px;
-    padding: 30px 40px;
+    overflow: hidden;
+
     border-radius: 40px;
     background: linear-gradient(180.00deg, rgba(1, 112, 184, 1), rgba(0.44565218687057495, 49.913047790527344, 82, 1) 100%);
 
@@ -36,9 +38,12 @@
       opacity: 0;
     }
 
+
     @media screen and (max-width: 768px) {
+      padding: 30px 15px;
+
       h1, h2, h3, h4, h5, h6 {
-        font-size: 25px;
+        font-size: 20px;
       }
     }
 
@@ -101,6 +106,10 @@
 
     .hero__image,  {
       opacity: 1;
+
+      @media screen and (max-width: 578px) {
+        opacity: .5;
+      }
     }
 
     .hero__btn {

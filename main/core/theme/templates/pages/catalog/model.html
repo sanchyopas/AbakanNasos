@@ -40,7 +40,7 @@
         <meta itemprop="position" content="4">
       </a>
       <span itemprop="name" class="breadcrumbs__item">
-            {{ model.model }}
+            {{ model.name }}
             <meta itemprop="position" content="5">
         </span>
     </div>
@@ -64,7 +64,7 @@
       {% endif %}
       <div class="info__text">
         <h1 class="info__title">
-          {% if model.meta_h1 %}{{ model.meta_h1 }}{% else %}{{ model.model }}{% endif %}
+          {% if model.meta_h1 %}{{ model.meta_h1 }}{% else %}{{ model.name }}{% endif %}
         </h1>
         {% if model.description %}
         <div class="text">

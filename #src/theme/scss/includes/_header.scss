@@ -1,6 +1,8 @@
 .header {
   flex: 0 0 auto;
   padding-top: 10px;
+  background: #FFFFFF;
+  transition: $animation_speed;
 
   @media screen and (max-width: 992px) {
     padding: 15px 0;
@@ -9,6 +11,19 @@
     svg {
       width: 18px;
       height: 18px;
+    }
+  }
+
+  &.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99;
+    padding: 0 0 10px;
+
+    .nav__link {
+      padding: 5px 15px;
     }
   }
 
@@ -73,23 +88,29 @@
   //.header__social
   &__social {
     @media screen and (max-width: 1200px) {
-      position: fixed;
-      bottom: 30px;
-      right: 0;
-      flex-direction: column;
-      background: #fff;
-      border-radius: 20px 0 0 20px;
-      border: 1px solid rgba($color: #003252, $alpha: 0.5);
-      border-right: 0;
-      z-index: 99;
-    }
-
-    a {
-      @media screen and (min-width: 1200px) {
-        padding: 0;
-      }
+      display: none;
     }
   }
+
+  &__mobile-social {
+    margin-top: 30px;
+
+    @media screen and (min-width: 768px) {
+      display: none;
+    }
+  }
+
+  &__mobile-inner {
+    padding: 10px 0;
+    border-top: 1px solid rgba($color: #0d6efd, $alpha: 0.3);
+
+    .address {
+      margin-bottom: 10px;
+    }
+
+  }
+
+  &__mobile-item {}
 
 }
 
@@ -143,6 +164,7 @@
     color: rgba(32, 32, 32, 1);
     font-size: 16px;
     font-weight: 500;
+    transition: $animation_speed;
 
     @media(hover: hover) {
       &:hover {

@@ -1,6 +1,7 @@
 import Swiper from "swiper";
 import {Navigation, Pagination, Scrollbar, Thumbs, EffectFade} from "swiper/modules";
 
+
 const heroSlider = new Swiper('.hero__slider', {
   modules: [Navigation, EffectFade],
   direction: 'horizontal',
@@ -34,59 +35,34 @@ const clientsSlider = new Swiper('.clients__slider', {
   },
 });
 
-const infoSliderThumb = new Swiper('.info__slider-thumb', {
-  spaceBetween: 10,
-  slidesPerView: 3,
+const thumbEl = document.querySelector('.info__slider-thumb');
+const mainEl = document.querySelector('.info__slider');
 
-  // scrollbar: {
-  //   el: '.swiper-scrollbar',
-  //   draggable: true,
-  // },
+let infoSliderThumb = null;
 
-  breakpoints: {
-    320: {
-      scrollbar: {
-        enabled: true
+if (thumbEl) {
+  infoSliderThumb = new Swiper(thumbEl, {
+    spaceBetween: 10,
+    slidesPerView: 3,
+    watchSlidesProgress: true,
+    breakpoints: {
+      320: {
+        direction: 'horizontal',
       },
-      slidesPerView: 1,
-      direction: 'horizontal',
-      spaceBetween: 20,
-    },
-    1200: {
-      direction: 'vertical',
-      slidesPerView: 3,
-      scrollbar: {
-        enabled: false
-      },
+      1200: {
+        direction: 'vertical',
+      }
     }
-  }
+  });
+}
 
-});
-
-const infoSlider = new Swiper('.info__slider', {
-  modules: {Scrollbar, Pagination, Thumbs},
-  direction: 'horizontal',
-  loop: false,
-  spaceBetween: 20,
-  slidesPerView: 1,
-
-  thumbs: {
-    swiper: infoSliderThumb,
-  },
-
-  // breakpoints: {
-  //   320: {
-  //     scrollbar: {
-  //       enabled: true
-  //     },
-  //     slidesPerView: 1,
-  //   },
-  //   992: {
-  //     slidesPerView: 3,
-  //     scrollbar: {
-  //       enabled: false
-  //     },
-  //   }
-  // }
-
-});
+if (mainEl) {
+  new Swiper(mainEl, {
+    loop: false,
+    spaceBetween: 20,
+    slidesPerView: 1,
+    thumbs: infoSliderThumb
+      ? { swiper: infoSliderThumb }
+      : undefined,
+  });
+}
