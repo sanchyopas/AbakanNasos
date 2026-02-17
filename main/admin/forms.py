@@ -206,6 +206,7 @@ class ModelForm(forms.ModelForm):
         model = Models
         fields = "__all__"
 
+
 ModelCharacteristicFormSet = inlineformset_factory(
     Models,
     ModelCharacteristic,

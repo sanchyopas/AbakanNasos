@@ -1,10 +1,20 @@
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
+
+  <h3>Модель</h3>
   {{ form.as_p }}
 
+  <hr>
+
+  <h3>Характеристики</h3>
+
   {{ formset.management_form }}
+
   {% for f in formset %}
-  {{ f.as_p }}
+  <div class="char-block">
+    {{ f.id }}  <!-- важно для редактирования -->
+    {{ f.as_p }}
+  </div>
   {% endfor %}
 
   <button type="submit">Сохранить</button>

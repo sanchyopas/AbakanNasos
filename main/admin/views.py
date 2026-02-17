@@ -561,17 +561,20 @@ def model_add(request):
 def model_edit(request, pk):
     model = Models.objects.get(id=pk)
 
-    form = ModelForm(request.POST or None, request.FILES or None, instance=model)
-    formset = ModelCharacteristicFormSet(request.POST or None, instance=model)
-
     if request.method == "POST":
+        form = ModelForm(request.POST, request.FILES, instance=model)
+        formset = ModelCharacteristicFormSet(request.POST, instance=model)
+
         if form.is_valid() and formset.is_valid():
             form.save()
             formset.save()
-            messages.success(request, "Модель и характеристики сохранены!")
+            messages.success(request, "Модель обновлена!")
             return redirect(model.get_absolute_url())
         else:
             messages.error(request, "Ошибка сохранения")
+    else:
+        form = ModelForm(instance=model)
+        formset = ModelCharacteristicFormSet(instance=model)
 
     context = {
         "form": form,
