@@ -31,8 +31,15 @@
           <div class="page-content__col">
             {% if form.name %}
             <div class="form__group">
-              <label for="{{ form.name.id_for_label }}" class="form__controls-label">Наименование: </label>
+              <label for="{{ form.name.id_for_label }}" class="form__controls-label">{{ form.name.label }}: </label>
               {{ form.name }} {{ form.name.errors }}
+            </div>
+            {% endif %}
+
+            {% if form.map %}
+            <div class="form__group">
+              <label for="{{ form.map.id_for_label }}" class="form__controls-label">{{ form.map.label }}: </label>
+              {{ form.map }} {{ form.map.errors }}
             </div>
             {% endif %}
 

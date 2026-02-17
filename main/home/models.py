@@ -72,6 +72,7 @@ class ContactPage(SingletonModel):
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.CharField(max_length=350, null=True, blank=True, verbose_name="Meta keywords")
+  map = models.CharField(max_length=350, null=True, blank=True, verbose_name="Код карты")
 
 class SliderHero(models.Model):
   STATUS_CHOICES = [
