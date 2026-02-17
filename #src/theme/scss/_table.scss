@@ -143,12 +143,8 @@ tbody {
 
     &:first-child {
       text-align: left;
-      white-space: nowrap;
+      //white-space: nowrap;
       line-height: 150%;
-
-      @media screen and (max-width: 1200px) {
-        white-space: normal;
-      }
 
     }
 

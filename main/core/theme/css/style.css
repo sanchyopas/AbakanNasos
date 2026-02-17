@@ -3547,6 +3547,8 @@ html.with-fancybox body.hide-scrollbar {
       -ms-transform: translateY(30px);
           transform: translateY(30px);
   opacity: 0;
+  font-size: 2em;
+  text-wrap: balance;
 }
 
 .hero__slide p {
@@ -3592,9 +3594,9 @@ html.with-fancybox body.hide-scrollbar {
   color: rgb(255, 255, 255);
   overflow: hidden;
   opacity: 0;
-  -webkit-transform: translateY(0);
-      -ms-transform: translateY(0);
-          transform: translateY(0);
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 99;
 }
 
 .hero__btn::before {
@@ -3646,6 +3648,7 @@ html.with-fancybox body.hide-scrollbar {
       -ms-flex-align: center;
           align-items: center;
   gap: 10px;
+  z-index: 99;
 }
 
 .hero__arrow-next,
@@ -3664,6 +3667,15 @@ html.with-fancybox body.hide-scrollbar {
   background: -o-linear-gradient(top, rgb(11, 108, 170), rgb(100, 189, 246) 100%);
   background: linear-gradient(180deg, rgb(11, 108, 170), rgb(100, 189, 246) 100%);
   color: #ffffff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .hero__arrow-next svg,
@@ -4265,7 +4277,6 @@ tbody .model-chars {
 
 tbody .model-chars:first-child {
   text-align: left;
-  white-space: nowrap;
   line-height: 150%;
 }
 
@@ -5852,14 +5863,6 @@ body main {
 @media screen and (min-width: 395px) {
   .chars__item {
     padding: 0 20px 5px;
-  }
-}
-
-@media screen and (min-width: 435px) {
-  .hero .swiper-slide-active .hero__btn {
-    -webkit-transform: translateY(-30px);
-        -ms-transform: translateY(-30px);
-            transform: translateY(-30px);
   }
 }
 
@@ -10678,10 +10681,6 @@ body main {
     -webkit-box-ordinal-group: 2;
         -ms-flex-order: 1;
             order: 1;
-  }
-
-  tbody .model-chars:first-child {
-    white-space: normal;
   }
 
   .header__social {

@@ -250,7 +250,7 @@ def robots(request):
 
       return redirect(request.META.get('HTTP_REFERER'))
     else:
-      return render(request, "settings/robots.html", {"form": form_new})
+      return render(request, "common-template/robots.html", {"form": form_new})
 
   robots = RobotsTxt.objects.get()
 
@@ -261,7 +261,7 @@ def robots(request):
     "robots":robots
   }
 
-  return render(request, "settings/robots.html", context)
+  return render(request, "common-template/robots.html", context)
 
 folder = 'upload/'
 
@@ -555,11 +555,35 @@ def admin_model(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def model_add(request):
-  return generic_add(request, ModelsForm, "admin_model", "Добавление модели",  template_name=None)
+  return generic_add(request, ModelsForm, "admin_model", "Добавление модели",  template_name="common-template/product-edit-add-page.html")
 
 @user_passes_test(lambda u: u.is_superuser)
 def model_edit(request, pk):
-  return generic_edit(  request,  pk, Models,  ModelsForm, "admin_model", "Редактирование модели", template_name=None)
+    model = Models.objects.get(id=pk)
+
+    form = ModelForm(request.POST or None, request.FILES or None, instance=model)
+    formset = ModelCharacteristicFormSet(request.POST or None, instance=model)
+
+    if request.method == "POST":
+        if form.is_valid() and formset.is_valid():
+            form.save()
+            formset.save()
+            messages.success(request, "Модель и характеристики сохранены!")
+            return redirect(model.get_absolute_url())
+        else:
+            messages.error(request, "Ошибка сохранения")
+
+    context = {
+        "form": form,
+        "formset": formset,
+        "title": "Редактирование модели"
+    }
+
+    return render(request, "common-template/model-edit.html", context)
+
+""" @user_passes_test(lambda u: u.is_superuser)
+def model_edit(request, pk):
+  return generic_edit(  request,  pk, Models,  ModelsForm, "admin_model", "Редактирование модели", template_name="common-template/product-edit-add-page.html") """
 
 @user_passes_test(lambda u: u.is_superuser)
 def model_delete(request, pk):

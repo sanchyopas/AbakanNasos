@@ -14,38 +14,48 @@
     <div class="container">
       <div class="swiper hero__slider">
         <div class="swiper-wrapper hero__wrapper">
-          {% for slide in slider_category %}
-          <div class="swiper-slide hero__slide">
-            <h2>{{ slide.name }}</h2>
-            {{ slide.description|safe|truncatewords:40 }}
-            {% thumbnail slide.image "460x409" format="WEBP" upscale=False as im %}
-            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ slide.name }}"
-                 title="{{ slide.name }}" fetchpriority="high" class="hero__image">
-            {% endthumbnail %}
+          {% if slider_category %}
+            {% for slide in slider_category %}
+              <div class="swiper-slide hero__slide">
+                <h2>{{ slide.name }}</h2>
+                <div>
+                {{ slide.description|safe|truncatewords:40 }}
+                </div>
+                {% thumbnail slide.image "460x409" format="WEBP" upscale=False as im %}
+                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ slide.name }}"
+                     title="{{ slide.name }}" fetchpriority="high" class="hero__image">
+                {% endthumbnail %}
 
-            <a href="{{ slide.get_absolute_url }}" class="hero__btn">Посмотреть товары</a>
-          </div>
-          {% endfor %}
+                <a href="{{ slide.get_absolute_url }}" class="hero__btn">Перейти в категорию</a>
+              </div>
+            {% endfor %}
+          {% endif %}
 
-          {% for slide in slides %}
-          <div class="swiper-slide hero__slide">
-            <h1>{{ slide.title }}</h1>
-            <p>
-              {{ slide.description }}
-            </p>
-            <img src="{{ slide.image.url }}" alt="" class="hero__image">
-            <button type="button" class="hero__btn">Посмотреть товары</button>
-          </div>
-          {% endfor %}
+          {% if slides %}
+            {% for slide in slides %}
+              <div class="swiper-slide hero__slide">
+                <h1>{{ slide.title }}</h1>
+                <p>
+                  {{ slide.description|safe|truncatewords:40 }}
+                </p>
+                <img src="{{ slide.image.url }}" alt="" class="hero__image">
+                <button type="button" class="hero__btn">Посмотреть товары</button>
+              </div>
+            {% endfor %}
+          {% endif%}
+
         </div>
         <div class="hero__arrows">
-          <div class="swiper-button-prev hero__arrow-prev"></div>
-          <div class="swiper-button-next hero__arrow-next"></div>
+          <button type="button" class="swiper-button-prev hero__arrow-prev">
+            <img src="{% static 'theme/img/arrow-left.png' %}" alt="">
+          </button>
+          <button type="button" class="swiper-button-next hero__arrow-next">
+            <img src="{% static 'theme/img/arrow-right.png' %}" alt="">
+          </button>
         </div>
       </div>
     </div>
   </section>
-
 
   {% if category %}
     {% include "../section/services.html" with category=category %}

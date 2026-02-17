@@ -26,6 +26,8 @@
       transition: $animation-speed;
       transform: translateY(30px);
       opacity: 0;
+      font-size: 2em;
+      text-wrap: balance;
     }
 
     p {
@@ -72,7 +74,9 @@
     color: rgba(255, 255, 255, 1);
     overflow: hidden;
     opacity: 0;
-    transform: translateY(0);
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 99;
 
     &::before {
       content: '';
@@ -114,10 +118,6 @@
 
     .hero__btn {
       opacity: 1;
-
-      @media screen and (min-width: 435px) {
-        transform: translateY(-30px);
-      }
     }
   }
 
@@ -128,6 +128,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    z-index: 99;
 
     @media (max-width: 768px) {
       bottom: 50%;
@@ -151,6 +152,9 @@
     border-radius: 15px;
     background: linear-gradient(180.00deg, rgba(10.650540351867676, 107.5530014038086, 170.4086456298828, 1), rgba(99.51506805419922, 188.6202850341797, 246.41827392578125, 1) 100%);
     color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     svg {
       width: 11px;
