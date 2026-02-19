@@ -547,6 +547,10 @@ def product_add(request):
 def product_delete(request,pk):
   return generic_delete(request, Product, pk)
 
+@user_passes_test(lambda u: u.is_superuser)
+def product_image_delete(request,pk):
+  return generic_delete(request, ProductImage, pk)
+
 
 """ Модели товаров """
 @user_passes_test(lambda u: u.is_superuser)
@@ -560,29 +564,76 @@ def model_add(request):
 @user_passes_test(lambda u: u.is_superuser)
 def model_edit(request, pk):
     model = Models.objects.get(id=pk)
+    charsForm = CharacteristicForm()
+    model_char_form = ModelCharacteristicForm()
+    chars = ModelCharacteristic.objects.filter(model_id=pk)
+    all_chars = Characteristic.objects.all()
+    form = ModelsForm(instance=model)
+    form_new = ModelsForm(request.POST or None, request.FILES or None, instance=model)
 
-    if request.method == "POST":
-        form = ModelForm(request.POST, request.FILES, instance=model)
-        formset = ModelCharacteristicFormSet(request.POST, instance=model)
+    if request.method == 'POST':
+        # Получаем список выбранных характеристик (ID)
+        chars_list = request.POST.getlist('characteristic')
 
-        if form.is_valid() and formset.is_valid():
-            form.save()
-            formset.save()
-            messages.success(request, "Модель обновлена!")
-            return redirect(model.get_absolute_url())
+        if form_new.is_valid():
+            form_new.save()  # Сохраняем изменения модели
+            model = Models.objects.get(id=pk)
+
+            # Проходим по всем выбранным характеристикам
+            for char_id in chars_list:
+                try:
+                    characteristic = Characteristic.objects.get(pk=char_id)
+                except Characteristic.DoesNotExist:
+                    continue  # пропускаем, если такой характеристики нет
+
+                # Берём значение характеристики из input
+                value = request.POST.get(f'value_{char_id}', '')
+
+                # Обновляем существующую запись или создаём новую
+                ModelCharacteristic.objects.update_or_create(
+                    model=model,
+                    characteristic=characteristic,
+                    defaults={'value': value}
+                )
+
+            messages.success(request, "Успешно сохранено !")
+            return redirect(request.META.get('HTTP_REFERER'))
         else:
-            messages.error(request, "Ошибка сохранения")
-    else:
-        form = ModelForm(instance=model)
-        formset = ModelCharacteristicFormSet(instance=model)
+            # Обработка ошибок формы
+            error_list = []
+            for field_name, errors in form_new.errors.items():
+                if field_name == "__all__":
+                    for error in errors:
+                        error_list.append(error)
+                    continue
+                field_label = form_new[field_name].label
+                for error in errors:
+                    error_list.append(f"{field_label}: {error}")
 
+            messages.error(request, " | ".join(error_list))
+            return render(request, 'common-template/product-edit-add-page.html', {
+                'form': form_new,
+                "all_chars": all_chars,
+                "chars": chars,
+                "charsForm": charsForm,
+                "model_char_form": model_char_form,
+                "title": "Страница редактирования",
+                "url": general_url_product,
+            })
+
+    # GET-запрос
     context = {
+        "all_chars": all_chars,
+        "chars": chars,
         "form": form,
-        "formset": formset,
-        "title": "Редактирование модели"
+        "charsForm": charsForm,
+        "model_char_form": model_char_form,
+        "title": "Страница редактирования",
+        "url": general_url_product,
     }
 
-    return render(request, "common-template/model-edit.html", context)
+    return render(request, "common-template/product-edit-add-page.html", context)
+
 
 """ @user_passes_test(lambda u: u.is_superuser)
 def model_edit(request, pk):
@@ -592,6 +643,8 @@ def model_edit(request, pk):
 def model_delete(request, pk):
   return generic_delete(request, Models, pk)
 
+def model_char_delete(request, pk):
+  return generic_delete(request, ModelCharacteristic, pk)
 
 """ Наши клиенты блок """
 @user_passes_test(lambda u: u.is_superuser)

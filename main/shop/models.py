@@ -136,12 +136,7 @@ class Models(models.Model):
   parent = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True,related_name="models_parent", verbose_name="Продукт")
   slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, verbose_name="URL")
   name = models.CharField(max_length=150, default="", db_index=True, verbose_name="Модель")
-  in_stock = models.CharField(
-                   max_length=20,
-                   choices=STATUS_STOCK,
-                   default='draft',
-                   verbose_name="В наличие"
-                 )
+  in_stock = models.CharField(max_length=20, choices=STATUS_STOCK, default='draft', verbose_name="В наличие")
 
   status = models.CharField(
       max_length=20,

@@ -186,3 +186,18 @@
     font-size: 14px;
   }
 }
+
+.char__paste {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 10px;
+}
+
+.char-block {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid rgba($color: $mainColor, $alpha: .1);
+  border-radius: 10px;
+  padding: 20px;
+}

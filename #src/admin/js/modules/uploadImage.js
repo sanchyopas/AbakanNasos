@@ -7,8 +7,9 @@ imageAdd?.addEventListener("click", () => {
 
 document.body.addEventListener("click", (e) => {
   if (e.target.classList.contains("product-block__minus")) {
-    const parentElement = e.target.closest(".product-block__image");
-    parentElement.remove();
+    const parentElement = e.target.closest(".product-block__image")
+    if (parentElement) {
+      parentElement.remove();
+    }
   }
-
 });

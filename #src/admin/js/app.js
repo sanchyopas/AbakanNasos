@@ -18,8 +18,6 @@ tabButton?.forEach(btn => {
     tabButton.forEach(item => item.classList.remove('_active'));
     pageEditButton.forEach(item => item.classList.remove('_show'));
 
-    console.log(btn)
-
     let bodyTabBody = document.getElementById(this.dataset.name);
 
     btn.classList.add('_active');
@@ -111,67 +109,30 @@ document.addEventListener('keydown', function(event) {
 const charAddBtn = document.getElementById("char-add");
 
 charAddBtn?.addEventListener("click", (e) => {
-  const charBody = document.getElementById('char-body');
+  e.preventDefault();
 
-  const html = `
-    <div class="char-block">
-    <input type="hidden" name="characteristics-4-id" value="" id="id_characteristics-4-id">  <!-- важно для редактирования -->
-    <p><label for="id_characteristics-4-characteristic">Characteristic:</label> 
-    <select name="characteristics-4-characteristic" id="id_characteristics-4-characteristic">
-      <option value="" selected>---------</option>
-    
-      <option value="1">Мощность, кВт</option>
-    
-      <option value="2">Напряжение, В</option>
-    
-      <option value="3">Подача</option>
-    
-      <option value="4">Напор</option>
-    
-      <option value="5">Подключение</option>
-    
-      <option value="6">Максимальная глубина всасывания (м)</option>
-    
-      <option value="7">Напряжение</option>
-    
-      <option value="8">Наличие</option>
-    
-      <option value="9">Мощность</option>
-    
-      <option value="10">Монтажная длина (мм)</option>
-    
-      <option value="11">Максимальная глубина всасывания</option>
-    
-      <option value="12">Unnamed: 13</option>
-    
-      <option value="13">Unnamed: 14</option>
-    
-      <option value="14">Unnamed: 15</option>
-    
-      <option value="15">Unnamed: 16</option>
-    
-      <option value="16">Unnamed: 17</option>
-    
-      <option value="17">Unnamed: 18</option>
-    
-      <option value="18">Unnamed: 19</option>
-    
-      <option value="19">Unnamed: 20</option>
-    
-      <option value="20">Unnamed: 21</option>
-    
-      <option value="21">Unnamed: 22</option>
-    
-      <option value="22">Unnamed: 23</option>
-    
-      <option value="23">Unnamed: 24</option>
-    </select>
-</p>
-  <p><label for="id_characteristics-4-value">Value:</label> <input type="text" name="characteristics-4-value" value="3/4&quot; (дюйм)" maxlength="250" id="id_characteristics-4-value"></p>
-<p><label for="id_characteristics-4-DELETE">Удалить:</label> <input type="checkbox" name="characteristics-4-DELETE" id="id_characteristics-4-DELETE"><input type="hidden" name="characteristics-4-id" value="1158" id="id_characteristics-4-id"><input type="hidden" name="characteristics-4-model" value="192" id="id_characteristics-4-model"></p>
-  </div>
-  `
+  const selectChar = document.getElementById("select-char"); // скрытый блок
+  if (selectChar) {
+    const charBody = document.getElementById('char__paste');
 
-  charBody.insertAdjacentHTML('afterend', html)
-})
+    const clone = selectChar.querySelector('.char-row').cloneNode(true);
+
+    charBody.appendChild(clone);
+
+    const charDeleteBtns = clone.querySelectorAll(".char-delete");
+
+    charDeleteBtns?.forEach((item) => {
+
+      item.addEventListener("click", () => {
+        const parent = item.closest(".char-row");
+        if (parent) {
+          parent.remove();
+        }
+      });
+    });
+
+  }
+});
+
+
 

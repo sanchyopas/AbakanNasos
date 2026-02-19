@@ -11,20 +11,21 @@
 
       <h3>Модель</h3>
       {{ form.as_p }}
-
       <hr>
 
-      <h3>Характеристики1</h3>
+      <h3>Характеристики</h3>
 
       {{ formset.management_form }}
+      <div id="char-body">
+        {% for f in formset %}
 
-      {% for f in formset %}
-      <div class="char-block" id="char-body">
-        {{ f.id }}
-        {{ f.as_p }}
+        <div class="char-block">
+          {{ f.id }}
+          {{ f.as_p }}
+        </div>
+
+        {% endfor %}
       </div>
-      {% endfor %}
-
       <button type="button" class="char-add" id="char-add">qДобавить характеристику</button>
 
       <button type="submit">Сохранить</button>

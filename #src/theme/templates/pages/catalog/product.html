@@ -143,18 +143,18 @@
               </tr>
               {% endif %}
               {% endfor %}
-              <td data-label="{{ model.in_stock }}">
+              <td data-label="Наличие">
                 <button type="button" class="table__btn">
-                  {% if model.in_stock == "В наличии" %}
-                  <span style="color: green;">{{ model.in_stock }}</span>
+                  {% if model.in_stock == "published" %}
+                  <span style="color: green;">{{ model.get_in_stock_display }}</span>
                   {% endif %}
 
-                  {% if model.in_stock == "Нет в наличии" %}
-                  <span style="color: red;">{{ model.in_stock }}</span>
+                  {% if model.in_stock == "hidden" %}
+                  <span style="color: red;">{{ model.get_in_stock_display }}</span>
                   {% endif %}
 
-                  {% if model.in_stock == "В пути" %}
-                  <span style="color: orange;">{{ model.in_stock }}</span>
+                  {% if model.in_stock == "draft" %}
+                  <span style="color: orange;">{{ model.get_in_stock_display }}</span>
                   {% endif %}
 
                 </button>
@@ -202,20 +202,17 @@
           {% endfor %}
           {% endif %}
 
-          <td data-label="{{ model.in_stock }}">
+          <td data-label="Наличие">
             <button type="button" class="table__btn">
-              {% if model.in_stock == "В наличии" %}
-              <span style="color: green;">{{ model.in_stock }}</span>
+              {% if model.in_stock == "published" %}
+              <span style="color: green;">{{ model.get_in_stock_display }}</span>
+              {% elif model.in_stock == "hidden" %}
+              <span style="color: red;">{{ model.get_in_stock_display }}</span>
+              {% elif model.in_stock == "draft" %}
+              <span style="color: orange;">{{ model.get_in_stock_display }}</span>
+              {% else %}
+              <span style="color: green;">{{ model.get_in_stock_display }}</span>
               {% endif %}
-
-              {% if model.in_stock == "Нет в наличии" %}
-              <span style="color: red;">{{ model.in_stock }}</span>
-              {% endif %}
-
-              {% if model.in_stock == "В пути" %}
-              <span style="color: orange;">{{ model.in_stock }}</span>
-              {% endif %}
-
             </button>
           </td>
         </tr>

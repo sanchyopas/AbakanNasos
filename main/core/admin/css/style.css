@@ -1042,6 +1042,27 @@ ol {
   font-size: 14px;
 }
 
+.char__paste {
+  display: -ms-grid;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 10px;
+}
+
+.char-block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 20px;
+  border: 1px solid rgba(38, 53, 61, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+}
+
 .sort-admin {
   margin-bottom: 40px;
 }

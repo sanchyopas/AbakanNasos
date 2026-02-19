@@ -6,7 +6,7 @@ from shop.models import *
 from branch.models import *
 from .widgets import CustomImageWidget
 from django_ckeditor_5.widgets import CKEditor5Widget
-from django.forms import inlineformset_factory
+
 
 INPUT_CLASS = "form__controls"
 
@@ -201,20 +201,6 @@ class ModelsForm(AutoStyledModelForm):
       )
     }
 
-class ModelForm(forms.ModelForm):
-    class Meta:
-        model = Models
-        fields = "__all__"
-
-
-ModelCharacteristicFormSet = inlineformset_factory(
-    Models,
-    ModelCharacteristic,
-    fields=("characteristic", "value"),
-    extra=1,
-    can_delete=True
-)
-
 class ClientsForm(AutoStyledModelForm):
   class Meta:
     model = Clients
@@ -260,6 +246,21 @@ class ProductForm(AutoStyledModelForm):
       ),
       'category': forms.CheckboxSelectMultiple,
     }
+
+class ModelsForm(AutoStyledModelForm):
+  class Meta:
+    model = Models
+    fields = "__all__"
+
+class ModelCharacteristicForm(AutoStyledModelForm):
+  class Meta:
+    model = ModelCharacteristic
+    fields = "__all__"
+
+class CharacteristicForm(AutoStyledModelForm):
+  class Meta:
+    model = Characteristic
+    fields = "__all__"
 
 class ProductImageForm(AutoStyledModelForm):
   class Meta:
