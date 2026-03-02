@@ -27,6 +27,16 @@
 
   {% include "../includes/_contact.html" %}
 
+{% if site_settings.time_work %}
+<section class="py border-t">
+  <div class="container">
+    <div class="section-text text">
+      {{ site_settings.time_work|safe }}
+    </div>
+  </div>
+</section>
+{% endif %}
+
   {% if contact.description %}
   <section class="py border-t">
     <div class="container">

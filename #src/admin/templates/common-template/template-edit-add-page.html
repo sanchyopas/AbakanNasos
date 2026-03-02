@@ -284,16 +284,16 @@
               </div>
               {% endif %}
 
-              {% if form.time_work %}
-              <div class="form__group">
-                <label for="{{ form.time_work.id_for_label }}" class="form__controls-label">
-                  Режим работы :
-                </label>
-                {{ form.time_work }} {{ form.time_work.errors }}
-              </div>
-              {% endif %}
-
             </div>
+
+            {% if form.time_work %}
+            <div class="form__group">
+              <label for="{{ form.time_work.id_for_label }}" class="form__controls-label">
+                Режим работы :
+              </label>
+              {{ form.time_work }} {{ form.time_work.errors }}
+            </div>
+            {% endif %}
             {% if image %}
             <div class="form__group form__group-image">
               <label for="{{ image_form.src.id_for_label }}" class="form__controls-label">

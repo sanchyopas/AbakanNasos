@@ -6,6 +6,11 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 10px;
+
+    @media(max-width: 500px) {
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    }
+
   }
 
   &__item {
@@ -51,6 +56,11 @@
     font-weight: 600;
     position: relative;
     z-index: 2;
+
+    @media(max-width: 365px) {
+      text-align: center;
+    }
+
   }
 
   &__image {
@@ -61,6 +71,13 @@
     z-index: 1;
     object-fit: cover;
     transition: $animation-speed;
+
+    @media(max-width: 365px) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+
   }
 
 }

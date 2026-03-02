@@ -13,7 +13,7 @@ class BaseSettings(SingletonModel):
   logo_width = models.CharField(max_length=250, blank=True, null=True, db_index=True, verbose_name="Ширина логотипа")
   logo_height = models.CharField(max_length=250, blank=True, null=True, db_index=True, verbose_name="Высота логотипа")
   phone = models.CharField(max_length=50, blank=True, null=True, db_index=True, verbose_name="Основной номер телефона")
-  time_work = models.CharField(max_length=250, blank=True, null=True, db_index=True, verbose_name="Время работы")
+  time_work = models.TextField(null=True, blank=True, verbose_name="Режим работы")
   email = models.EmailField(max_length=250, blank=True, null=True, db_index=True, verbose_name="Email")
   address = models.CharField(max_length=250, blank=True, null=True, verbose_name="Адрес")
   meta_h1 = models.CharField(max_length=350, null=True, blank=True, verbose_name="Заголовок первого уровня")

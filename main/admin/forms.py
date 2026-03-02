@@ -142,6 +142,10 @@ class GlobalSettingsForm(AutoStyledModelForm):
       'description':CKEditor5Widget(
           attrs={'class': 'django_ckeditor_5'},
           config_name='extends'
+      ),
+      'time_work':CKEditor5Widget(
+          attrs={'class': 'django_ckeditor_5'},
+          config_name='extends'
       )
     }
 
