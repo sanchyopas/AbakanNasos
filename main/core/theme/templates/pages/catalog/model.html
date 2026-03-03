@@ -52,7 +52,7 @@
     <div class="info__row">
       {% if model.image or images %}
       <div class="info__image" {% if not images %}style="grid-template-columns: 1fr;" {% endif %}>
-        {% if images or images %}
+        {% if model.image or images %}
         <div class="info__thumb">
           <div class="swiper info__slider-thumb">
             <div class="swiper-wrapper info__slider-thumb-wrapper">
@@ -62,11 +62,13 @@
               </div>
               {% endif %}
 
+              {% if images %}
               {% for image in images %}
               <div class="swiper-slide info__slide-thumb">
                 <img src="{{ image.src.url }}" alt="">
               </div>
               {% endfor %}
+              {% endif %}
             </div>
           </div>
         </div>
@@ -75,15 +77,19 @@
         {% if model.image or images %}
         <div class="swiper info__slider">
           <div class="swiper-wrapper">
+            {% if model.image %}
             <a href="{{ model.image.url }}" class="swiper-slide info__slide" data-fancybox>
               <img src="{{ model.image.url }}" alt="">
             </a>
+            {% endif %}
 
+            {% if images %}
             {% for image in images %}
             <a href="{{ image.src.url }}" class="swiper-slide info__slide" data-fancybox>
               <img src="{{ image.src.url }}" alt="">
             </a>
             {% endfor %}
+            {% endif %}
           </div>
         </div>
         {% endif %}
