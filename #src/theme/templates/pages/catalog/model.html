@@ -56,9 +56,9 @@
         <div class="info__thumb">
           <div class="swiper info__slider-thumb">
             <div class="swiper-wrapper info__slider-thumb-wrapper">
-              {% if product.image %}
+              {% if model.image %}
               <div class="swiper-slide info__slide-thumb">
-                <img src="{{ product.image.url }}" alt="">
+                <img src="{{ model.image.url }}" alt="">
               </div>
               {% endif %}
 
@@ -72,11 +72,11 @@
         </div>
         {% endif %}
 
-        {% if product.image or images %}
+        {% if model.image or images %}
         <div class="swiper info__slider">
           <div class="swiper-wrapper">
-            <a href="{{ product.image.url }}" class="swiper-slide info__slide" data-fancybox>
-              <img src="{{ product.image.url }}" alt="">
+            <a href="{{ model.image.url }}" class="swiper-slide info__slide" data-fancybox>
+              <img src="{{ model.image.url }}" alt="">
             </a>
 
             {% for image in images %}
