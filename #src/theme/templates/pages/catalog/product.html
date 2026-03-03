@@ -43,10 +43,11 @@
 
 <div class="info">
   <div class="container">
+
     <div class="info__row">
       {% if product.image or images %}
       <div class="info__image" {% if not images %}style="grid-template-columns: 1fr;" {% endif %}>
-        {% if images %}
+        {% if images or images %}
         <div class="info__thumb">
           <div class="swiper info__slider-thumb">
             <div class="swiper-wrapper info__slider-thumb-wrapper">
@@ -66,7 +67,7 @@
         </div>
         {% endif %}
 
-        {% if product.image %}
+        {% if product.image or images %}
           <div class="swiper info__slider">
           <div class="swiper-wrapper">
             <div class="swiper-slide info__slide">
@@ -83,6 +84,8 @@
         {% endif %}
       </div>
       {% endif %}
+
+
       <div class="info__text">
         <h1 class="info__title">
           {% if product.meta_h1 %}{{ product.meta_h1 }}{% else %}{{ product.name }}{% endif %}
@@ -101,6 +104,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </div>
 

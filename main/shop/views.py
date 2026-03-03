@@ -52,9 +52,6 @@ def product(request, parent, slug):
     # модели текущего продукта
     models = Models.objects.filter(parent=product)
 
-#     chars = ModelCharacteristic.objects.get(model=models_qs)
-
-#     print(chars)
 
     context = {
         "category": category,
@@ -70,11 +67,13 @@ def model_detail(request, parent, product, model):
   model = get_object_or_404(Models, slug=model)
   product = Product.objects.get(slug=product)
   category = Category.objects.get(slug=parent)
+  images = ModelsImage.objects.filter(parent=model)
 
   context = {
     "category": category,
     "product": product,
-    "model": model
+    "model": model,
+    "images":images
   }
 
   return render(request, "pages/catalog/model.html", context)

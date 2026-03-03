@@ -180,6 +180,13 @@ class ProductImage(models.Model):
   class Meta:
     verbose_name = 'Изображение'
 
+class ModelsImage(models.Model):
+  parent = models.ForeignKey(Models, on_delete=models.CASCADE, related_name="images", verbose_name="Привязка к продукту")
+  src = models.ImageField(upload_to="model-image/", null=True, blank=True, verbose_name="Дополнительны изображения")
+
+  class Meta:
+    verbose_name = 'Изображение'
+
 
 
 

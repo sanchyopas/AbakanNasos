@@ -540,30 +540,9 @@ def product_edit(request, pk):
   return render(request, "common-template/product-edit-add-page.html", context)
 
 @user_passes_test(lambda u: u.is_superuser)
-def product_add(request):
-  return generic_add(request, ProductForm, "admin_shop", "Добавление Товара",  template_name="common-template/product-edit-add-page.html")
-
-@user_passes_test(lambda u: u.is_superuser)
-def product_delete(request,pk):
-  return generic_delete(request, Product, pk)
-
-@user_passes_test(lambda u: u.is_superuser)
-def product_image_delete(request,pk):
-  return generic_delete(request, ProductImage, pk)
-
-
-""" Модели товаров """
-@user_passes_test(lambda u: u.is_superuser)
-def admin_model(request):
-  return generic_list(request, Models, "Модели", "model_add", "model_edit", "model_delete")
-
-@user_passes_test(lambda u: u.is_superuser)
-def model_add(request):
-  return generic_add(request, ModelsForm, "admin_model", "Добавление модели",  template_name="common-template/product-edit-add-page.html")
-
-@user_passes_test(lambda u: u.is_superuser)
 def model_edit(request, pk):
     model = Models.objects.get(id=pk)
+    images = ProductImage.objects.filter(parent_id=pk)
     charsForm = CharacteristicForm()
     model_char_form = ModelCharacteristicForm()
     chars = ModelCharacteristic.objects.filter(model_id=pk)
@@ -573,7 +552,14 @@ def model_edit(request, pk):
 
     if request.method == 'POST':
         # Получаем список выбранных характеристик (ID)
+        models = Models.objects.get(id=pk)
+        images = request.FILES.getlist('src')
+
         chars_list = request.POST.getlist('characteristic')
+
+        for image in images:
+          img = ModelsImage(parent=models, src=image)
+          img.save()
 
         if form_new.is_valid():
             form_new.save()  # Сохраняем изменения модели
@@ -619,6 +605,7 @@ def model_edit(request, pk):
                 "model_char_form": model_char_form,
                 "title": "Страница редактирования",
                 "url": general_url_product,
+                "images": images,
             })
 
     # GET-запрос
@@ -630,9 +617,34 @@ def model_edit(request, pk):
         "model_char_form": model_char_form,
         "title": "Страница редактирования",
         "url": general_url_product,
+        "images": images,
     }
 
     return render(request, "common-template/product-edit-add-page.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def product_add(request):
+  return generic_add(request, ProductForm, "admin_shop", "Добавление Товара",  template_name="common-template/product-edit-add-page.html")
+
+@user_passes_test(lambda u: u.is_superuser)
+def product_delete(request,pk):
+  return generic_delete(request, Product, pk)
+
+@user_passes_test(lambda u: u.is_superuser)
+def product_image_delete(request,pk):
+  return generic_delete(request, ProductImage, pk)
+
+
+""" Модели товаров """
+@user_passes_test(lambda u: u.is_superuser)
+def admin_model(request):
+  return generic_list(request, Models, "Модели", "model_add", "model_edit", "model_delete")
+
+@user_passes_test(lambda u: u.is_superuser)
+def model_add(request):
+  return generic_add(request, ModelsForm, "admin_model", "Добавление модели",  template_name="common-template/product-edit-add-page.html")
+
+
 
 
 """ @user_passes_test(lambda u: u.is_superuser)

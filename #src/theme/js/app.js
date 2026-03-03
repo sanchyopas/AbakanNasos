@@ -11,6 +11,11 @@ import "./modules/normalizeFormatPhoneLink.js";
 import "./modules/font-awesome.js";
 import "./modules/notice.js";
 import "./modules/stickyMenu.js";
+import {Fancybox} from "@fancyapps/ui"
+
+Fancybox.bind("[data-fancybox]", {
+
+});
 
 const socialBtn = document.querySelector('.social__mobile-btn');
 socialBtn?.addEventListener('click', (e) => {

@@ -275,6 +275,15 @@ class ProductImageForm(AutoStyledModelForm):
         'src': CustomImageWidget(),
     }
 
+class ModelImageForm(AutoStyledModelForm):
+  class Meta:
+    model = ModelsImage
+    fields = "__all__"
+
+    widgets = {
+        'src': CustomImageWidget(),
+    }
+
 class HomeTemplateForm(AutoStyledModelForm):
   class Meta:
     model = HomeTemplate
