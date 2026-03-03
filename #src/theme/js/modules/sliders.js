@@ -34,7 +34,9 @@ const clientsSlider = new Swiper('.clients__slider', {
   },
 });
 
-const infoSliderThumb = new Swiper('.info__slider-thumb', {
+const infoSliderThumb =  document.querySelectorAll('.info__slider-thumb')
+if (infoSliderThumb) {
+  new Swiper('.info__slider-thumb', {
   // scrollbar: {
   //   el: '.swiper-scrollbar',
   //   draggable: true,
@@ -62,6 +64,7 @@ const infoSliderThumb = new Swiper('.info__slider-thumb', {
   }
 
 });
+}
 
 const infoSlider = new Swiper('.info__slider', {
   modules: [Scrollbar, Pagination, Thumbs, Zoom],
