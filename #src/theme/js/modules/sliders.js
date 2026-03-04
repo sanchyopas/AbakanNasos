@@ -1,5 +1,6 @@
 import Swiper from "swiper";
-import {Navigation, Pagination, Scrollbar, Thumbs, EffectFade, Zoom} from "swiper/modules";
+import { Navigation, Pagination, Scrollbar, Thumbs, EffectFade, Zoom } from 'swiper/modules';
+
 
 const heroSlider = new Swiper('.hero__slider', {
   modules: [Navigation, EffectFade],
@@ -35,40 +36,33 @@ const clientsSlider = new Swiper('.clients__slider', {
 });
 
 
-const infoSliderThumb = new Swiper('.info__slider-thumb', {
-  slidesPerView: 3,
+document.addEventListener('DOMContentLoaded', () => {
 
-  breakpoints: {
-    320: {
-      slidesPerView: 3,
-      direction: 'horizontal',
-      spaceBetween: 10,
-    },
-    1200: {
-      direction: 'vertical',
-      slidesPerView: 3,
-      spaceBetween: 10,
+  const infoSliderThumb = new Swiper('.info__slider-thumb', {
+    slidesPerView: 3,
+    breakpoints: {
+      320: {
+        slidesPerView: 3,
+        direction: 'horizontal',
+        spaceBetween: 10,
+      },
+      1200: {
+        direction: 'vertical',
+        slidesPerView: 3,
+        spaceBetween: 10,
+      }
     }
-  }
+  });
 
-});
+  const infoSlider = new Swiper('.info__slider', {
+    modules: [Scrollbar, Pagination, Thumbs, Zoom],
+    direction: 'horizontal',
+    spaceBetween: 20,
+    slidesPerView: 1,
 
-const infoSlider = new Swiper('.info__slider', {
-  modules: [Scrollbar, Pagination, Thumbs, Zoom],
-  direction: 'horizontal',
-  loop: false,
-  spaceBetween: 20,
-  slidesPerView: 1,
-
-  thumbs: {
-    swiper: infoSliderThumb,
-  },
-
-  on: {
-    slideChange: function () {
-      // Перемещаем активный тамбнейл на первое место
-      infoSliderThumb.slideTo(this.activeIndex);
+    thumbs: {
+      swiper: infoSliderThumb,
     },
-  },
+  });
 
 });
