@@ -687,8 +687,8 @@ def model_char_add(request):
   return generic_add(request, CharacteristicForm, "admin_char_model", "Добавление характеристики",  template_name="common-template/product-edit-add-page.html")
 
 @user_passes_test(lambda u: u.is_superuser)
-def model_char_edit(request):
-  return generic_add(request, CharacteristicForm, "admin_char_model", "Добавление характеристики",  template_name="common-template/product-edit-add-page.html")
+def model_char_edit(request, pk):
+  return generic_edit(request,  pk, Characteristic,  CharacteristicForm, "admin_char_model", "Редактирование характеристик", template_name=None)
 
 """ Модели товаров """
 @user_passes_test(lambda u: u.is_superuser)
