@@ -10938,7 +10938,7 @@ body main {
 
 @media (max-width: 500px) {
   .services__grid {
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 
   .services__image {
