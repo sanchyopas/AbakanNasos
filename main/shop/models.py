@@ -155,7 +155,7 @@ class Models(models.Model):
     })
 
 class Characteristic(models.Model):
-    name = models.CharField(max_length=250, unique=True)
+    name = models.CharField(max_length=250, unique=True, verbose_name="Название")
 
     def __str__(self):
         return self.name
