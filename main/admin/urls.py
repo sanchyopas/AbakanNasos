@@ -41,13 +41,20 @@ urlpatterns = [
     path('product/<int:pk>/delete/', views.product_delete, name='product_delete'),
 
     path('product-image/<int:pk>/delete/', views.product_image_delete, name='product_image_delete'),
+    path('models-image/<int:pk>/delete/', views.model_image_delete, name='model_image_delete'),
 
     path('model/', views.admin_model, name='admin_model'),
     path('model/add/', views.model_add, name='model_add'),
     path('model/<int:pk>/edit/', views.model_edit, name='model_edit'),
     path('model/<int:pk>/delete/', views.model_delete, name='model_delete'),
 
+    path('model-char/', views.admin_char_model, name='admin_char_model'),
+    path('model-char/add/', views.model_char_add, name='model_char_add'),
+    path('model-char/<int:pk>/edit/', views.model_char_edit, name='model_char_edit'),
+    path('char-delete/<int:pk>/delete/', views.char_delete, name='char_delete'),
+
     path('model-char/<int:pk>/delete/', views.model_char_delete, name='model_char_delete'),
+
 
     path('clients/', views.admin_clients, name='admin_clients'),
     path('clients/add/', views.clients_add, name='clients_add'),

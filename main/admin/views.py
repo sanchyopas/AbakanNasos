@@ -535,14 +535,56 @@ def product_edit(request, pk):
     "title": "Страница редактирования",
     "url": general_url_product,
     "images": images,
+    "product_view": True
   }
 
   return render(request, "common-template/product-edit-add-page.html", context)
 
+# @user_passes_test(lambda u: u.is_superuser)
+# def model_add(request):
+#     """Универсальное добавление"""
+#
+#     form = ModelsForm()
+#     all_chars = Characteristic.objects.all()
+#
+#     if request.method == "POST":
+#       form = ModelsForm(request.POST, request.FILES)
+#       if form.is_valid():
+#         form.save()
+#         messages.success(request, "Успешно сохранено !")
+#         return redirect(request.META.get('HTTP_REFERER'))
+#       else:
+#         error_list = []
+#
+#         for field_name, errors in form.errors.items():
+#           # если ошибка не привязана к полю (non_field_errors)
+#           if field_name == "__all__":
+#             for error in errors:
+#               error_list.append(error)
+#             continue
+#
+#             field_label = form[field_name].label
+#
+#             for error in errors:
+#               error_list.append(f"{field_label}: {error}")
+#         messages.error(request, " | ".join(error_list))
+#         return render(request, "common-template/template-edit-add-page.html", {"form": form, "title": title})
+#
+#     context = {
+#       "form": form,
+#       "title": "Добавление модели",
+#       "all_chars": all_chars,
+#     }
+#     return render(request, "common-template/template-edit-add-page.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def model_add(request):
+  return generic_add(request, ModelsForm, "admin_model", "Добавление модели",  template_name="common-template/product-edit-add-page.html")
+
 @user_passes_test(lambda u: u.is_superuser)
 def model_edit(request, pk):
     model = Models.objects.get(id=pk)
-    images = ProductImage.objects.filter(parent_id=pk)
+    images = ModelsImage.objects.filter(parent_id=pk)
     charsForm = CharacteristicForm()
     model_char_form = ModelCharacteristicForm()
     chars = ModelCharacteristic.objects.filter(model_id=pk)
@@ -606,6 +648,7 @@ def model_edit(request, pk):
                 "title": "Страница редактирования",
                 "url": general_url_product,
                 "images": images,
+                "model_view": True
             })
 
     # GET-запрос
@@ -618,6 +661,7 @@ def model_edit(request, pk):
         "title": "Страница редактирования",
         "url": general_url_product,
         "images": images,
+        "model_view": True
     }
 
     return render(request, "common-template/product-edit-add-page.html", context)
@@ -634,18 +678,28 @@ def product_delete(request,pk):
 def product_image_delete(request,pk):
   return generic_delete(request, ProductImage, pk)
 
+@user_passes_test(lambda u: u.is_superuser)
+def admin_char_model(request):
+  return generic_list(request, Characteristic, "Характеристики модели", "model_char_add", "model_char_edit", "char_delete")
+
+@user_passes_test(lambda u: u.is_superuser)
+def model_char_add(request):
+  return generic_add(request, CharacteristicForm, "admin_char_model", "Добавление характеристики",  template_name="common-template/product-edit-add-page.html")
+
+@user_passes_test(lambda u: u.is_superuser)
+def model_char_edit(request):
+  return generic_add(request, CharacteristicForm, "admin_char_model", "Добавление характеристики",  template_name="common-template/product-edit-add-page.html")
 
 """ Модели товаров """
 @user_passes_test(lambda u: u.is_superuser)
 def admin_model(request):
   return generic_list(request, Models, "Модели", "model_add", "model_edit", "model_delete")
 
+
+
 @user_passes_test(lambda u: u.is_superuser)
-def model_add(request):
-  return generic_add(request, ModelsForm, "admin_model", "Добавление модели",  template_name="common-template/product-edit-add-page.html")
-
-
-
+def model_image_delete(request,pk):
+  return generic_delete(request, ModelsImage, pk)
 
 """ @user_passes_test(lambda u: u.is_superuser)
 def model_edit(request, pk):
@@ -657,6 +711,9 @@ def model_delete(request, pk):
 
 def model_char_delete(request, pk):
   return generic_delete(request, ModelCharacteristic, pk)
+
+def char_delete(request, pk):
+  return generic_delete(request, Characteristic, pk)
 
 """ Наши клиенты блок """
 @user_passes_test(lambda u: u.is_superuser)

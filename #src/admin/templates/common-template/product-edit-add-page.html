@@ -247,9 +247,14 @@
               {% for image in images %}
               <div class="product-block__image">
                 <img src="{{ image.src.url }}" alt="" id="{{image.id}}">
+                {% if product_view %}
                 <a href="{% url 'product_image_delete' image.pk %}" class="product-block__minus">Удалить</a>
-              </div>
+                {% endif %}
 
+                {% if model_view %}
+                <a href="{% url 'model_image_delete' image.pk %}" class="product-block__minus">Удалить</a>
+                {% endif %}
+              </div>
               {% endfor %}
             </div>
           </div>
