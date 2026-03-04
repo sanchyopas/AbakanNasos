@@ -5453,6 +5453,7 @@ body._lock::after {
   font-weight: 600;
   position: relative;
   z-index: 2;
+  word-break: break-word;
 }
 
 .services__image {
@@ -10939,6 +10940,13 @@ body main {
   .services__grid {
     grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   }
+
+  .services__image {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+  }
 }
 
 @media screen and (max-width: 435px) {
@@ -10963,13 +10971,6 @@ body main {
 @media (max-width: 365px) {
   .services__title {
     text-align: center;
-  }
-
-  .services__image {
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-        -ms-transform: translateX(-50%);
-            transform: translateX(-50%);
   }
 }
 

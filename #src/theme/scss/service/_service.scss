@@ -56,6 +56,7 @@
     font-weight: 600;
     position: relative;
     z-index: 2;
+    word-break: break-word;
 
     @media(max-width: 365px) {
       text-align: center;
@@ -72,7 +73,7 @@
     object-fit: cover;
     transition: $animation-speed;
 
-    @media(max-width: 365px) {
+    @media(max-width: 500px) {
       left: 50%;
       transform: translateX(-50%);
     }
