@@ -4073,6 +4073,7 @@ button[disabled] {
   -ms-grid-columns: 162px 1fr;
   grid-template-columns: 162px 1fr;
   gap: 10px;
+  max-height: 371px;
 }
 
 .info__slider {
@@ -4112,7 +4113,7 @@ button[disabled] {
 
 .info__slide-thumb {
   width: 162px !important;
-  height: 121px !important;
+  height: 117px !important;
   border: 1px solid rgba(1, 112, 184, 0.16);
   border-radius: 30px;
   overflow: hidden;
@@ -9704,6 +9705,10 @@ body main {
 
   .ps-xl-5 {
     padding-left: 3rem !important;
+  }
+
+  .info .swiper {
+    height: 371px !important;
   }
 }
 

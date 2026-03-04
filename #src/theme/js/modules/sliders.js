@@ -36,29 +36,18 @@ const clientsSlider = new Swiper('.clients__slider', {
 
 
 const infoSliderThumb = new Swiper('.info__slider-thumb', {
-  // scrollbar: {
-  //   el: '.swiper-scrollbar',
-  //   draggable: true,
-  // },
-
+  slidesPerView: 3,
 
   breakpoints: {
     320: {
-      scrollbar: {
-        enabled: true
-      },
       slidesPerView: 3,
       direction: 'horizontal',
-      spaceBetween: 20,
+      spaceBetween: 10,
     },
     1200: {
       direction: 'vertical',
       slidesPerView: 3,
-      spaceBetween: 20,
-
-      scrollbar: {
-        enabled: false
-      },
+      spaceBetween: 10,
     }
   }
 
@@ -73,6 +62,13 @@ const infoSlider = new Swiper('.info__slider', {
 
   thumbs: {
     swiper: infoSliderThumb,
+  },
+
+  on: {
+    slideChange: function () {
+      // Перемещаем активный тамбнейл на первое место
+      infoSliderThumb.slideTo(this.activeIndex);
+    },
   },
 
 });

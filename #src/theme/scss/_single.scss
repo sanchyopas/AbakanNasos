@@ -12,11 +12,18 @@
     }
   }
 
+  .swiper {
+    @media (min-width: 1200px){
+      height: 371px !important;
+    }
+  }
+
   &__image {
     min-width: 0;
     display: grid;
     grid-template-columns: 162px 1fr;
     gap: 10px;
+    max-height: 371px;
 
     @media screen and (max-width: 1200px) {
       grid-template-columns: 1fr;
@@ -43,8 +50,6 @@
   &__slider-thumb {
     height: 100%;
 
-
-
     .swiper-slide-thumb-active {
       border: 1px solid rgba(1, 112, 184, 0.5);
     }
@@ -67,7 +72,7 @@
 
   &__slide-thumb {
     width: 162px !important;
-    height: 121px !important;
+    height: 117px !important;
     border: 1px solid rgba(1, 112, 184, 0.16);
     border-radius: 30px;
     overflow: hidden;
