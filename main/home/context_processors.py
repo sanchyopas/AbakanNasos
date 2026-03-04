@@ -15,6 +15,9 @@ def socials(request):
 def callback_block(request):
     return {"callback": CallBackBlock.load()}
 
+def contact(request):
+    return {"contact": ContactPage.objects.get()}
+
 def branch(request):
     return {"branch": Branch.objects.filter(status='published')}
  

@@ -57,9 +57,11 @@
       </div>
       {% endif %}
 
-      <div class="contact__map">
-
-      </div>
+      {% if contact.map %}
+        <div class="contact__map">
+          {{ contact.map|safe }}
+        </div>
+      {% endif %}
     </div>
   </div>
 </section>
