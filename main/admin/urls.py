@@ -88,6 +88,7 @@ urlpatterns = [
     
     #URl - отвечающие за загрузку данных
     path('upload-goods/', views.upload_goods, name="upload_goods"),
+    path('download-goods/', views.download_goods, name="download_goods"),
     path('upload-succes/', views.upload_succes, name="upload-succes"),
 
     

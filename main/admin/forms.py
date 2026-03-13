@@ -13,6 +13,21 @@ INPUT_CLASS = "form__controls"
 class UploadFileForm(forms.Form):
     file = forms.FileField()
 
+class DownLoadFileForm(forms.Form):
+    # Поле для выбора одной категории
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        label='Выберите категорию',
+        empty_label="---"
+    )
+    # Поле для выбора нескольких категорий (если нужно)
+    # categories = forms.ModelMultipleChoiceField(queryset=Category.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Можно фильтровать или менять выборку здесь
+        self.fields['category'].queryset = Category.objects.all()
+
 class RobotsForm(forms.ModelForm):
   
   class Meta:

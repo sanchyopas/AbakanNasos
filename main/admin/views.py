@@ -266,6 +266,57 @@ def robots(request):
 folder = 'upload/'
 
 from PIL import Image
+from openpyxl import Workbook
+@user_passes_test(lambda u: u.is_superuser)
+def download_goods(request):
+  form = DownLoadFileForm()
+
+  if request.method == 'POST':
+    form = DownLoadFileForm(request.POST)
+    if form.is_valid():
+      category = request.POST['category']
+
+      wb = Workbook()
+      ws = wb.active
+      ws.title = "Products"
+
+      # Заголовки
+      columns = ['Категория',
+      'Подкатегория',
+      'Модель',
+      'Фото категории',
+      'Фото подкатегории',
+      'Фото моделей',
+      'Наличие',
+      'Наличие',
+      ]
+      ws.append(columns)
+
+      # Данные
+      for model in Models.objects.select_related("parent").prefetch_related("parent__category").filter(parent__category__id=category):
+          category = model.parent.category.first()
+
+          ws.append([
+              category.name if category else "",
+              model.parent.name,
+              model.name,
+              category.image.url if category.image else "",
+              model.parent.image.url if model.parent.image else "",
+              model.image.url if model.image else "",
+              model.get_in_stock_display()
+          ])
+
+      response = HttpResponse(
+          content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      )
+
+      response['Content-Disposition'] = 'attachment; filename="products.xlsx"'
+
+      wb.save(response)
+
+      return response
+
+  return render(request, 'upload/download.html', {'form': form})
 
 @user_passes_test(lambda u: u.is_superuser)
 def upload_goods(request):
