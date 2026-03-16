@@ -88,6 +88,10 @@ def rename_image(filename):
 
     try:
         original_name = unicodedata.normalize("NFKC", str(filename)).strip()
+
+        # убираем полный путь и /media/goods/
+        original_name = os.path.basename(original_name)
+
         image_name, ext = os.path.splitext(original_name)
         ext = ext.lower()
 
@@ -100,17 +104,17 @@ def rename_image(filename):
         old_path = os.path.join(images_folder, original_name)
         new_path = os.path.join(images_folder, new_filename)
 
+        # если файл уже существует — просто возвращаем путь
         if os.path.exists(new_path):
             return f"goods/{new_filename}"
 
+        # если старый файл существует — переименовываем
         if os.path.exists(old_path):
             os.rename(old_path, new_path)
-        else:
-          pass
 
         return f"goods/{new_filename}"
 
-    except Exception as e:
+    except Exception:
         return ""
 
 
@@ -187,15 +191,15 @@ def import_products_from_excel(file_path):
         model, created = Models.objects.get_or_create(
             slug=model_slug,
             parent=product,
-            defaults={'model': model_name, 'status': 'published', 'image': model_image, 'in_stock': model_stock}
+            defaults={'name': model_name, 'status': 'published', 'image': model_image, 'in_stock': model_stock}
         )
 
         if not created:
-          model.model = model_name
+          model.name = model_name
           model.in_stock = model_stock
           model.status = 'published'
           model.image = model_image
-          model.save(update_fields=['model', 'in_stock', 'status', 'image'])
+          model.save(update_fields=['name', 'in_stock', 'status', 'image'])
 
 
         for column in df.columns[FIXED_COLUMNS_COUNT:]:
@@ -269,54 +273,84 @@ from PIL import Image
 from openpyxl import Workbook
 @user_passes_test(lambda u: u.is_superuser)
 def download_goods(request):
-  form = DownLoadFileForm()
+    form = DownLoadFileForm()
 
-  if request.method == 'POST':
-    form = DownLoadFileForm(request.POST)
-    if form.is_valid():
-      category = request.POST['category']
+    if request.method == 'POST':
+        form = DownLoadFileForm(request.POST)
 
-      wb = Workbook()
-      ws = wb.active
-      ws.title = "Products"
+        if form.is_valid():
 
-      # Заголовки
-      columns = ['Категория',
-      'Подкатегория',
-      'Модель',
-      'Фото категории',
-      'Фото подкатегории',
-      'Фото моделей',
-      'Наличие',
-      'Наличие',
-      ]
-      ws.append(columns)
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Products"
 
-      # Данные
-      for model in Models.objects.select_related("parent").prefetch_related("parent__category").filter(parent__category__id=category):
-          category = model.parent.category.first()
+            # получаем модели категории
+            category = form.cleaned_data["category"]
 
-          ws.append([
-              category.name if category else "",
-              model.parent.name,
-              model.name,
-              category.image.url if category.image else "",
-              model.parent.image.url if model.parent.image else "",
-              model.image.url if model.image else "",
-              model.get_in_stock_display()
-          ])
+            models = Models.objects.select_related("parent").prefetch_related(
+                "parent__category",
+                "characteristics__characteristic"
+            ).filter(parent__category=category)
 
-      response = HttpResponse(
-          content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      )
+            # получаем ВСЕ характеристики этих моделей
+            characteristics = Characteristic.objects.filter(
+                modelcharacteristic__model__in=models
+            ).distinct()
 
-      response['Content-Disposition'] = 'attachment; filename="products.xlsx"'
+            # Заголовки
+            columns = [
+                'Категория',
+                'Подкатегория',
+                'Модель',
+                'Фото категории',
+                'Фото подкатегории',
+                'Фото модели',
+                'Наличие',
+            ]
 
-      wb.save(response)
+            # добавляем характеристики в заголовки
+            for char in characteristics:
+                columns.append(char.name)
 
-      return response
+            ws.append(columns)
 
-  return render(request, 'upload/download.html', {'form': form})
+            # Данные
+            for model in models:
+                category = model.parent.category.first()
+
+                row = [
+                    category.name if category else "",
+                    model.parent.name if model.parent else "",
+                    model.name,
+                    category.image.url if category and category.image else "",
+                    model.parent.image.url if model.parent and model.parent.image else "",
+                    model.image.url if model.image else "",
+                    model.get_in_stock_display(),
+                ]
+
+                # словарь характеристик модели
+                char_dict = {
+                    mc.characteristic_id: mc.value
+                    for mc in model.characteristics.all()
+                }
+
+                # добавляем значения характеристик
+                for char in characteristics:
+                    row.append(char_dict.get(char.id, ""))
+
+                ws.append(row)
+
+            response = HttpResponse(
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            )
+
+            response['Content-Disposition'] = 'attachment; filename="products.xlsx"'
+
+            wb.save(response)
+
+            return response
+
+    return render(request, 'upload/download.html', {'form': form})
 
 @user_passes_test(lambda u: u.is_superuser)
 def upload_goods(request):
