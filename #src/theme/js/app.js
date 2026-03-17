@@ -14,7 +14,7 @@ import "./modules/stickyMenu.js";
 import {Fancybox} from "@fancyapps/ui"
 
 Fancybox.bind("[data-fancybox]", {
-
+  theme: "light",
 });
 
 const socialBtn = document.querySelector('.social__mobile-btn');
