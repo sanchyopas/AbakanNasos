@@ -107,6 +107,119 @@
   </div>
 </div>
 
+
+<div class="table py">
+  <div class="container">
+
+    <h2 class="title table__title">Модели</h2>
+
+    <div class="table__inner">
+      {% comment %}
+      <div class="table__accordion accordion">
+        {% for model in models %}
+        <div class="accordion__item">
+          <div class="accordion__title active">
+            <div>
+              {% if model.slug %}
+              <a href="{{ model.get_absolute_url }}" class="model-chars">{{ model.name }}</a>
+              {% else %}
+              <p class="model-name">{{ model.name }}</p>
+              {% endif %}
+            </div>
+            <button type="button" class="accordion__btn">
+              <img src="{% static 'theme/img/arrow-down.png' %}" alt="">
+            </button>
+          </div>
+          <div class="accordion__body">
+            <table>
+              <tbody>
+              {% for char in model.characteristics.all|slice:":5" %}
+              {% if char.value %}
+              <tr>
+                <td data-label="{{ char.characteristic }}" class="model-chars">
+                  <p class="model-name">{{ char.value }}</p>
+                </td>
+                {% else %}
+                <td data-label="{{ char.characteristic }}" class="model-chars">
+                  <p class="model-name">-</p>
+                </td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+              <td data-label="Наличие">
+                <button type="button" class="table__btn">
+                  {% if model.in_stock == "published" %}
+                  <span style="color: green;">{{ model.get_in_stock_display }}</span>
+                  {% endif %}
+
+                  {% if model.in_stock == "hidden" %}
+                  <span style="color: red;">{{ model.get_in_stock_display }}</span>
+                  {% endif %}
+
+                  {% if model.in_stock == "draft" %}
+                  <span style="color: orange;">{{ model.get_in_stock_display }}</span>
+                  {% endif %}
+
+                </button>
+              </td>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% endfor %}
+      </div>{% endcomment %}
+
+      <table class="table__table">
+        <thead>
+        <tr>
+          <th><p>Модель</p></th>
+          {% for charName in chars %}
+            <th><p>{{ charName.characteristic.name }}</p></th>
+          {% endfor %}
+          <th><p>Наличие</p></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in table %}
+        <tr>
+          <!-- Модель -->
+          <td class="model-chars">
+            {% if row.url %}
+            <a href="{{ row.url }}" class="model-name">{{ row.name }}</a>
+            {% else %}
+            <p class="model-name">{{ row.name }}</p>
+            {% endif %}
+          </td>
+
+          <!-- Характеристики -->
+          {% for char in row.chars %}
+          <td class="model-chars">
+            <p class="model-name">{{ char.value }}</p>
+          </td>
+          {% endfor %}
+
+          <!-- Наличие -->
+          <td>
+            <button type="button" class="table__btn">
+              {% if row.in_stock_status == "published" %}
+              <span style="color: green;">{{ row.in_stock }}</span>
+              {% elif row.in_stock_status == "hidden" %}
+              <span style="color: red;">{{ row.in_stock }}</span>
+              {% elif row.in_stock_status == "draft" %}
+              <span style="color: orange;">{{ row.in_stock }}</span>
+              {% endif %}
+            </button>
+          </td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% comment %}
 {% if models %}
 <div class="table py">
   <div class="container">
@@ -169,9 +282,6 @@
         {% endfor %}
       </div>
 
-        {% for h in chars.characteristics.all %}
-          <p>{{ h }}</p>
-        {% endfor %}
       <table class="table__table">
         <thead>
         <tr>
@@ -228,7 +338,7 @@
     </div>
   </div>
 </div>
-{% endif %}
+{% endif %}{% endcomment %}
 
 {% if product.text %}
 <section class="py border-l">

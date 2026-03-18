@@ -52,45 +52,46 @@ def product(request, parent, slug):
     category = Category.objects.get(slug=parent)
     images = ProductImage.objects.filter(parent=product)
 
-    models = Models.objects.filter(parent=product)
-
+    models = Models.objects.filter(parent=product).prefetch_related('characteristics__characteristic')
 
     first_model = models.first()
 
     if first_model:
-        chars = first_model.characteristics.all().order_by('order_by')[:5]
+      chars = first_model.characteristics.all().order_by('order_by')[:5]
 
-
-    headers = {}
     table = []
 
     for model in models:
-        chars = model.characteristics.all().order_by('order_by')
-        char_dict = {}
+      # берем только нужные 5 характеристик
+      model_chars = model.characteristics.all().order_by('order_by')[:5]
 
-        for ch in chars:
-            name = ch.characteristic.name
 
-            # собираем уникальные заголовки + порядок
-            if name not in headers:
-                headers[name] = ch.order_by
+      char_items = []
 
-            char_dict[name] = ch.value
-
-        table.append({
-            "model": model,
-            "chars": char_dict
+      for ch in model_chars:
+        char_items.append({
+          "name": ch.characteristic.name,
+          "value": ch.value if ch.value else "-"
         })
 
-    headers = [k for k, v in sorted(headers.items(), key=lambda x: x[1])]
+      table.append({
+        "name": model.name,
+        "slug": model.slug,
+        "url": model.get_absolute_url() if model.slug else None,
+        "chars": char_items,
+        "in_stock": model.get_in_stock_display(),
+        "in_stock_status": model.in_stock
+      })
+
+    print(table)
 
     context = {
-        "category": category,
-        "product": product,
-        "images": images,
-        "table": table,
-        "headers": headers,
-        "chars": chars
+      "category": category,
+      "product": product,
+      "images": images,
+      "models": models,
+      "table": table,
+      "chars": chars
     }
 
     return render(request, "pages/catalog/product.html", context)
