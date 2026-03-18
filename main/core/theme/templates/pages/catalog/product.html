@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% load static %} {% load thumbnail %}
-
+{% load custom_tags %}
 {% block title %}
 {% if product.meta_h1 %}{{ product.meta_h1 }}{% else %}{{ product.name }}{% endif %}
 {% endblock %}
@@ -169,6 +169,9 @@
         {% endfor %}
       </div>
 
+        {% for h in chars.characteristics.all %}
+          <p>{{ h }}</p>
+        {% endfor %}
       <table class="table__table">
         <thead>
         <tr>

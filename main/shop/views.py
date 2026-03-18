@@ -44,47 +44,53 @@ def category_detail(request, slug):
   return render(request, "pages/catalog/category-details.html", context)
 
 
+from django.db.models import IntegerField
+from django.db.models.functions import Cast
+
 def product(request, parent, slug):
     product = Product.objects.get(slug=slug)
     category = Category.objects.get(slug=parent)
     images = ProductImage.objects.filter(parent=product)
 
-    chars = []
-
-    # модели текущего продукта
-
     models = Models.objects.filter(parent=product)
-    result = []
-    headers = []
 
-#     for model in models:
-#         chars = model.characteristics.all().order_by('order_by')
-#
-#         char_dict = {}
-#
-#         for ch in chars:
-#             char_name = ch.characteristic.name
-#
-#             # собираем заголовки (уникальные)
-#             if char_name not in headers:
-#                 headers.append(char_name)
-#
-#             char_dict[char_name] = ch.value
-#
-#         result.append({
-#             "model": model.name,
-#             "inStock": model.in_stock,
-#             "chars": char_dict
-#         })
+
+    first_model = models.first()
+
+    if first_model:
+        chars = first_model.characteristics.all().order_by('order_by')[:5]
+
+
+    headers = {}
+    table = []
+
+    for model in models:
+        chars = model.characteristics.all().order_by('order_by')
+        char_dict = {}
+
+        for ch in chars:
+            name = ch.characteristic.name
+
+            # собираем уникальные заголовки + порядок
+            if name not in headers:
+                headers[name] = ch.order_by
+
+            char_dict[name] = ch.value
+
+        table.append({
+            "model": model,
+            "chars": char_dict
+        })
+
+    headers = [k for k, v in sorted(headers.items(), key=lambda x: x[1])]
 
     context = {
         "category": category,
         "product": product,
         "images": images,
-        "models": models,
-#         "chars": chars,
-#         "result": result,
-#         "headers": headers
+        "table": table,
+        "headers": headers,
+        "chars": chars
     }
 
     return render(request, "pages/catalog/product.html", context)
