@@ -12,6 +12,7 @@ INPUT_CLASS = "form__controls"
 
 class UploadFileForm(forms.Form):
     file = forms.FileField()
+    archive = forms.FileField()
 
 class DownLoadFileForm(forms.Form):
     # Поле для выбора одной категории

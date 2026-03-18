@@ -92,27 +92,27 @@ def rename_image(filename):
         # убираем полный путь и /media/goods/
         original_name = os.path.basename(original_name)
 
-        image_name, ext = os.path.splitext(original_name)
-        ext = ext.lower()
-
-        slug_name = slugify(image_name)
-        if not slug_name:
-            slug_name = "image"
-
-        new_filename = f"{slug_name}{ext}"
-
-        old_path = os.path.join(images_folder, original_name)
-        new_path = os.path.join(images_folder, new_filename)
+#         image_name, ext = os.path.splitext(original_name)
+#         ext = ext.lower()
+#
+#         slug_name = slugify(image_name)
+#         if not slug_name:
+#             slug_name = "image"
+#
+#         new_filename = f"{slug_name}{ext}"
+#
+#         old_path = os.path.join(images_folder, original_name)
+#         new_path = os.path.join(images_folder, new_filename)
 
         # если файл уже существует — просто возвращаем путь
-        if os.path.exists(new_path):
-            return f"goods/{new_filename}"
+        if os.path.exists(original_name):
+            return f"goods/{original_name}"
 
         # если старый файл существует — переименовываем
-        if os.path.exists(old_path):
-            os.rename(old_path, new_path)
+#         if os.path.exists(old_path):
+#             os.rename(old_path, new_path)
 
-        return f"goods/{new_filename}"
+        return f"goods/{original_name}"
 
     except Exception:
         return ""
@@ -360,6 +360,12 @@ def upload_goods(request):
       form = UploadFileForm(request.POST, request.FILES)
       if form.is_valid():
         file = request.FILES['file']
+        archive = request.FILES['archive']
+
+        # Распаковка архива
+        with zipfile.ZipFile(archive, 'r',) as zip_ref:
+          zip_ref.extractall(path="media/goods")
+
         import_products_from_excel(file)
 
 #         destination = open(os.path.join('upload/', file.name), 'wb+')
@@ -369,9 +375,7 @@ def upload_goods(request):
 #
 #         destination.close()
 
-        # Распаковка архива
-#         with zipfile.ZipFile(f'upload/{file}', 'r') as zip_ref:
-#             zip_ref.extractall('media/')
+
 
         # Удаление загруженного архива
 #         os.remove(f'upload/{file}')
@@ -672,7 +676,9 @@ def model_edit(request, pk):
     images = ModelsImage.objects.filter(parent_id=pk)
     charsForm = CharacteristicForm()
     model_char_form = ModelCharacteristicForm()
-    chars = ModelCharacteristic.objects.filter(model_id=pk)
+
+    chars = ModelCharacteristic.objects.filter(model_id=pk).order_by('order_by')
+
     all_chars = Characteristic.objects.all()
     form = ModelsForm(instance=model)
     form_new = ModelsForm(request.POST or None, request.FILES or None, instance=model)
@@ -701,12 +707,13 @@ def model_edit(request, pk):
 
                 # Берём значение характеристики из input
                 value = request.POST.get(f'value_{char_id}', '')
+                order = request.POST.get(f'order_{char_id}', '')
 
                 # Обновляем существующую запись или создаём новую
                 ModelCharacteristic.objects.update_or_create(
                     model=model,
                     characteristic=characteristic,
-                    defaults={'value': value}
+                    defaults={'value': value, 'order_by': order}
                 )
 
             messages.success(request, "Успешно сохранено !")

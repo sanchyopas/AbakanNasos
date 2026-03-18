@@ -172,6 +172,10 @@ class ModelCharacteristic(models.Model):
       on_delete=models.CASCADE
     )
     value = models.CharField(max_length=250, null=True, blank=True)
+    order_by = models.CharField(max_length=150, blank=True, null=True, default="1", verbose_name="Порядок сортировки")
+
+    class Meta:
+      unique_together = ('model', 'characteristic')
 
 class ProductImage(models.Model):
   parent = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="Привязка к продукту")

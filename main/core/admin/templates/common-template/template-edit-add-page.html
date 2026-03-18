@@ -511,6 +511,7 @@
                 <label for="id_old_value" class="form__controls-label">Значение :</label>
                 <input type="text" name="old_value" class="form__controls" required
                        id="id_old_value" value="{{ char.value }}"/>
+
                 <a href="{% url 'delete_properties' char.id %}" class="form__remove"> Удалить </a>
               </div>
               {% endfor %}

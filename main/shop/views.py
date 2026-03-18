@@ -49,15 +49,42 @@ def product(request, parent, slug):
     category = Category.objects.get(slug=parent)
     images = ProductImage.objects.filter(parent=product)
 
-    # модели текущего продукта
-    models = Models.objects.filter(parent=product)
+    chars = []
 
+    # модели текущего продукта
+
+    models = Models.objects.filter(parent=product)
+    result = []
+    headers = []
+
+#     for model in models:
+#         chars = model.characteristics.all().order_by('order_by')
+#
+#         char_dict = {}
+#
+#         for ch in chars:
+#             char_name = ch.characteristic.name
+#
+#             # собираем заголовки (уникальные)
+#             if char_name not in headers:
+#                 headers.append(char_name)
+#
+#             char_dict[char_name] = ch.value
+#
+#         result.append({
+#             "model": model.name,
+#             "inStock": model.in_stock,
+#             "chars": char_dict
+#         })
 
     context = {
         "category": category,
         "product": product,
         "images": images,
         "models": models,
+#         "chars": chars,
+#         "result": result,
+#         "headers": headers
     }
 
     return render(request, "pages/catalog/product.html", context)

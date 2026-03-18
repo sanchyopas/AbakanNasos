@@ -44,6 +44,7 @@
       {% for item in products %}
       <a href="{{ item.get_absolute_url }}" class="services__item">
         <p class="services__title">{{ item.name }}</p>
+        {{ item.image.url }}
         {% if item.image %}
         {% thumbnail item.image "214x184" format="WEBP" crop="center" as im %}
         <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ item.name }}"

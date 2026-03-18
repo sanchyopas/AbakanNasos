@@ -92,11 +92,11 @@ addPropertyBtn?.addEventListener("click", (e) => {
 })
 
 
-document.querySelector('#myForm')?.addEventListener('change', function(event) {
+document.querySelector('#myForm')?.addEventListener('change', function (event) {
   console.log('Изменение в:', event.target.name);
 });
 
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
   if ((event.ctrlKey || event.metaKey) && event.key === 's') {
     event.preventDefault();
 
@@ -133,6 +133,8 @@ charAddBtn?.addEventListener("click", (e) => {
 
   }
 });
+
+
 
 
 
