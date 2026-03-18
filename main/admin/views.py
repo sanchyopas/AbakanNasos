@@ -360,11 +360,11 @@ def upload_goods(request):
       form = UploadFileForm(request.POST, request.FILES)
       if form.is_valid():
         file = request.FILES['file']
-        archive = request.FILES['archive']
+        archive = request.FILES.get('archive')
 
-        # Распаковка архива
-        with zipfile.ZipFile(archive, 'r',) as zip_ref:
-          zip_ref.extractall(path="media/goods")
+        if archive:
+          with zipfile.ZipFile(archive, 'r') as zip_ref:
+              zip_ref.extractall(path="media/goods")
 
         import_products_from_excel(file)
 
