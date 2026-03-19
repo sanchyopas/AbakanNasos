@@ -293,6 +293,10 @@ def download_goods(request):
 
             # получаем модели категории
             category = form.cleaned_data["category"]
+            slug_name = slugify(category.name)
+            filename = f'{slug_name}.xlsx'
+
+            print(filename)
 
             models = Models.objects.select_related("parent").prefetch_related(
                 "parent__category",
@@ -351,7 +355,7 @@ def download_goods(request):
                 content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             )
 
-            response['Content-Disposition'] = 'attachment; filename="products.xlsx"'
+            response['Content-Disposition'] = f'attachment; filename="{filename}.xlsx"'
 
             wb.save(response)
 
