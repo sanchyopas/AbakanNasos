@@ -308,7 +308,6 @@ def download_goods(request):
                 modelcharacteristic__model__in=models
             ).distinct()
 
-            # Заголовки
             columns = [
                 'Категория',
                 'Подкатегория',
@@ -720,6 +719,8 @@ def model_edit(request, pk):
                 # Берём значение характеристики из input
                 value = request.POST.get(f'value_{char_id}', '')
                 order = request.POST.get(f'order_{char_id}', '')
+                order = int(order)
+                print(type(order))
 
                 # Обновляем существующую запись или создаём новую
                 ModelCharacteristic.objects.update_or_create(
