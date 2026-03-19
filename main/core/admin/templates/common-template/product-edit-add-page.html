@@ -280,7 +280,7 @@
                 </select>
 
                 <input type="text" class="form__controls" name="value_{{ char.characteristic.id }}" value="{{ char.value }}">
-                <input type="text" name="order_{{ char.characteristic.id }}" class="form__controls" value="{{ char.order_by }}">
+                <input type="text" name="order_{{ char.characteristic.id }}" class="form__controls" value="{{ char.order_by }}" readonly>
                 <a href="{% url 'model_char_delete' char.pk %}" class="product-block__minus">Удалить</a>
               </div>
               {% endfor %}

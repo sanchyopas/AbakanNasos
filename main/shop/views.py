@@ -83,8 +83,6 @@ def product(request, parent, slug):
         "in_stock_status": model.in_stock
       })
 
-    print(table)
-
     context = {
       "category": category,
       "product": product,

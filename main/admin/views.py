@@ -119,112 +119,119 @@ def rename_image(filename):
 
 
 def import_products_from_excel(file_path):
-#     Product.objects.all().delete()
-#     Category.objects.all().delete()
-#     Models.objects.all().delete()
+    df = pd.read_excel(file_path, engine='openpyxl')
 
-  df = pd.read_excel(file_path, engine='openpyxl')
+    FIXED_COLUMNS_COUNT = 7
 
-  FIXED_COLUMNS_COUNT = 7
+    for _, row in df.iterrows():
 
-  for _, row in df.iterrows():
+        # --- CATEGORY ---
+        category_name = str(row.iloc[0]).strip()
+        if not category_name:
+            continue
 
-    category_name = str(row.iloc[0]).strip()
-    if not category_name:
-      continue
+        description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
+        image = rename_image(row.iloc[3])
 
-    description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
-    image = rename_image(row.iloc[3])
+        category_slug = slugify(category_name)
+        category, created = Category.objects.get_or_create(
+            slug=category_slug,
+            defaults={
+                'name': category_name,
+                'status': 'published',
+                'description': description,
+                'image': image
+            }
+        )
 
-    category_slug = slugify(category_name)
-    category, created = Category.objects.get_or_create(
-      slug=category_slug,
-      defaults={
-        'name': category_name,
-        'status': 'published',
-        'description': description,
-        'image': image
-      }
-    )
+        if not created:
+            category.description = description
+            if image:
+                category.image = image
+            category.save(update_fields=['description', 'image'])
 
-    if not created:
-      category.description = description
-      if image:
-        category.image = image
-      category.save(update_fields=['description', 'image'])
+        # --- PRODUCT ---
+        product_name = str(row.iloc[1]).strip()
+        if not product_name:
+            continue
 
-    product_name = str(row.iloc[1]).strip()
-    if not product_name:
-      continue
+        product_image = rename_image(row.iloc[4])
 
-    product_image = rename_image(row.iloc[4])
+        product_slug = slugify(product_name)
+        product, pr_created = Product.objects.get_or_create(
+            slug=product_slug,
+            defaults={
+                'name': product_name,
+                'status': 'published',
+                'image': product_image
+            }
+        )
 
-    product_slug = slugify(product_name)
-    product, pr_created = Product.objects.get_or_create(
-      slug=product_slug,
-      defaults={
-        'name': product_name,
-        'status': 'published',
-        'image': product_image
-      }
-    )
+        if not pr_created:
+            if product_image:
+                product.image = product_image
+            product.save(update_fields=['image'])
 
-    if not pr_created:
-      if product_image:
-        product.image = product_image
-      product.save(update_fields=['image'])
+        product.category.add(category)
 
-    product.category.add(category)
+        # --- MODEL ---
+        model_name = str(row.iloc[2]).strip()
+        if not model_name:
+            continue
 
-    model_name = str(row.iloc[2]).strip()
-    if not model_name:
-      continue
+        model_slug = slugify(model_name)
+        model_stock = row.iloc[6]
+        model_image = rename_image(row.iloc[5])
 
-    model_slug = slugify(model_name)
-    model_stock = row.iloc[6]
+        if pd.isna(model_image):
+            model_image = ""
 
-    model_image = rename_image(row.iloc[5])
+        model, created = Models.objects.get_or_create(
+            slug=model_slug,
+            parent=product,
+            defaults={
+                'name': model_name,
+                'status': 'published',
+                'image': model_image,
+                'in_stock': model_stock
+            }
+        )
 
-    if pd.isna(model_image):
-      model_image=""
+        if not created:
+            model.name = model_name
+            model.in_stock = model_stock
+            model.status = 'published'
+            model.image = model_image
+            model.save(update_fields=['name', 'in_stock', 'status', 'image'])
 
-    model, created = Models.objects.get_or_create(
-      slug=model_slug,
-      parent=product,
-      defaults={'name': model_name, 'status': 'published', 'image': model_image, 'in_stock': model_stock}
-    )
+        # --- CHARACTERISTICS ---
+        for index, column in enumerate(df.columns[FIXED_COLUMNS_COUNT:], start=1):
 
-    if not created:
-      model.name = model_name
-      model.in_stock = model_stock
-      model.status = 'published'
-      model.image = model_image
-      model.save(update_fields=['name', 'in_stock', 'status', 'image'])
+            if str(column).startswith('Unnamed'):
+                continue
 
+            col_name = str(column).strip()
+            if not col_name:
+                continue
 
-    for column in df.columns[FIXED_COLUMNS_COUNT:]:
+            value = row[column]
+            if pd.isna(value):
+                value = "-"
 
-      if str(column).startswith('Unnamed'):
-        continue
+            # создаем характеристику
+            char, _ = Characteristic.objects.get_or_create(
+                name=col_name
+            )
 
-      value = row[column]
-
-      if pd.isna(value):
-        value = "-"
-
-      col_name = str(column).strip()
-      if not col_name or col_name.startswith('Unnamed'):
-        continue
-
-      char, _ = Characteristic.objects.get_or_create(
-        name=col_name
-      )
-
-      ModelCharacteristic.objects.update_or_create(
-        model=model,
-        characteristic=char,
-        defaults={'value': str(value)}
-      )
+            # сохраняем значение + порядок
+            ModelCharacteristic.objects.update_or_create(
+                model=model,
+                characteristic=char,
+                defaults={
+                    'value': str(value),
+                    'order_by': index  # 🔥 сохраняем порядок из Excel
+                }
+            )
 
 
 

@@ -277,6 +277,10 @@ class ModelCharacteristicForm(AutoStyledModelForm):
     model = ModelCharacteristic
     fields = "__all__"
 
+    widgets = {
+      'order_by': forms.NumberInput(attrs={'readonly': 'readonly'})
+    }
+
 class CharacteristicForm(AutoStyledModelForm):
   class Meta:
     model = Characteristic
