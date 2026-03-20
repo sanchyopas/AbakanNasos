@@ -297,11 +297,12 @@ def download_goods(request):
             slug_name = slugify(category.name)
             filename = f'{slug_name}.xlsx'
 
-            print(filename)
-
             models = Models.objects.select_related("parent").prefetch_related(
                 "parent__category",
-                "characteristics__characteristic"
+                Prefetch(
+                    "characteristics",
+                    queryset=ModelCharacteristic.objects.select_related("characteristic").order_by("order_by")
+                )
             ).filter(parent__category=category)
 
             # получаем ВСЕ характеристики этих моделей
@@ -355,7 +356,7 @@ def download_goods(request):
                 content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             )
 
-            response['Content-Disposition'] = f'attachment; filename="{filename}.xlsx"'
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
             wb.save(response)
 
