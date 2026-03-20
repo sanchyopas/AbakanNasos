@@ -176,6 +176,7 @@ class ModelCharacteristic(models.Model):
 
     class Meta:
       unique_together = ('model', 'characteristic')
+      ordering = ['order_by']
 
 class ProductImage(models.Model):
   parent = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="Привязка к продукту")

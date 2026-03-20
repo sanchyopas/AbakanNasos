@@ -276,7 +276,7 @@ def robots(request):
   return render(request, "common-template/robots.html", context)
 
 folder = 'upload/'
-from django.db.models import Prefetch
+
 from PIL import Image
 from openpyxl import Workbook
 @user_passes_test(lambda u: u.is_superuser)
@@ -299,10 +299,7 @@ def download_goods(request):
 
             models = Models.objects.select_related("parent").prefetch_related(
                 "parent__category",
-                Prefetch(
-                    "characteristics",
-                    queryset=ModelCharacteristic.objects.select_related("characteristic").order_by("order_by")
-                )
+                "characteristics__characteristic"
             ).filter(parent__category=category)
 
             # получаем ВСЕ характеристики этих моделей
