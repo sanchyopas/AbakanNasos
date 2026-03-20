@@ -122,6 +122,7 @@ charAddBtn?.addEventListener("click", (e) => {
 
     select.setAttribute("name", "characteristic");
     input.setAttribute("name", `value_${select.value}`);
+    input.setAttribute("required", "required");
 
     select.addEventListener("change", () => {
       input.setAttribute("name", `value_${select.value}`);
