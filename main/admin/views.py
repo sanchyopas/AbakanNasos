@@ -719,10 +719,12 @@ def model_edit(request, pk):
                 # Берём значение характеристики из input
                 value = request.POST.get(f'value_{char_id}', '')
                 order = request.POST.get(f'order_{char_id}', '')
+
+                if not value:
+                  continue
+
                 if order == '':
-                  order = 0
-                else:
-                  order = int(order)
+                  order = int(order) if order else 999
 
                 # Обновляем существующую запись или создаём новую
                 ModelCharacteristic.objects.update_or_create(

@@ -116,6 +116,16 @@ charAddBtn?.addEventListener("click", (e) => {
     const charBody = document.getElementById('char__paste');
 
     const clone = selectChar.querySelector('.char-row').cloneNode(true);
+    // назначаем name ТОЛЬКО клону
+    const select = clone.querySelector("select");
+    const input = clone.querySelector("input");
+
+    select.setAttribute("name", "characteristic");
+    input.setAttribute("name", `value_${select.value}`);
+
+    select.addEventListener("change", () => {
+      input.setAttribute("name", `value_${select.value}`);
+    });
 
     charBody.appendChild(clone);
 
