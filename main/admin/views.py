@@ -279,6 +279,8 @@ folder = 'upload/'
 
 from PIL import Image
 from openpyxl import Workbook
+from django.db.models import Min
+
 @user_passes_test(lambda u: u.is_superuser)
 def download_goods(request):
     form = DownLoadFileForm()
@@ -292,7 +294,6 @@ def download_goods(request):
             ws = wb.active
             ws.title = "Products"
 
-            # получаем модели категории
             category = form.cleaned_data["category"]
             slug_name = slugify(category.name)
             filename = f'{slug_name}.xlsx'
@@ -302,11 +303,16 @@ def download_goods(request):
                 "characteristics__characteristic"
             ).filter(parent__category=category)
 
-            # получаем ВСЕ характеристики этих моделей
-            characteristics = Characteristic.objects.filter(
-                modelcharacteristic__model__in=models
-            ).distinct()
+            characteristics = ModelCharacteristic.objects.filter(
+                model__in=models
+            ).values(
+                'characteristic_id',
+                'characteristic__name'
+            ).annotate(
+                order=Min('order_by')
+            ).order_by('order')
 
+            # базовые колонки
             columns = [
                 'Категория',
                 'Подкатегория',
@@ -319,40 +325,36 @@ def download_goods(request):
 
             # добавляем характеристики в заголовки
             for char in characteristics:
-                columns.append(char.name)
+                columns.append(char['characteristic__name'])
 
             ws.append(columns)
 
-            # Данные
             for model in models:
-                category = model.parent.category.first()
+                category_obj = model.parent.category.first()
 
                 row = [
-                    category.name if category else "",
+                    category_obj.name if category_obj else "",
                     model.parent.name if model.parent else "",
                     model.name,
-                    category.image.url if category and category.image else "",
+                    category_obj.image.url if category_obj and category_obj.image else "",
                     model.parent.image.url if model.parent and model.parent.image else "",
                     model.image.url if model.image else "",
                     model.get_in_stock_display(),
                 ]
 
-                # словарь характеристик модели
                 char_dict = {
                     mc.characteristic_id: mc.value
                     for mc in model.characteristics.all()
                 }
 
-                # добавляем значения характеристик
                 for char in characteristics:
-                    row.append(char_dict.get(char.id, ""))
+                    row.append(char_dict.get(char['characteristic_id'], ""))
 
                 ws.append(row)
 
             response = HttpResponse(
                 content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             )
-
             response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
             wb.save(response)
