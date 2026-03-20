@@ -131,7 +131,7 @@ def import_products_from_excel(file_path):
             continue
 
         description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
-        image = rename_image(row.iloc[3])
+        image = row.iloc[3]
 
         category_slug = slugify(category_name)
         category, created = Category.objects.get_or_create(
@@ -143,6 +143,7 @@ def import_products_from_excel(file_path):
                 'image': image
             }
         )
+
 
         if not created:
             category.description = description
@@ -379,34 +380,7 @@ def upload_goods(request):
         import_products_from_excel(file)
 
       return redirect('upload-succes')
-#         destination = open(os.path.join('upload/', file.name), 'wb+')
-#
-#         for chunk in file.chunks():
-#           destination.write(chunk)
-#
-#         destination.close()
 
-
-
-        # Удаление загруженного архива
-#         os.remove(f'upload/{file}')
-#
-#         # Сжатие фотографий
-#         for filename in os.listdir('media/upload'):
-#
-#           if filename.endswith('.jpg') or filename.endswith('.png') or filename.endswith('.JPG') or filename.endswith('.JPEG') or filename.endswith('.jpeg'):
-#             with Image.open(os.path.join('media/upload', filename)) as img:
-#               temp = filename.replace('.jpeg', '')
-#               temp_one = temp.replace('№', '')
-#               temp_b = temp_one.replace('В', 'B')
-#               temp_e = temp_one.replace('Э', 'E')
-#               img.save(os.path.join('media/goods', temp_e), quality=60)  # quality=60 для JPEG файла
-#
-#         # Очистка временной папки
-#         os.system('rm -rf media/upload')
-#         return redirect('upload-succes')
-#       else:
-#         form = UploadFileForm()
     return render(request, 'upload/upload.html', {'form': form})
 
 @user_passes_test(lambda u: u.is_superuser)
