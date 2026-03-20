@@ -189,8 +189,8 @@ def import_products_from_excel(file_path):
 
         model, created = Models.objects.get_or_create(
             slug=model_slug,
-            parent=product,
             defaults={
+                'parent': product,
                 'name': model_name,
                 'status': 'published',
                 'image': model_image,
