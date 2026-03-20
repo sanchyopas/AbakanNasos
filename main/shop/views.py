@@ -59,6 +59,7 @@ def product(request, parent, slug):
     if first_model:
       chars = first_model.characteristics.all().order_by('order_by')[:5]
 
+    print(first_model.characteristics.all())
     table = []
 
     for model in models:
