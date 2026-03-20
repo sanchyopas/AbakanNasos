@@ -776,7 +776,19 @@ def model_char_edit(request, pk):
 """ Модели товаров """
 @user_passes_test(lambda u: u.is_superuser)
 def admin_model(request):
-  return generic_list(request, Models, "Модели", "model_add", "model_edit", "model_delete")
+  items = Models.objects.all().order_by('-id')
+  products = Product.objects.all()
+
+  context = {
+      "products": products,
+      "items": items,
+      "title": "Модели",
+      "add_url": "model_add",
+      "edit_url": "model_edit",
+      "delete_url": "model_delete",
+  }
+
+  return render(request, "common-template/list-items.html", context)
 
 
 

@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.urls import reverse
 
 
-def generic_list(request, model, title, add_url, edit_url, delete_url):
+def generic_list(request, model, title, add_url, edit_url, delete_url, parent=False):
     items = model.objects.all()
 
     context = {
