@@ -276,7 +276,7 @@ def robots(request):
   return render(request, "common-template/robots.html", context)
 
 folder = 'upload/'
-
+from django.db.models import Prefetch
 from PIL import Image
 from openpyxl import Workbook
 @user_passes_test(lambda u: u.is_superuser)
