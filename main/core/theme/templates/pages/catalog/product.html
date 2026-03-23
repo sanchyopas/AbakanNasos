@@ -1,0 +1,368 @@
+{% extends "base.html" %} {% load static %} {% load thumbnail %}
+{% load custom_tags %}
+{% block title %}
+{% if product.meta_h1 %}{{ product.meta_h1 }}{% else %}{{ product.name }}{% endif %}
+{% endblock %}
+
+{% block description %}
+{% if product.meta_description %}{{ product.meta_description}}{% endif %}
+{% endblock %}
+
+{% block keywords %}
+{% if product.meta_keywords %}{{ product.meta_keywords}}{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="top-page">
+  <div class="container">
+    <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+      <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+         class="breadcrumbs__item">
+        Главная
+        <meta itemprop="position" content="1">
+      </a>
+      <a href="{% url 'category' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+         class="breadcrumbs__item">
+        Каталог
+        <meta itemprop="position" content="2">
+      </a>
+      <a href="{{ category.get_absolute_url }}" itemprop="itemListElement" itemscope=""
+         itemtype="http://schema.org/ListItem"
+         class="breadcrumbs__item">
+        {{ category.name }}
+        <meta itemprop="position" content="3">
+      </a>
+      <span itemprop="name" class="breadcrumbs__item">
+            {{ product.name }}
+            <meta itemprop="position" content="4">
+        </span>
+    </div>
+  </div>
+</div>
+
+<div class="info">
+  <div class="container">
+    <div class="info__row">
+      {% if product.image or images %}
+      <div class="info__image" {% if not images %}style="grid-template-columns: 1fr;" {% endif %}>
+        {% if images or images %}
+        <div class="info__thumb">
+          <div class="swiper info__slider-thumb">
+            <div class="swiper-wrapper info__slider-thumb-wrapper">
+              {% if product.image %}
+              <div class="swiper-slide info__slide-thumb">
+                <img src="{{ product.image.url }}" alt="">
+              </div>
+              {% endif %}
+
+              {% for image in images %}
+              <div class="swiper-slide info__slide-thumb">
+                <img src="{{ image.src.url }}" alt="">
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if product.image or images %}
+        <div class="swiper info__slider">
+          <div class="swiper-wrapper">
+            <a href="{{ product.image.url }}" class="swiper-slide info__slide" data-fancybox>
+              <img src="{{ product.image.url }}" alt="">
+            </a>
+
+            {% for image in images %}
+            <a href="{{ image.src.url }}" class="swiper-slide info__slide" data-fancybox>
+              <img src="{{ image.src.url }}" alt="">
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+
+      <div class="info__text">
+        <h1 class="info__title">
+          {% if product.meta_h1 %}{{ product.meta_h1 }}{% else %}{{ product.name }}{% endif %}
+        </h1>
+        {% if product.description %}
+        <div class="text">
+          {{ product.description|safe }}
+        </div>
+        {% endif %}
+        <div class="info__btns">
+          <button type="button" class="info__btn btn btn--outline" data-popup="leave-request"
+                  data-name="{{ product.name }}">
+            Оставить заявку
+          </button>
+          <button type="button" class="info__btn btn btn--primary" data-popup="callback">Связаться с нами</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="table py">
+  <div class="container">
+    <h2 class="title table__title">Модели</h2>
+    <div class="table__inner">
+      <div class="table__accordion accordion">
+        {% for model in models %}
+        <div class="accordion__item">
+          <div class="accordion__title active">
+            <div>
+              {% if model.slug %}
+              <a href="{{ model.get_absolute_url }}" class="model-chars">{{ model.name }}</a>
+              {% else %}
+              <p class="model-name">{{ model.name }}</p>
+              {% endif %}
+            </div>
+            <button type="button" class="accordion__btn">
+              <img src="{% static 'theme/img/arrow-down.png' %}" alt="">
+            </button>
+          </div>
+          <div class="accordion__body">
+            <table class="table__table">
+              <thead>
+              <tr>
+                <th><p>Модель</p></th>
+                {% for charName in chars %}
+                <th><p>{{ charName.characteristic.name }}</p></th>
+                {% endfor %}
+                <th><p>Наличие</p></th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for row in table %}
+              <tr>
+                <!-- Модель -->
+                <td class="model-chars">
+                  {% if row.url %}
+                  <a href="{{ row.url }}" class="model-name">{{ row.name }}</a>
+                  {% else %}
+                  <p class="model-name">{{ row.name }}</p>
+                  {% endif %}
+                </td>
+
+                <!-- Характеристики -->
+                {% for char in row.chars %}
+                <td class="model-chars">
+                  <p class="model-name">{{ char.value }}</p>
+                </td>
+                {% endfor %}
+
+                <!-- Наличие -->
+                <td>
+                  <button type="button" class="table__btn">
+                    {% if row.in_stock_status == "В наличии" %}
+                    <span style="color: green;">{{ row.in_stock }}</span>
+                    {% elif row.in_stock_status == "Нет в наличии" %}
+                    <span style="color: red;">{{ row.in_stock }}</span>
+                    {% elif row.in_stock_status == "В пути" %}
+                    <span style="color: orange;">{{ row.in_stock }}</span>
+                    {% endif %}
+                  </button>
+                </td>
+
+              </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <table class="table__table">
+        <thead>
+        <tr>
+          <th><p>Модель</p></th>
+          {% for charName in chars %}
+            <th><p>{{ charName.characteristic.name }}</p></th>
+          {% endfor %}
+          <th><p>Наличие</p></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in table %}
+        <tr>
+          <!-- Модель -->
+          <td class="model-chars">
+            {% if row.url %}
+            <a href="{{ row.url }}" class="model-name">{{ row.name }}</a>
+            {% else %}
+            <p class="model-name">{{ row.name }}</p>
+            {% endif %}
+          </td>
+
+          <!-- Характеристики -->
+          {% for char in row.chars %}
+          <td class="model-chars">
+            <p class="model-name">{{ char.value }}</p>
+          </td>
+          {% endfor %}
+
+          <!-- Наличие -->
+          <td>
+            <button type="button" class="table__btn">
+              {% if row.in_stock_status == "В наличии" %}
+              <span style="color: green;">{{ row.in_stock }}</span>
+              {% elif row.in_stock_status == "Нет в наличии" %}
+              <span style="color: red;">{{ row.in_stock }}</span>
+              {% elif row.in_stock_status == "В пути" %}
+              <span style="color: orange;">{{ row.in_stock }}</span>
+              {% endif %}
+            </button>
+          </td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% comment %}
+{% if models %}
+<div class="table py">
+  <div class="container">
+
+    <h2 class="title table__title">Модели</h2>
+
+    <div class="table__inner">
+
+      <div class="table__accordion accordion">
+        {% for model in models %}
+        <div class="accordion__item">
+          <div class="accordion__title active">
+            <div>
+              {% if model.slug %}
+              <a href="{{ model.get_absolute_url }}" class="model-chars">{{ model.name }}</a>
+              {% else %}
+              <p class="model-name">{{ model.name }}</p>
+              {% endif %}
+            </div>
+            <button type="button" class="accordion__btn">
+              <img src="{% static 'theme/img/arrow-down.png' %}" alt="">
+            </button>
+          </div>
+          <div class="accordion__body">
+            <table>
+              <tbody>
+              {% for char in model.characteristics.all|slice:":5" %}
+              {% if char.value %}
+              <tr>
+                <td data-label="{{ char.characteristic }}" class="model-chars">
+                  <p class="model-name">{{ char.value }}</p>
+                </td>
+                {% else %}
+                <td data-label="{{ char.characteristic }}" class="model-chars">
+                  <p class="model-name">-</p>
+                </td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+              <td data-label="Наличие">
+                <button type="button" class="table__btn">
+                  {% if model.in_stock == "published" %}
+                  <span style="color: green;">{{ model.get_in_stock_display }}</span>
+                  {% endif %}
+
+                  {% if model.in_stock == "hidden" %}
+                  <span style="color: red;">{{ model.get_in_stock_display }}</span>
+                  {% endif %}
+
+                  {% if model.in_stock == "draft" %}
+                  <span style="color: orange;">{{ model.get_in_stock_display }}</span>
+                  {% endif %}
+
+                </button>
+              </td>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <table class="table__table">
+        <thead>
+        <tr>
+          <th><p>Модель</p></th>
+          <th><p>Мощность</p></th>
+          <th><p>Напряжение</p></th>
+          <th><p>Подача</p></th>
+          <th><p>Напор</p></th>
+          <th><p>Подключение</p></th>
+          <th><p>Наличие</p></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for model in models %}
+        <tr>
+          {% if model.name %}
+          <td data-label="{{ model.name }}" class="model-chars">
+            {% if model.slug %}
+            <a href="{{ model.get_absolute_url }}" class="model-name">{{ model.name }}</a>
+            {% else %}
+            <p class="model-name">{{ model.name }}</p>
+            {% endif %}
+          </td>
+          {% for char in model.characteristics.all|slice:":5" %}
+          {% if char.value %}
+          <td data-label="{{ char.characteristic }}" class="model-chars">
+            <p class="model-name">{{ char.value }}</p>
+          </td>
+          {% else %}
+          <td data-label="{{ char.characteristic }}" class="model-chars">
+            <p class="model-name">-</p>
+          </td>
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+
+          <td data-label="Наличие">
+            <button type="button" class="table__btn">
+              {% if model.in_stock == "published" %}
+              <span style="color: green;">{{ model.get_in_stock_display }}</span>
+              {% elif model.in_stock == "hidden" %}
+              <span style="color: red;">{{ model.get_in_stock_display }}</span>
+              {% elif model.in_stock == "draft" %}
+              <span style="color: orange;">{{ model.get_in_stock_display }}</span>
+              {% else %}
+              <span style="color: green;">{{ model.get_in_stock_display }}</span>
+              {% endif %}
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endif %}{% endcomment %}
+
+{% if product.text %}
+<section class="py border-l">
+  <div class="container">
+    <div class="text">
+      {{ product.text|safe }}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% include "../../includes/_callback.html" %}
+
+{% include "../../includes/_contact.html" %}
+
+
+{% endblock %}

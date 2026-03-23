@@ -1,0 +1,96 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% block body %}
+
+<div class="page">
+  <div class="page__inner">
+    <div class="page__head">
+      <div class="page__head-tab">
+        <h1 class="page__title">{{ title }}</h1>
+      </div>
+      <div class="page__head-right">
+        <div class="page__head-btns">
+          <a href="{% url add_url %}" class="action-button">Создать</a>
+        </div>
+      </div>
+    </div>
+    {% if filter %}
+    <form method="get" style="margin:20px 0px">
+
+      <!-- Категория -->
+      <select name="category" class="form__controls-select" onchange="this.form.submit()">
+        <option value="">Все категории</option>
+        {% for cat in categories %}
+        <option value="{{ cat.id }}" {% if cat.id|stringformat:"s" == selected_category %}selected{% endif %}>
+        {{ cat.name }}
+        </option>
+        {% endfor %}
+      </select>
+
+      <!-- Продукт -->
+      <select name="product" class="form__controls-select" onchange="this.form.submit()">
+        <option value="">Все продукты</option>
+        {% for product in products %}
+        <option value="{{ product.id }}" {% if product.id|stringformat:"s" == selected_product %}selected{% endif %}>
+        {{ product.name }}
+        </option>
+        {% endfor %}
+      </select>
+
+    </form>
+    {% endif %}
+
+    <div class="page-content _show" id="list">
+      {% if items %}
+      <div class="grid-items">
+        {% for item in items %}
+        <div class="grid-item">
+          {% if item.image %}
+          <div class="grid-item__image">
+            {% thumbnail item.image "50x50" format="WEBP" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
+            {% endthumbnail %}
+          </div>
+          {% endif %}
+
+          {% if item.icon_white %}
+          <div class="grid-item__image">
+            <img src="{{ item.icon_white.url }}" alt=""/>
+          </div>
+          {% endif %}
+
+          {% if item.icon_dark %}
+          <div class="grid-item__image">
+            <img src="{{ item.icon_dark.url }}" alt=""/>
+          </div>
+          {% endif %}
+
+
+
+          {% if item.branch %}
+          {% for br in item.branch.all %}
+          <div class="grid-item__title">
+            {{ br.address }}
+          </div>
+          {% endfor %}
+          {% endif %}
+
+          <div class="grid-item__content">
+            <p class="grid-item__title">
+              {% if item.title %}{{ item.title }} {% endif %}
+              {{ item.name }}
+              {{ item.model }}
+            </p>
+            {% if item.price %}<p>{{ item.price }} ₽</p>{% endif %}
+            {% include 'common/_edit-block.html' with edit_url=edit_url delete_url=delete_url %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

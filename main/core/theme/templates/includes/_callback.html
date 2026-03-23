@@ -1,0 +1,59 @@
+{% load thumbnail %}
+<section class="callback my">
+  {% if callback.image %}
+  {% thumbnail callback.image "1500x1500" format="WEBP" crop="center" as im %}
+  <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ callback.title }}"
+       title="{{ callback.title }}" class="callback__pattern">
+  {% endthumbnail %}
+
+  {% endif %}
+  <div class="container">
+    <div class="callback__row">
+      <div class="callback__info">
+        {% if callback.title %}
+        <h2>{{ callback.title }}</h2>
+        {% endif %}
+
+        {% if callback.description %}
+        <p>
+          {{ callback.description }}
+        </p>
+        {% endif %}
+
+        {% if site_settings.logo_dark %}
+        <div class="callback__logo">
+          {% thumbnail site_settings.logo_dark "145x46" format="WEBP" crop="center" as im %}
+          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ callback.title }}"
+               title="{{ callback.title }}">
+          {% endthumbnail %}
+        </div>
+        {% endif %}
+
+      </div>
+      <div class="callback__form">
+        <form action="{% url 'callback_form' %}" class="form" method="POST" id="callback-form">
+          {% csrf_token %}
+          <div class="form__grid">
+            <input type="text" class="form__input" placeholder="Имя" name="name">
+            <input type="tel" class="form__input" placeholder="Номер телефона" name="phone" data-tel-input>
+          </div>
+          {% if branch %}
+          <select name="branch" class="form__select" required>
+            <option selected disabled hidden>Филиал</option>
+            {% for br in branch %}
+            <option value="{{ br.id }}">{{ br.address }}</option>
+            {% endfor %}
+          </select>
+          {% endif %}
+          <textarea name="message" placeholder="Ваш вопрос" rows="5" class="form__textarea"></textarea>
+          <label class="form__pivacy">
+            <input type="checkbox" class="form__checkbox" required>
+            Я даю свое согласие на обработку персональных данных и подверждаю, что ознакомлен(а)
+            с политикой конфиденциальности и обработки персональных данных
+          </label>
+          <button type="submit" class="form__submit">Оставить заявку</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
