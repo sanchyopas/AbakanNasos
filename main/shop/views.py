@@ -55,40 +55,40 @@ def product(request, parent, slug):
     models = Models.objects.filter(parent=product).prefetch_related('characteristics__characteristic')
     first_model = models.first()
 
+    chars = []
+
     if first_model:
-      chars = first_model.characteristics.all().order_by('order_by')[:5]
+        chars = first_model.characteristics.all().order_by('order_by')[:5]
 
     table = []
 
     for model in models:
-      # берем только нужные 5 характеристик
-      model_chars = model.characteristics.all().order_by('order_by')[:5]
+        model_chars = model.characteristics.all().order_by('order_by')[:5]
 
+        char_items = []
 
-      char_items = []
+        for ch in model_chars:
+            char_items.append({
+                "name": ch.characteristic.name,
+                "value": ch.value if ch.value else "-"
+            })
 
-      for ch in model_chars:
-        char_items.append({
-          "name": ch.characteristic.name,
-          "value": ch.value if ch.value else "-"
+        table.append({
+            "name": model.name,
+            "slug": model.slug,
+            "url": model.get_absolute_url() if model.slug else None,
+            "chars": char_items,
+            "in_stock": model.get_in_stock_display(),
+            "in_stock_status": model.in_stock
         })
 
-      table.append({
-        "name": model.name,
-        "slug": model.slug,
-        "url": model.get_absolute_url() if model.slug else None,
-        "chars": char_items,
-        "in_stock": model.get_in_stock_display(),
-        "in_stock_status": model.in_stock
-      })
-
     context = {
-      "category": category,
-      "product": product,
-      "images": images,
-      "models": models,
-      "table": table,
-      "chars": chars
+        "category": category,
+        "product": product,
+        "images": images,
+        "models": models,
+        "table": table,
+        "chars": chars
     }
 
     return render(request, "pages/catalog/product.html", context)
