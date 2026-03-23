@@ -125,7 +125,6 @@ def rename_image(filename):
 def import_products_from_excel(file_path):
     df = pd.read_excel(file_path, engine='openpyxl')
 
-    # FIXED_COLUMNS_COUNT = 9, потому что теперь добавлены колонки "Доп. фото продукта" и "Доп. фото модели"
     FIXED_COLUMNS_COUNT = 9
 
     for _, row in df.iterrows():
@@ -139,17 +138,27 @@ def import_products_from_excel(file_path):
         image = rename_image(row.iloc[3])
 
         category_slug = slugify(category_name)
-        category, created = Category.objects.get_or_create(
-            slug=category_slug,
-            defaults={
-                'name': category_name,
-                'status': 'published',
-                'description': description,
-                'image': image
-            }
-        )
 
-        if not created:
+        # 🔥 сначала ищем по slug
+        category = Category.objects.filter(slug=category_slug).first()
+
+        if not category:
+            # 🔥 если не нашли — ищем по name
+            category = Category.objects.filter(name=category_name).first()
+
+            if category:
+                category.slug = category_slug
+                category.save(update_fields=['slug'])
+
+        if not category:
+            category = Category.objects.create(
+                name=category_name,
+                slug=category_slug,
+                status='published',
+                description=description,
+                image=image
+            )
+        else:
             category.description = description
             if image:
                 category.image = image
@@ -160,22 +169,29 @@ def import_products_from_excel(file_path):
         if not product_name:
             continue
 
+        product_slug = slugify(product_name)
         product_image = rename_image(row.iloc[4])
 
-        product_slug = slugify(product_name)
-        product, pr_created = Product.objects.get_or_create(
-            slug=product_slug,
-            defaults={
-                'name': product_name,
-                'status': 'published',
-                'image': product_image
-            }
-        )
+        product = Product.objects.filter(slug=product_slug).first()
 
-        if not pr_created:
+        if not product:
+            product = Product.objects.filter(name=product_name).first()
+
+            if product:
+                product.slug = product_slug
+                product.save(update_fields=['slug'])
+
+        if not product:
+            product = Product.objects.create(
+                name=product_name,
+                slug=product_slug,
+                status='published',
+                image=product_image
+            )
+        else:
             if product_image:
                 product.image = product_image
-            product.save(update_fields=['image'])
+                product.save(update_fields=['image'])
 
         product.category.add(category)
 
@@ -185,21 +201,31 @@ def import_products_from_excel(file_path):
             continue
 
         model_slug = slugify(model_name)
-        model_stock = row.iloc[6]
+
+        # ❗ ВАЖНО: теперь наличие в колонке 8
+        model_stock = row.iloc[8]
+
         model_image = rename_image(row.iloc[5])
 
-        model, created = Models.objects.get_or_create(
-            slug=model_slug,
-            defaults={
-                'parent': product,
-                'name': model_name,
-                'status': 'published',
-                'image': model_image,
-                'in_stock': model_stock
-            }
-        )
+        model = Models.objects.filter(slug=model_slug).first()
 
-        if not created:
+        if not model:
+            model = Models.objects.filter(name=model_name, parent=product).first()
+
+            if model:
+                model.slug = model_slug
+                model.save(update_fields=['slug'])
+
+        if not model:
+            model = Models.objects.create(
+                parent=product,
+                name=model_name,
+                slug=model_slug,
+                status='published',
+                image=model_image,
+                in_stock=model_stock
+            )
+        else:
             model.name = model_name
             model.in_stock = model_stock
             model.status = 'published'
@@ -207,19 +233,26 @@ def import_products_from_excel(file_path):
             model.save(update_fields=['name', 'in_stock', 'status', 'image'])
 
         # --- ДОПОЛНИТЕЛЬНЫЕ ФОТО ---
-        # Доп. фото продукта
+
+        # ✅ колонка 6 — доп фото продукта
         extra_product_photos = str(row.iloc[6]).split(",") if not pd.isna(row.iloc[6]) else []
         for photo_path in extra_product_photos:
             photo_file = rename_image(photo_path.strip())
             if photo_file:
-                ProductImage.objects.get_or_create(parent=product, src=photo_file)
+                ProductImage.objects.get_or_create(
+                    parent=product,
+                    src=photo_file
+                )
 
-        # Доп. фото модели
+        # ✅ колонка 7 — доп фото модели
         extra_model_photos = str(row.iloc[7]).split(",") if not pd.isna(row.iloc[7]) else []
         for photo_path in extra_model_photos:
             photo_file = rename_image(photo_path.strip())
             if photo_file:
-                ModelsImage.objects.get_or_create(parent=model, src=photo_file)
+                ModelsImage.objects.get_or_create(
+                    parent=model,
+                    src=photo_file
+                )
 
         # --- CHARACTERISTICS ---
         for index, column in enumerate(df.columns[FIXED_COLUMNS_COUNT:], start=1):
@@ -235,16 +268,14 @@ def import_products_from_excel(file_path):
             if pd.isna(value):
                 value = "-"
 
-            # создаем характеристику
             char, _ = Characteristic.objects.get_or_create(name=col_name)
 
-            # сохраняем значение + порядок
             ModelCharacteristic.objects.update_or_create(
                 model=model,
                 characteristic=char,
                 defaults={
                     'value': str(value),
-                    'order_by': index  # сохраняем порядок из Excel
+                    'order_by': index
                 }
             )
 
