@@ -112,6 +112,7 @@ def rename_image(filename):
 #         if os.path.exists(old_path):
 #             os.rename(old_path, new_path)
 
+        print(f"goods/{original_name}")
         return f"goods/{original_name}"
 
     except Exception:
@@ -131,7 +132,7 @@ def import_products_from_excel(file_path):
             continue
 
         description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
-        image = row.iloc[3]
+        image = rename_image(row.iloc[3])
 
         category_slug = slugify(category_name)
         category, created = Category.objects.get_or_create(
