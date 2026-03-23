@@ -209,13 +209,13 @@
           {% endfor %}
 
           <!-- Наличие -->
-          <td>
+          <td>{{ row.in_stock_status }}
             <button type="button" class="table__btn">
-              {% if row.in_stock_status == "В наличии" %}
+              {% if row.in_stock_status == "published" %}
               <span style="color: green;">{{ row.in_stock }}</span>
-              {% elif row.in_stock_status == "Нет в наличии" %}
+              {% elif row.in_stock_status == "hidden" %}
               <span style="color: red;">{{ row.in_stock }}</span>
-              {% elif row.in_stock_status == "В пути" %}
+              {% elif row.in_stock_status == "draft" %}
               <span style="color: orange;">{{ row.in_stock }}</span>
               {% endif %}
             </button>
