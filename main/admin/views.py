@@ -777,17 +777,31 @@ def model_char_edit(request, pk):
 @user_passes_test(lambda u: u.is_superuser)
 def admin_model(request):
   items = Models.objects.all().order_by('-id')
-  products = Product.objects.all()
+  products = Product.objects.all().prefetch_related("category")
+  categories = Category.objects.all()
+
+  selected_category = request.GET.get('category')
+  selected_product = request.GET.get('product')
+
+  # фильтр по категории
+  if selected_category:
+    items = items.filter(parent__category__id=selected_category)
+
+  # фильтр по продукту
+  if selected_product:
+    items = items.filter(parent_id=selected_product)
 
   context = {
-      "products": products,
-      "items": items,
-      "title": "Модели",
-      "add_url": "model_add",
-      "edit_url": "model_edit",
-      "delete_url": "model_delete",
+    "products": products,
+    "categories": categories,
+    "items": items,
+    "title": "Модели",
+    "add_url": "model_add",
+    "edit_url": "model_edit",
+    "delete_url": "model_delete",
+    "selected_category": selected_category,
+    "selected_product": selected_product,
   }
-
   return render(request, "common-template/list-items.html", context)
 
 

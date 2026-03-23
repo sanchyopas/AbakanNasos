@@ -8,7 +8,6 @@
     <div class="page__head">
       <div class="page__head-tab">
         <h1 class="page__title">{{ title }}</h1>
-
       </div>
       <div class="page__head-right">
         <div class="page__head-btns">
@@ -16,13 +15,30 @@
         </div>
       </div>
     </div>
-    {% if products %}
-    <div>
-      {% for product in products %}
-      <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
-      {% endfor %}
-    </div>
-    {% endif %}
+    <form method="get" style="margin:20px 0px">
+
+      <!-- Категория -->
+      <select name="category" class="form__controls-select" onchange="this.form.submit()">
+        <option value="">Все категории</option>
+        {% for cat in categories %}
+        <option value="{{ cat.id }}" {% if cat.id|stringformat:"s" == selected_category %}selected{% endif %}>
+        {{ cat.name }}
+        </option>
+        {% endfor %}
+      </select>
+
+      <!-- Продукт -->
+      <select name="product" class="form__controls-select" onchange="this.form.submit()">
+        <option value="">Все продукты</option>
+        {% for product in products %}
+        <option value="{{ product.id }}" {% if product.id|stringformat:"s" == selected_product %}selected{% endif %}>
+        {{ product.name }}
+        </option>
+        {% endfor %}
+      </select>
+
+    </form>
+
     <div class="page-content _show" id="list">
       {% if items %}
       <div class="grid-items">
