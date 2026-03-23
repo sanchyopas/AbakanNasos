@@ -209,7 +209,7 @@
           {% endfor %}
 
           <!-- Наличие -->
-          <td>
+          <td>{{ row.in_stock_status }}
             <button type="button" class="table__btn">
               {% if row.in_stock_status == "published" %}
               <span style="color: green;">{{ row.in_stock }}</span>
