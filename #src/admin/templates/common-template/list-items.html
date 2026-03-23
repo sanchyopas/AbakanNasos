@@ -15,6 +15,7 @@
         </div>
       </div>
     </div>
+    {% if filter %}
     <form method="get" style="margin:20px 0px">
 
       <!-- Категория -->
@@ -38,6 +39,7 @@
       </select>
 
     </form>
+    {% endif %}
 
     <div class="page-content _show" id="list">
       {% if items %}

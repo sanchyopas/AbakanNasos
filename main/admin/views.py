@@ -800,6 +800,7 @@ def admin_model(request):
     "add_url": "model_add",
     "edit_url": "model_edit",
     "delete_url": "model_delete",
+    "filter": True,
     "selected_category": selected_category,
     "selected_product": selected_product,
   }
