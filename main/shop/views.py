@@ -53,13 +53,11 @@ def product(request, parent, slug):
     images = ProductImage.objects.filter(parent=product)
 
     models = Models.objects.filter(parent=product).prefetch_related('characteristics__characteristic')
-
     first_model = models.first()
 
     if first_model:
       chars = first_model.characteristics.all().order_by('order_by')[:5]
 
-    print(first_model.characteristics.all())
     table = []
 
     for model in models:
