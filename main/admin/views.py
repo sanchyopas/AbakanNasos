@@ -127,6 +127,12 @@ def import_products_from_excel(file_path):
 
     FIXED_COLUMNS_COUNT = 9
 
+    stock_map = {
+        'В наличии': 'published',
+        'В пути': 'draft',
+        'Нет в наличии': 'hidden',
+    }
+
     for _, row in df.iterrows():
 
         # --- CATEGORY ---
@@ -139,13 +145,10 @@ def import_products_from_excel(file_path):
 
         category_slug = slugify(category_name)
 
-        # 🔥 сначала ищем по slug
         category = Category.objects.filter(slug=category_slug).first()
 
         if not category:
-            # 🔥 если не нашли — ищем по name
             category = Category.objects.filter(name=category_name).first()
-
             if category:
                 category.slug = category_slug
                 category.save(update_fields=['slug'])
@@ -176,7 +179,6 @@ def import_products_from_excel(file_path):
 
         if not product:
             product = Product.objects.filter(name=product_name).first()
-
             if product:
                 product.slug = product_slug
                 product.save(update_fields=['slug'])
@@ -202,8 +204,13 @@ def import_products_from_excel(file_path):
 
         model_slug = slugify(model_name)
 
-        # ❗ ВАЖНО: теперь наличие в колонке 8
-        model_stock = row.iloc[8]
+        # ✅ НАЛИЧИЕ (колонка 8)
+        model_stock_raw = row.iloc[8]
+
+        if pd.isna(model_stock_raw):
+            model_stock = 'draft'
+        else:
+            model_stock = stock_map.get(str(model_stock_raw).strip(), 'draft')
 
         model_image = rename_image(row.iloc[5])
 
@@ -211,7 +218,6 @@ def import_products_from_excel(file_path):
 
         if not model:
             model = Models.objects.filter(name=model_name, parent=product).first()
-
             if model:
                 model.slug = model_slug
                 model.save(update_fields=['slug'])
@@ -234,7 +240,7 @@ def import_products_from_excel(file_path):
 
         # --- ДОПОЛНИТЕЛЬНЫЕ ФОТО ---
 
-        # ✅ колонка 6 — доп фото продукта
+        # ✅ Доп фото продукта (колонка 6)
         extra_product_photos = str(row.iloc[6]).split(",") if not pd.isna(row.iloc[6]) else []
         for photo_path in extra_product_photos:
             photo_file = rename_image(photo_path.strip())
@@ -244,7 +250,7 @@ def import_products_from_excel(file_path):
                     src=photo_file
                 )
 
-        # ✅ колонка 7 — доп фото модели
+        # ✅ Доп фото модели (колонка 7)
         extra_model_photos = str(row.iloc[7]).split(",") if not pd.isna(row.iloc[7]) else []
         for photo_path in extra_model_photos:
             photo_file = rename_image(photo_path.strip())
