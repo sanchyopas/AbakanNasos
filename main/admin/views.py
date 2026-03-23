@@ -89,30 +89,33 @@ def rename_image(filename):
     try:
         original_name = unicodedata.normalize("NFKC", str(filename)).strip()
 
-        # убираем полный путь и /media/goods/
+        # убираем URL-домены если есть
+        if "://" in original_name:
+            original_name = original_name.split("/")[-1]
+
+        # убираем /media/.../ (любой вложенности)
+        if "/media/" in original_name:
+            original_name = original_name.split("/media/")[-1]
+
+        # оставляем только имя файла
         original_name = os.path.basename(original_name)
 
-#         image_name, ext = os.path.splitext(original_name)
-#         ext = ext.lower()
-#
-#         slug_name = slugify(image_name)
-#         if not slug_name:
-#             slug_name = "image"
-#
-#         new_filename = f"{slug_name}{ext}"
-#
-#         old_path = os.path.join(images_folder, original_name)
-#         new_path = os.path.join(images_folder, new_filename)
-
-        # если файл уже существует — просто возвращаем путь
-        if os.path.exists(original_name):
+        # если файл уже существует в goods
+        goods_path = os.path.join("media", "goods", original_name)
+        if os.path.exists(goods_path):
             return f"goods/{original_name}"
 
-        # если старый файл существует — переименовываем
-#         if os.path.exists(old_path):
-#             os.rename(old_path, new_path)
+        # если файл в product-image
+        product_path = os.path.join("media", "product-image", original_name)
+        if os.path.exists(product_path):
+            return f"product-image/{original_name}"
 
-        print(f"goods/{original_name}")
+        # если файл в model-image
+        model_path = os.path.join("media", "model-image", original_name)
+        if os.path.exists(model_path):
+            return f"model-image/{original_name}"
+
+        # fallback (если просто имя дали)
         return f"goods/{original_name}"
 
     except Exception:
@@ -122,7 +125,8 @@ def rename_image(filename):
 def import_products_from_excel(file_path):
     df = pd.read_excel(file_path, engine='openpyxl')
 
-    FIXED_COLUMNS_COUNT = 7
+    # FIXED_COLUMNS_COUNT = 9, потому что теперь добавлены колонки "Доп. фото продукта" и "Доп. фото модели"
+    FIXED_COLUMNS_COUNT = 9
 
     for _, row in df.iterrows():
 
@@ -144,7 +148,6 @@ def import_products_from_excel(file_path):
                 'image': image
             }
         )
-
 
         if not created:
             category.description = description
@@ -185,9 +188,6 @@ def import_products_from_excel(file_path):
         model_stock = row.iloc[6]
         model_image = rename_image(row.iloc[5])
 
-        if pd.isna(model_image):
-            model_image = ""
-
         model, created = Models.objects.get_or_create(
             slug=model_slug,
             defaults={
@@ -206,6 +206,21 @@ def import_products_from_excel(file_path):
             model.image = model_image
             model.save(update_fields=['name', 'in_stock', 'status', 'image'])
 
+        # --- ДОПОЛНИТЕЛЬНЫЕ ФОТО ---
+        # Доп. фото продукта
+        extra_product_photos = str(row.iloc[6]).split(",") if not pd.isna(row.iloc[6]) else []
+        for photo_path in extra_product_photos:
+            photo_file = rename_image(photo_path.strip())
+            if photo_file:
+                ProductImage.objects.get_or_create(parent=product, src=photo_file)
+
+        # Доп. фото модели
+        extra_model_photos = str(row.iloc[7]).split(",") if not pd.isna(row.iloc[7]) else []
+        for photo_path in extra_model_photos:
+            photo_file = rename_image(photo_path.strip())
+            if photo_file:
+                ModelsImage.objects.get_or_create(parent=model, src=photo_file)
+
         # --- CHARACTERISTICS ---
         for index, column in enumerate(df.columns[FIXED_COLUMNS_COUNT:], start=1):
 
@@ -221,9 +236,7 @@ def import_products_from_excel(file_path):
                 value = "-"
 
             # создаем характеристику
-            char, _ = Characteristic.objects.get_or_create(
-                name=col_name
-            )
+            char, _ = Characteristic.objects.get_or_create(name=col_name)
 
             # сохраняем значение + порядок
             ModelCharacteristic.objects.update_or_create(
@@ -231,7 +244,7 @@ def import_products_from_excel(file_path):
                 characteristic=char,
                 defaults={
                     'value': str(value),
-                    'order_by': index  # 🔥 сохраняем порядок из Excel
+                    'order_by': index  # сохраняем порядок из Excel
                 }
             )
 
@@ -290,7 +303,6 @@ def download_goods(request):
         form = DownLoadFileForm(request.POST)
 
         if form.is_valid():
-
             wb = Workbook()
             ws = wb.active
             ws.title = "Products"
@@ -301,7 +313,9 @@ def download_goods(request):
 
             models = Models.objects.select_related("parent").prefetch_related(
                 "parent__category",
-                "characteristics__characteristic"
+                "characteristics__characteristic",
+                "images",                   # доп. фото модели
+                "parent__images"             # доп. фото продукта
             ).filter(parent__category=category)
 
             characteristics = ModelCharacteristic.objects.filter(
@@ -313,7 +327,7 @@ def download_goods(request):
                 order=Min('order_by')
             ).order_by('order')
 
-            # базовые колонки
+            # базовые колонки + доп. фото продукта и модели перед "Наличие"
             columns = [
                 'Категория',
                 'Подкатегория',
@@ -321,10 +335,11 @@ def download_goods(request):
                 'Фото категории',
                 'Фото подкатегории',
                 'Фото модели',
+                'Доп. фото продукта',
+                'Доп. фото модели',
                 'Наличие',
             ]
 
-            # добавляем характеристики в заголовки
             for char in characteristics:
                 columns.append(char['characteristic__name'])
 
@@ -333,6 +348,14 @@ def download_goods(request):
             for model in models:
                 category_obj = model.parent.category.first()
 
+                # дополнительные фото продукта
+                product_extra_images = []
+                if model.parent:
+                    product_extra_images = [img.src.url for img in model.parent.images.all() if img.src]
+
+                # дополнительные фото модели
+                model_extra_images = [img.src.url for img in model.images.all() if img.src]
+
                 row = [
                     category_obj.name if category_obj else "",
                     model.parent.name if model.parent else "",
@@ -340,6 +363,8 @@ def download_goods(request):
                     category_obj.image.url if category_obj and category_obj.image else "",
                     model.parent.image.url if model.parent and model.parent.image else "",
                     model.image.url if model.image else "",
+                    ", ".join(product_extra_images),
+                    ", ".join(model_extra_images),
                     model.get_in_stock_display(),
                 ]
 
@@ -359,7 +384,6 @@ def download_goods(request):
             response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
             wb.save(response)
-
             return response
 
     return render(request, 'upload/download.html', {'form': form})

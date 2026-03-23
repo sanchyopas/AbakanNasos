@@ -180,14 +180,14 @@ class ModelCharacteristic(models.Model):
 
 class ProductImage(models.Model):
   parent = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="Привязка к продукту")
-  src = models.ImageField(upload_to="product-image/", null=True, blank=True, verbose_name="Дополнительны изображения")
+  src = models.ImageField(upload_to="goods/", null=True, blank=True, verbose_name="Дополнительны изображения")
 
   class Meta:
     verbose_name = 'Изображение'
 
 class ModelsImage(models.Model):
   parent = models.ForeignKey(Models, on_delete=models.CASCADE, related_name="images", verbose_name="Привязка к продукту")
-  src = models.ImageField(upload_to="model-image/", null=True, blank=True, verbose_name="Дополнительны изображения")
+  src = models.ImageField(upload_to="goods/", null=True, blank=True, verbose_name="Дополнительны изображения")
 
   class Meta:
     verbose_name = 'Изображение'
