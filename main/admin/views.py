@@ -140,7 +140,6 @@ def import_products_from_excel(file_path):
         if not category_name:
             continue
 
-        description = "" if pd.isna(row.iloc[2]) else row.iloc[2]
         image = rename_image(row.iloc[3])
 
         category_slug = slugify(category_name)
@@ -158,14 +157,12 @@ def import_products_from_excel(file_path):
                 name=category_name,
                 slug=category_slug,
                 status='published',
-                description=description,
                 image=image
             )
         else:
-            category.description = description
             if image:
                 category.image = image
-            category.save(update_fields=['description', 'image'])
+            category.save(update_fields=['image'])
 
         # --- PRODUCT ---
         product_name = str(row.iloc[1]).strip()
@@ -204,7 +201,7 @@ def import_products_from_excel(file_path):
 
         model_slug = slugify(model_name)
 
-        # ✅ НАЛИЧИЕ (колонка 8)
+
         model_stock_raw = row.iloc[8]
 
         if pd.isna(model_stock_raw):
@@ -238,10 +235,8 @@ def import_products_from_excel(file_path):
             model.image = model_image
             model.save(update_fields=['name', 'in_stock', 'status', 'image'])
 
-        # --- ДОПОЛНИТЕЛЬНЫЕ ФОТО ---
-
-        # ✅ Доп фото продукта (колонка 6)
         extra_product_photos = str(row.iloc[6]).split(",") if not pd.isna(row.iloc[6]) else []
+
         for photo_path in extra_product_photos:
             photo_file = rename_image(photo_path.strip())
             if photo_file:
@@ -250,7 +245,6 @@ def import_products_from_excel(file_path):
                     src=photo_file
                 )
 
-        # ✅ Доп фото модели (колонка 7)
         extra_model_photos = str(row.iloc[7]).split(",") if not pd.isna(row.iloc[7]) else []
         for photo_path in extra_model_photos:
             photo_file = rename_image(photo_path.strip())
@@ -260,7 +254,6 @@ def import_products_from_excel(file_path):
                     src=photo_file
                 )
 
-        # --- CHARACTERISTICS ---
         for index, column in enumerate(df.columns[FIXED_COLUMNS_COUNT:], start=1):
 
             if str(column).startswith('Unnamed'):
@@ -284,7 +277,6 @@ def import_products_from_excel(file_path):
                     'order_by': index
                 }
             )
-
 
 
 # @user_passes_test(lambda u: u.is_superuser)
