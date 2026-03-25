@@ -4825,6 +4825,16 @@ tbody td:last-child {
   color: rgba(255, 255, 255, 0.67);
 }
 
+.footer__author {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.67);
+}
+
+.footer__author a {
+  text-decoration: underline;
+  color: inherit;
+}
+
 .copyright {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.67);
@@ -11133,6 +11143,10 @@ body main {
   }
 
   .footer__link:hover {
+    color: rgb(255, 255, 255);
+  }
+
+  .footer__author:hover {
     color: rgb(255, 255, 255);
   }
 
