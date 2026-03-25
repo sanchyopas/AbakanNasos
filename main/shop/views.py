@@ -95,9 +95,15 @@ def product(request, parent, slug):
 
 
 def model_detail(request, parent, product, model):
-  model = get_object_or_404(Models, slug=model)
-  product = Product.objects.get(slug=product)
-  category = Category.objects.get(slug=parent)
+  category = get_object_or_404(Category, slug=parent)
+
+  product = get_object_or_404(Product, slug=product)
+
+  model = get_object_or_404(
+      Models,
+      parent=product,
+      slug=model
+  )
   images = ModelsImage.objects.filter(parent=model)
 
   context = {

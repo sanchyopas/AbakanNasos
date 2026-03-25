@@ -134,9 +134,15 @@ class Models(models.Model):
   description = models.TextField(null=True, blank=True,  verbose_name="Описание")
   text = models.TextField(null=True, blank=True,  verbose_name="Текст на странице")
   parent = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True,related_name="models_parent", verbose_name="Продукт")
-  slug = models.SlugField(max_length=255, unique=True, blank=True, null=True, verbose_name="URL")
+  slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name="URL")
   name = models.CharField(max_length=150, default="", db_index=True, verbose_name="Модель")
   in_stock = models.CharField(max_length=20, choices=STATUS_STOCK, default='draft', verbose_name="В наличии")
+  order = models.PositiveIntegerField(default=0, db_index=True, verbose_name="Сортировка")
+
+  class Meta:
+    ordering = ['order']
+    unique_together = ('parent', 'slug')
+
 
   status = models.CharField(
       max_length=20,

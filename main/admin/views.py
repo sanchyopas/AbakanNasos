@@ -133,16 +133,18 @@ def import_products_from_excel(file_path):
         'Нет в наличии': 'hidden',
     }
 
+    # Счётчик порядка моделей внутри продукта
+    product_model_counters = {}
+
     for _, row in df.iterrows():
 
-        # --- CATEGORY ---
+        # ================= CATEGORY =================
         category_name = str(row.iloc[0]).strip()
         if not category_name:
             continue
 
-        image = rename_image(row.iloc[3])
-
         category_slug = slugify(category_name)
+        category_image = rename_image(row.iloc[3])
 
         category = Category.objects.filter(slug=category_slug).first()
 
@@ -157,14 +159,14 @@ def import_products_from_excel(file_path):
                 name=category_name,
                 slug=category_slug,
                 status='published',
-                image=image
+                image=category_image
             )
         else:
-            if image:
-                category.image = image
-            category.save(update_fields=['image'])
+            if category_image:
+                category.image = category_image
+                category.save(update_fields=['image'])
 
-        # --- PRODUCT ---
+        # ================= PRODUCT =================
         product_name = str(row.iloc[1]).strip()
         if not product_name:
             continue
@@ -194,16 +196,14 @@ def import_products_from_excel(file_path):
 
         product.category.add(category)
 
-        # --- MODEL ---
+        # ================= MODEL =================
         model_name = str(row.iloc[2]).strip()
         if not model_name:
             continue
 
         model_slug = slugify(model_name)
 
-
         model_stock_raw = row.iloc[8]
-
         if pd.isna(model_stock_raw):
             model_stock = 'draft'
         else:
@@ -211,14 +211,26 @@ def import_products_from_excel(file_path):
 
         model_image = rename_image(row.iloc[5])
 
-        model = Models.objects.filter(slug=model_slug).first()
+        # ---- ORDER внутри продукта ----
+        product_id = product.id
+
+        if product_id not in product_model_counters:
+            product_model_counters[product_id] = 1
+        else:
+            product_model_counters[product_id] += 1
+
+        order = product_model_counters[product_id]
+
+        # ---- ВАЖНО: ищем только внутри продукта ----
+        model = Models.objects.filter(parent=product, slug=model_slug).first()
 
         if not model:
-            model = Models.objects.filter(name=model_name, parent=product).first()
+            model = Models.objects.filter(parent=product, name=model_name).first()
             if model:
                 model.slug = model_slug
                 model.save(update_fields=['slug'])
 
+        # ---- CREATE / UPDATE ----
         if not model:
             model = Models.objects.create(
                 parent=product,
@@ -226,16 +238,28 @@ def import_products_from_excel(file_path):
                 slug=model_slug,
                 status='published',
                 image=model_image,
-                in_stock=model_stock
+                in_stock=model_stock,
+                order=order
             )
         else:
             model.name = model_name
             model.in_stock = model_stock
             model.status = 'published'
             model.image = model_image
-            model.save(update_fields=['name', 'in_stock', 'status', 'image'])
+            model.order = order
+            model.save(update_fields=[
+                'name',
+                'in_stock',
+                'status',
+                'image',
+                'order'
+            ])
 
-        extra_product_photos = str(row.iloc[6]).split(",") if not pd.isna(row.iloc[6]) else []
+        # ================= PRODUCT IMAGES =================
+        extra_product_photos = (
+            str(row.iloc[6]).split(",")
+            if not pd.isna(row.iloc[6]) else []
+        )
 
         for photo_path in extra_product_photos:
             photo_file = rename_image(photo_path.strip())
@@ -245,7 +269,12 @@ def import_products_from_excel(file_path):
                     src=photo_file
                 )
 
-        extra_model_photos = str(row.iloc[7]).split(",") if not pd.isna(row.iloc[7]) else []
+        # ================= MODEL IMAGES =================
+        extra_model_photos = (
+            str(row.iloc[7]).split(",")
+            if not pd.isna(row.iloc[7]) else []
+        )
+
         for photo_path in extra_model_photos:
             photo_file = rename_image(photo_path.strip())
             if photo_file:
@@ -253,7 +282,8 @@ def import_products_from_excel(file_path):
                     parent=model,
                     src=photo_file
                 )
-
+        ModelCharacteristic.objects.filter(model=model).delete()
+        # ================= CHARACTERISTICS =================
         for index, column in enumerate(df.columns[FIXED_COLUMNS_COUNT:], start=1):
 
             if str(column).startswith('Unnamed'):
@@ -345,7 +375,7 @@ def download_goods(request):
                 "characteristics__characteristic",
                 "images",                   # доп. фото модели
                 "parent__images"             # доп. фото продукта
-            ).filter(parent__category=category)
+            ).filter(parent__category=category, status='published')
 
             characteristics = ModelCharacteristic.objects.filter(
                 model__in=models
@@ -356,7 +386,6 @@ def download_goods(request):
                 order=Min('order_by')
             ).order_by('order')
 
-            # базовые колонки + доп. фото продукта и модели перед "Наличие"
             columns = [
                 'Категория',
                 'Подкатегория',
@@ -377,12 +406,10 @@ def download_goods(request):
             for model in models:
                 category_obj = model.parent.category.first()
 
-                # дополнительные фото продукта
                 product_extra_images = []
                 if model.parent:
                     product_extra_images = [img.src.url for img in model.parent.images.all() if img.src]
 
-                # дополнительные фото модели
                 model_extra_images = [img.src.url for img in model.images.all() if img.src]
 
                 row = [

@@ -195,6 +195,15 @@
               </div>
             {% endif %}
 
+            {% if form.order %}
+            <div class="form__group">
+              <label for="{{ form.order.id_for_label }}" class="form__controls-label">
+                {{ form.order.label }}{% if form.order.field.required %}<span class="form__required">*</span>{% endif %}:
+              </label>
+              {{ form.order }} {{ form.order.errors }}
+            </div>
+            {% endif %}
+
             {% if form.order_by %}
             <div class="form__group">
               <label for="{{ form.order_by.id_for_label }}" class="form__controls-label">{{ form.order_by.label }}:</label>
