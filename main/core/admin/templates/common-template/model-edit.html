@@ -1,0 +1,35 @@
+{% extends 'admin_base.html' %}
+{% block body %}
+<div class="page">
+  <div class="page__inner">
+    <div class="page__top">
+      <h1 class="page__title">{{ title }}</h1>
+      <a href="javascript:history.back()">Назад</a>
+    </div>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <h3>Модель</h3>
+      {{ form.as_p }}
+      <hr>
+
+      <h3>Характеристики</h3>
+
+      {{ formset.management_form }}
+      <div id="char-body">
+        {% for f in formset %}
+
+        <div class="char-block">
+          {{ f.id }}
+          {{ f.as_p }}
+        </div>
+
+        {% endfor %}
+      </div>
+      <button type="button" class="char-add" id="char-add">qДобавить характеристику</button>
+
+      <button type="submit">Сохранить</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
